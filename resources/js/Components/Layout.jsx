@@ -25,7 +25,7 @@ export default function Layout({titulo, children}) {
             {children}
         </div>
 
-        <div className={"absolute top-[75px] right-0 flex flex-col bg-[#06B6D4] text-right px-5 gap-2 h-screen w-2/3 md:w-1/5 " + (isMenuHidden ? 'hidden' : '')}>
+        <div className={"absolute top-[75px] right-0 flex flex-col bg-[#06B6D4] text-right px-5 h-screen w-3/4 md:w-1/5 divide-y-2" + (isMenuHidden ? ' hidden' : '')}>
             <Menu />
         </div>
     </div>;
@@ -42,6 +42,6 @@ function Menu() {
     ];
 
     return listaMenu.map((item, i) => {
-        return <a href={item.caminho} key={i} className="text-white text-xl border-b border-white">{item.nome}</a>
+        return <a href={item.caminho} key={i} className="text-white text-xl py-2">{item.nome}</a>
     });
 }
