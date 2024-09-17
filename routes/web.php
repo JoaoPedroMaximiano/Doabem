@@ -25,6 +25,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/teste', [App\Http\Controllers\TesteController::class, 'index'])->name('teste');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
