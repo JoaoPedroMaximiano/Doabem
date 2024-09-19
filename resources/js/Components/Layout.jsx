@@ -11,7 +11,7 @@ export default function Layout({titulo, children}) {
         </Head>
 
         <div className="flex justify-between items-center w-full bg-[#06B6D4] py-5 px-2.5">
-            <a href="/" className="text-3xl text-white">Logo</a>
+            <a href="/" className="text-3xl text-white ">Logo</a>
             <div className="pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
                 {
                     isMenuHidden ?
@@ -21,7 +21,7 @@ export default function Layout({titulo, children}) {
             </div>
         </div>
 
-        <div className="py-5 px-4">
+        <div className="container mx-auto p-4 min-h-screen">
             {children}
         </div>
 
