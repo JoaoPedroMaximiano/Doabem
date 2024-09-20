@@ -16,16 +16,17 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
-Route::get('/teste', [App\Http\Controllers\TesteController::class, 'index'])->name('teste');
+Route::get('/', [App\Http\Controllers\ListagemController::class, 'index']);
+Route::get('/teste', [App\Http\Controllers\TesteController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

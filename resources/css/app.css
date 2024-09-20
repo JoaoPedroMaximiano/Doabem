@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #F0F0F0;
+}
+
+h1 {
+    @apply text-2xl;
+}
+
+h2 {
+    @apply text-sm font-bold;
+}
+
+p {
+    @apply text-base;
+}
+
+input[type=text] {
+    color: #000000;
+    border: #C2C2C2 1px solid;
+    border-radius: 4px;
+    padding: 8px;
+    @apply w-full;
+}
