@@ -27,6 +27,7 @@ use Inertia\Inertia;
 
 Route::get('/', [App\Http\Controllers\ListagemController::class, 'index']);
 Route::get('/teste', [App\Http\Controllers\TesteController::class, 'index']);
+Route::get('/uf', [App\Http\Controllers\UfController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
