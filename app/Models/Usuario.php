@@ -17,7 +17,6 @@ class Usuario extends Model
         'email',
         'celular',
         'status',
-        'data_cadastro',
     ];
 
     public function setSenhaAttribute($value)

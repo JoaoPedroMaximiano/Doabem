@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nome');
             $table->text('descricao');
             $table->dateTime('data_cadastro');
-            $table->string('imagem')->nullable(); 
+            $table->string('imagem')->nullable();
             $table->enum('status', ['ativo', 'inativo']);
             $table->timestamps();
         });
