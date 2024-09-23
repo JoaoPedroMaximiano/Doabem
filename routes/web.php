@@ -21,11 +21,8 @@ Route::get('/destinoDoacao', [App\Http\Controllers\DestinoDoacaoController::clas
 Route::get('/destinoFinal', [App\Http\Controllers\DestinoFinalController::class, 'index']);
 Route::get('/doacao', [App\Http\Controllers\DoacaoController::class, 'index']);
 
-Route::prefix('usuario')->group(function () {
-    Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('usuario.login');
-    Route::get('/cadastrar', [App\Http\Controllers\UsuarioController::class, 'cadastrar'])->name('usuario.cadastrar');
-    Route::get('/teste', [App\Http\Controllers\UsuarioController::class, 'index']);
-});
+Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login');
+Route::get('/cadastrar', [App\Http\Controllers\UsuarioController::class, 'cadastrar'])->name('cadastrar');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -18,10 +18,27 @@ p {
     @apply text-base;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     color: #000000;
     border: #C2C2C2 1px solid;
     border-radius: 4px;
     padding: 8px;
     @apply w-full;
+}
+
+.btn-primary {
+    background-color: #06B6D4;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #EC4899;
+    border: #F9A8D4 solid 1px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
 }
