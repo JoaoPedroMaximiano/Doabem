@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UsuarioController extends Controller
 {
@@ -21,6 +22,10 @@ class UsuarioController extends Controller
 
         $usuarios = Usuario::all();
         dd($usuario);
+    }
+
+    public function loginPage(){
+        return Inertia::render('Autenticacao/Login');
     }
 
 }
