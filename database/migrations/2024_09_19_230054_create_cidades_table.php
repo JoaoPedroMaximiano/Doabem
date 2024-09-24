@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('id_uf')->constrained('ufs');
             $table->string('nome');
             $table->enum('status', ['ativo', 'inativo']);
-            $table->timestamps(); 
         });
     }
 

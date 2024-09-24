@@ -11,7 +11,7 @@ class Doacao extends Model
     protected $table = 'doacoes';
     protected $fillable = [
         'id_doador',
-        'identidade_beneficente',
+        'id_entidade_beneficente',
         'id_destino_final',
         'id_necessidade',
         'id_evento_beneficente',

@@ -12,7 +12,7 @@ class EventoBeneficente extends Model
     protected $table = 'eventos_beneficentes';
 
     protected $fillable = [
-        'identidade_beneficente',
+        'id_entidade_beneficente',
         'id_local',
         'nome',
         'descricao',
@@ -25,7 +25,7 @@ class EventoBeneficente extends Model
 
     public function entidadeBeneficente()
     {
-        return $this->belongsTo(EntidadeBeneficente::class, 'identidade_beneficente');
+        return $this->belongsTo(EntidadeBeneficente::class, 'id_entidade_beneficente');
     }
 
     public function local()

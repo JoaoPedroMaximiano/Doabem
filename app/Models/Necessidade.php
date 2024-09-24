@@ -11,7 +11,7 @@ class Necessidade extends Model
     protected $table = 'necessidades';
     
     protected $fillable = [
-        'identidade_beneficente',
+        'id_entidade_beneficente',
         'id_local',
         'nome',
         'descricao',
@@ -23,7 +23,7 @@ class Necessidade extends Model
 
     public function entidadeBeneficente()
     {
-        return $this->belongsTo(EntidadeBeneficente::class, 'identidade_beneficente');
+        return $this->belongsTo(EntidadeBeneficente::class, 'id_entidade_beneficente');
     }
 
     public function local()
@@ -35,4 +35,5 @@ class Necessidade extends Model
     {
         return $this->status === 'ativo';
     }
+
 }

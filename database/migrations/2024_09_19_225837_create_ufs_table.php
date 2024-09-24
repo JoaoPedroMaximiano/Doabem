@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('nome');
             $table->string('sigla');
             $table->enum('status', ['ativo', 'inativo']);
-            $table->timestamps();
         });
     }
 

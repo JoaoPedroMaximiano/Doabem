@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('cnpj')->nullable();
             $table->string('razao_social')->nullable();
             $table->string('nome_fantasia')->nullable();
-            $table->timestamps();
         });
     }
 
