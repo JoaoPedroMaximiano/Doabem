@@ -22,7 +22,9 @@ Route::get('/destinoFinal', [App\Http\Controllers\DestinoFinalController::class,
 Route::get('/doacao', [App\Http\Controllers\DoacaoController::class, 'index']);
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login');
-Route::get('/cadastrar', [App\Http\Controllers\UsuarioController::class, 'cadastrar'])->name('cadastrar');
+Route::get('/cadastrarDoador', [App\Http\Controllers\DoadorController::class, 'create'])->name('cadastrar.doador');
+Route::get('/cadastrarEntidadeBeneficente', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

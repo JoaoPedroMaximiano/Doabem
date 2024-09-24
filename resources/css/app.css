@@ -42,3 +42,11 @@ input[type=text], input[type=password] {
     padding: 10px;
     border-radius: 5px;
 }
+
+.btn-tertiary {
+    background-color: #EC4899;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}

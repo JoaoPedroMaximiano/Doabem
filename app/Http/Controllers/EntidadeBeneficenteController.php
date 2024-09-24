@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EntidadeBeneficente;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EntidadeBeneficenteController extends Controller
 {
@@ -22,4 +23,10 @@ class EntidadeBeneficenteController extends Controller
         dd($entidade);
 
     }
+
+    public function create(){
+        return Inertia::render('Autenticacao/CadastrarEntidadeBeneficente');
+    }
+
+    public function store(){}
 }

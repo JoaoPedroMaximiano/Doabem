@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doador;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DoadorController extends Controller
 {
@@ -19,4 +20,10 @@ class DoadorController extends Controller
         $doadores = Doador::all();
         dd($doadores);
     }
+
+    public function create(){
+        return Inertia::render('Autenticacao/CadastrarDoador');
+    }
+
+    public function store(){}
 }
