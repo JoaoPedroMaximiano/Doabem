@@ -19,10 +19,9 @@ return new class extends Migration
             $table->foreignId('id_local')->constrained('locais');
             $table->string('nome');
             $table->text('descricao');
-            $table->dateTime('data_cadastro');
+            $table->dateTime('data_cadastro')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('imagem')->nullable();
             $table->enum('status', ['ativo', 'inativo']);
-            $table->timestamps();
         });
     }
 

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('id_usuario')->nullable()->constrained('usuarios');
             $table->string('nome');
             $table->string('cpf');
-            $table->timestamps();
         });
     }
 

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('id_doacao')->constrained('doacoes');
             $table->enum('status', ['Recebida', 'Em Preparação', 'Em Trânsito', 'Entregue', 'Cancelada']);
             $table->dateTime('data_atualizacao');
-            $table->timestamps();
         });
     }
 

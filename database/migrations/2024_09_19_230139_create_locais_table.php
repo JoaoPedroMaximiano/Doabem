@@ -20,7 +20,6 @@ return new class extends Migration
             $table->float('longitude');
             $table->string('cep');
             $table->enum('status', ['ativo', 'inativo']);
-            $table->timestamps();
         });
     }
 

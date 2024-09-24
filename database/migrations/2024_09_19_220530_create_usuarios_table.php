@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('email');
             $table->string('celular'); 
             $table->enum('status', ['ativo', 'pendente', 'inativo']); 
-            $table->timestamps();
         });
     }
 
