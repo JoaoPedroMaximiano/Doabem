@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Models\Usuario;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,8 +10,11 @@ Route::get('/', [App\Http\Controllers\ListagemController::class, 'index']);
 Route::get('/entidadeBeneficiente', [App\Http\Controllers\EntidadeBeneficenteController::class, 'index']);
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login');
-Route::get('/cadastrarDoador', [App\Http\Controllers\DoadorController::class, 'create'])->name('cadastrar.doador');
-Route::get('/cadastrarEntidadeBeneficente', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte');
+Route::post('/login', [App\Http\Controllers\UsuarioController::class, 'autenticacao'])->name('autenticacao');
+Route::get('/logout', [App\Http\Controllers\UsuarioController::class, 'logout'])->name('logout');
+
+Route::get('/cadastrar-doador', [App\Http\Controllers\DoadorController::class, 'create'])->name('cadastrar.doador');
+Route::get('/cadastrar-entidade-beneficente', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte');
 
 
 Route::get('/dashboard', function () {

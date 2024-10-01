@@ -5,17 +5,24 @@ import { Eye, EyeSlash } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
 
-export default function Login(){
+export default function Login({auth}){
+    console.log(auth);
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
     
     function redirectCadastrar(){
-        router.visit('/cadastrar');
+        router.visit('/cadastrar-doador');
     }
 
     function login() {
         console.log(dados);
-        // axios
+        axios.post('/login', dados)
+        .then( Response => {
+            router.visit('/');
+        })
+        .catch(error => {
+            console.log('erro no post');
+        })
     }
 
     return <div className="container mx-auto p-4 min-h-screen flex flex-col justify-between ">
@@ -37,12 +44,9 @@ export default function Login(){
                 </div>
             </label>
 
-            {/* 
-            futuramente será implemementado
-            <a href="#" className="underline text-[#06B6D4] w-100">
-                <p className="text-sm text-right">Esqueci a senha</p>
+            <a href="/" className="underline text-[#06B6D4] w-100">
+                <p className="text-sm text-right">Voltar a tela inicial</p>
             </a> 
-            */}
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Entrar" onClick={login}/>

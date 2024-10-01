@@ -1,5 +1,6 @@
 import Button from "@/Components/Button";
 import Input from "@/Components/Input";
+import { Head, router } from "@inertiajs/react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState } from "react";
 
@@ -7,13 +8,31 @@ export default function CadastrarEntidadeBeneficente(){
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
+    function redirectLogin(){
+        router.visit('/login');
+    }
+
+    function login() {
+        console.log(dados);
+        axios.post('/login', dados)
+        .then( Response => {
+            console.log('Post feito');
+        })
+        .catch(error => {
+            console.log('erro no post');
+        })
+    }
+
     return <div className="container mx-auto p-4 min-h-screen flex flex-col justify-between">
-        <head>
+        <Head>
             <title>Cadastrar</title>
-        </head>
+        </Head>
         <div className="flex flex-col gap-2.5">
         
             <h1 className="font-bold text-x1">Criar nova conta</h1>
+            <a href="/cadastrar-doador" className="underline text-[#06B6D4] w-100">
+                <p className="text-sm">Sou um doador</p>
+            </a> 
             <label>
                 <p>Login</p>
                 <Input placeholder="Digite seu login" name="login"/>
@@ -65,7 +84,7 @@ export default function CadastrarEntidadeBeneficente(){
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Registrar conta" onClick={() => {}}/>
-            <Button texto="Cancelar" onClick={() => {}} btnType="secondary"/>   
+            <Button texto="Cancelar" onClick={redirectLogin} btnType="secondary"/>   
         </div>
 
     </div>
