@@ -10,25 +10,26 @@ export default function Layout({titulo, children}) {
             <title>{titulo}</title>
         </Head>
 
-        <div className="relative z-20 flex justify-between items-center w-full bg-[#06B6D4] py-5 px-2.5">
-            <a href="/" className="text-3xl text-white ">Logo</a>
-            <div className="pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
-                {
-                    isMenuHidden ?
-                    <List size={32} color="#ffffff" /> :
-                    <X size={32} color="#ffffff" />
-                }
+        <div className="relative z-20 w-full bg-[#06B6D4] py-5 px-2.5">
+            <div className="container mx-auto flex justify-between items-center px-4">
+                <a href="/" className="text-3xl text-white ">Logo</a>
+                <div className="pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
+                    {
+                        isMenuHidden ?
+                        <List size={32} color="#ffffff" /> :
+                        <X size={32} color="#ffffff" />
+                    }
+                </div>
             </div>
         </div>
 
         <div className="relative">
-            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4 min-h-screen xl:min-h-[869px]">
                 {children}
             </div>
                 
-            <div className={"absolute z-10 top-0 left-0 bg-[#00000025] w-full h-screen "+(isMenuHidden ? ' hidden' : '')} onClick={() => setIsMenuHidden(!isMenuHidden)}></div>
-            <div className={"absolute z-30 top-0 right-0 bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-bl-md w-3/4 md:2/5" + (isMenuHidden ? ' hidden' : '')}>
-
+            <div className={"absolute z-10 top-0 left-0 bg-[#00000025] w-full h-full "+(isMenuHidden ? ' hidden' : '')} onClick={() => setIsMenuHidden(!isMenuHidden)}></div>
+            <div className={"absolute z-30 top-0 right-0 xl:right-44 bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-b-md w-3/4 md:w-fit" + (isMenuHidden ? ' hidden' : '')}>
                 <div className="flex flex-col divide-y-2">
                     <Menu />
                 </div>
