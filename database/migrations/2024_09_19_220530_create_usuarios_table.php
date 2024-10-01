@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('senha'); 
             $table->string('email');
             $table->string('celular'); 
+            $table->string('nivel_acesso');
             $table->enum('status', ['ativo', 'pendente', 'inativo']); 
         });
     }

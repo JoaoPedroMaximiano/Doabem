@@ -28,5 +28,7 @@ class EntidadeBeneficenteController extends Controller
         return Inertia::render('Autenticacao/CadastrarEntidadeBeneficente');
     }
 
-    public function store(){}
+    public function store(Request $request){
+        return Inertia::render('Autenticacao/login');
+    }
 }
