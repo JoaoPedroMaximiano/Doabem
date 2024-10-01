@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class ListagemController extends Controller
 {
-    public function index(Request $response)
+    public function index()
     {
         $listagem = [
             'Necessidades' => Necessidade::where('status', 'ativo')->get()->toArray(),

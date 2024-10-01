@@ -29,7 +29,7 @@ export default function Layout({titulo, children}) {
             </div>
                 
             <div className={"absolute z-10 top-0 left-0 bg-[#00000025] w-full h-full "+(isMenuHidden ? ' hidden' : '')} onClick={() => setIsMenuHidden(!isMenuHidden)}></div>
-            <div className={"absolute z-30 top-0 right-0 xl:right-44 bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-b-md w-3/4 md:w-fit" + (isMenuHidden ? ' hidden' : '')}>
+            <div className={"absolute z-30 top-0 right-0 xl:right-44 bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-bl-md md:rounded-b-md w-6/7 md:w-fit" + (isMenuHidden ? ' hidden' : '')}>
                 <div className="flex flex-col divide-y-2">
                     <Menu />
                 </div>
@@ -40,13 +40,20 @@ export default function Layout({titulo, children}) {
 
 function Menu() {
     let listaMenu = [
-        {nome: "Monitorar doações", caminho: "/monitorar-doacoes"},
-        {nome: "Gerenciar conta", caminho: "/gerenciar-conta"},
-        {nome: "Cadastrar doação", caminho: "/cadastrar-doacao"},
-        {nome: "Relatório de doações", caminho: "/relatorio-doacoes"},
         {nome: "Entrar", caminho: "/login"},
         {nome: "Criar nova conta", caminho: "/registrar"},
+        {nome: "Monitorar doações", caminho: "/monitorar-doacoes"},
+        {nome: "Gerenciar conta", caminho: "/gerenciar-conta"},
     ];
+
+    // Alterar posteriormente para validar se usuário é uma entidade beneficente
+    if (true) {
+        listaMenu.push({nome: "Cadastrar doação", caminho: "/doacao/cadastrar"});
+        listaMenu.push({nome: "Cadastrar necessidade", caminho: "/necessidade/cadastrar"});
+        listaMenu.push({nome: "Cadastrar evento beneficente", caminho: "/evento/cadastrar"});
+        listaMenu.push({nome: "Cadastrar local beneficente", caminho: "/local/cadastrar"});
+        listaMenu.push({nome: "Relatório de doações", caminho: "/relatorio-doacoes"});
+    }
 
     return listaMenu.map((item, i) => {
         return <a href={item.caminho} key={i} className="text-white text-xl py-2">{item.nome}</a>

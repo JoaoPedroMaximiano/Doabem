@@ -14,6 +14,8 @@ Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'
 Route::get('/cadastrarDoador', [App\Http\Controllers\DoadorController::class, 'create'])->name('cadastrar.doador');
 Route::get('/cadastrarEntidadeBeneficente', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte');
 
+Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade');
+Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

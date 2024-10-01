@@ -21,6 +21,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@phosphor-icons/react": "^2.1.7"
+        "@phosphor-icons/react": "^2.1.7",
+        "leaflet": "^1.9.4",
+        "sweetalert2": "^11.14.1"
     }
 }

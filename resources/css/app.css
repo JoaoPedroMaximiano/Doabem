@@ -18,12 +18,16 @@ p {
     @apply text-base;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], textarea {
     color: #000000;
     border: #C2C2C2 1px solid;
     border-radius: 4px;
     padding: 8px;
     @apply w-full;
+}
+
+textarea {
+    min-height: 100px;
 }
 
 .btn-primary {
@@ -50,3 +54,5 @@ input[type=text], input[type=password] {
     padding: 10px;
     border-radius: 5px;
 }
+
+.swal2-confirm { background-color: #06B6D4; }
