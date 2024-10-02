@@ -16,7 +16,7 @@ export default function CadastrarDoador(){
     }
 
     function cadastrar() {
-        axios.post('/cadastrar-doador', dados)
+        axios.post('/doador/cadastrar/salvar', dados)
         .then( Response => {
             router.visit('/');
         })
@@ -51,7 +51,7 @@ export default function CadastrarDoador(){
         </Head>
         <div className="flex flex-col gap-2.5">
             <h1 className="font-bold text-x1">Criar nova conta</h1>
-            <a href="/cadastrar-entidade-beneficente" className="underline text-[#06B6D4] w-100">
+            <a href="/entidade-beneficente/cadastrar" className="underline text-[#06B6D4] w-100">
                 <p className="text-sm">Sou uma entidade beneficente</p>
             </a>
             <label>

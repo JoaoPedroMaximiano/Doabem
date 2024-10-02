@@ -4,14 +4,14 @@ import { Head, router } from "@inertiajs/react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
-export default function Login({auth}){
-    console.log(auth);
+export default function Login(){
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
 
     function redirectCadastrar(){
-        router.visit('/cadastrar-doador');
+        router.visit('/doador/cadastrar');
     }
 
     function login() {
@@ -20,8 +20,28 @@ export default function Login({auth}){
             router.visit('/');
         })
         .catch(error => {
-            console.log('erro no post');
-        })
+            if (error.response && error.response.status === 422) {
+                const errors = error.response.data.errors;
+                let errorMessages = '';
+                Object.keys(errors).forEach((field) => {
+                    errors[field].forEach((message) => {
+                        errorMessages += `<li>${message}</li>`;
+                    });
+                });
+
+                Swal.fire({
+                    title: 'Erros de Validação',
+                    icon: 'error',
+                    html: `<ul>${errorMessages}</ul>`,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erro inesperado',
+                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    icon: 'error',
+                });
+            }
+        });
     }
 
     return <div className="container mx-auto p-4 min-h-screen flex flex-col justify-between ">

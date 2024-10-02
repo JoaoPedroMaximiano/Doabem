@@ -47,7 +47,7 @@ function Menu() {
 
     if (!auth?.user){
         listaMenu.push({nome: "Entrar", caminho: "/login"});
-        listaMenu.push({nome: "Criar nova conta", caminho: "/cadastrar-doador"});
+        listaMenu.push({nome: "Criar nova conta", caminho: "/doador/cadastrar"});
     }
 
     if (auth?.user?.nivel_acesso == 'entidade') {
