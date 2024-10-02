@@ -10,6 +10,7 @@ class Doador extends Model
     use HasFactory;
 
     protected $table = 'doadores';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_usuario',

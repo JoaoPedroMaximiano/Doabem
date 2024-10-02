@@ -11,6 +11,7 @@ class Usuario extends Authenticatable
     use HasFactory;
 
     protected $table = 'usuarios';
+    public $timestamps = false;
 
     protected $fillable = [
         'login',

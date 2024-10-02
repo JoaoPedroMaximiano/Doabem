@@ -10,6 +10,7 @@ class EntidadeBeneficente extends Model
     use HasFactory;
 
     protected $table = 'entidade_beneficentes';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_usuario',
