@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class UsuarioController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $usuario = Usuario::create([
             'login' => 'entidade',
@@ -27,7 +27,7 @@ class UsuarioController extends Controller
         dd($usuarios);
     }
 
-    public function logout(Request $request){
+    public function logout(){
         Auth::logout();
         return redirect('/');
     }

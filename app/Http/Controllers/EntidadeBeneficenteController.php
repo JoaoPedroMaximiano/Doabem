@@ -11,28 +11,14 @@ use Inertia\Inertia;
 
 class EntidadeBeneficenteController extends Controller
 {
-    public function index(Request $request)
+    public function create()
     {
-        $entidade = EntidadeBeneficente::create([
-            'id_usuario' => 1,
-            'cnpj' => '12.345.678/0001-90',
-            'razao_social' => 'Razão Social',
-            'nome_fantasia' => 'Nome Fantasia',
-        ]);
-
-        if ($entidade->hasCnpj());
-
-        $entidades = EntidadeBeneficente::all();
-        dd($entidade);
-
-    }
-
-    public function create(){
         return Inertia::render('Autenticacao/CadastrarEntidadeBeneficente');
     }
 
-    public function store(Request $request){
-        $validatedData = $request->validate([
+    public function store(Request $request)
+    {
+        $request->validate([
             'login' => 'required|string|max:255|unique:usuarios,login',
             'email' => 'required|email|max:255|unique:usuarios,email',
             'celular' => 'required|string|min:10|max:14',

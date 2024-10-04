@@ -11,13 +11,9 @@ export default function CadastrarEntidadeBeneficente(){
     let [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
 
-    function redirectLogin(){
-        router.visit('/login');
-    }
-
     function cadastrar() {
         axios.post('/entidade-beneficente/cadastrar/salvar', dados)
-        .then( Response => {
+        .then(() => {
             router.visit('/login');
         })
         .catch(error => {
@@ -50,7 +46,6 @@ export default function CadastrarEntidadeBeneficente(){
             <title>Cadastrar</title>
         </Head>
         <div className="flex flex-col gap-2.5">
-
             <h1 className="font-bold text-x1">Criar nova conta</h1>
             <a href="/doador/cadastrar" className="underline text-[#06B6D4] w-100">
                 <p className="text-sm">Sou um doador</p>
@@ -102,12 +97,10 @@ export default function CadastrarEntidadeBeneficente(){
                     <EyeSlash size={32} onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} className={"absolute top-1.5 right-2 " + (!isConfirmPasswordVisible ? "hidden" : "block")} />
                 </div>
             </label>
-
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Registrar conta" onClick={cadastrar}/>
-            <Button texto="Cancelar" onClick={redirectLogin} btnType="secondary"/>
+            <Button texto="Cancelar" onClick={() => router.visit('/login'))} btnType="secondary"/>
         </div>
-
     </div>
 }

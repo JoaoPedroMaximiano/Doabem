@@ -12,10 +12,18 @@ class ListagemController extends Controller
 {
     public function index()
     {
+        $necessidades = Necessidade::where('status', 'ativo')->get()->toArray();
+        $eventos = EventoBeneficente::where('status', 'ativo')
+            ->whereDate('data_inicio', '<=', now())
+            ->whereDate('data_fim', '>=', now())
+            ->get()
+            ->toArray();
+        $locais = LocalDoacao::where('status', 'ativo')->get()->toArray();
+
         $listagem = [
-            'Necessidades' => Necessidade::where('status', 'ativo')->get()->toArray(),
-            'Eventos' => EventoBeneficente::where('status', 'ativo')->get()->toArray(),
-            'Locais' => LocalDoacao::where('status', 'ativo')->get()->toArray(),
+            'Necessidades' => $necessidades,
+            'Eventos' => $eventos,
+            'Locais' => $locais,
         ];
 
         return Inertia::render('Listagem/Listagem', [

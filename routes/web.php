@@ -1,8 +1,5 @@
 <?php
-
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [App\Http\Controllers\ListagemController::class, 'index']);
 
@@ -15,6 +12,9 @@ Route::post('/doador/cadastrar/salvar', [App\Http\Controllers\DoadorController::
 
 Route::get('/entidade-beneficente/cadastrar', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte')->middleware('guest');
 Route::post('/entidade-beneficente/cadastrar/salvar', [App\Http\Controllers\EntidadeBeneficenteController::class, 'store'])->name('salvar.entidadeBeneficinte')->middleware('guest');
+
+Route::get('/gerenciar-conta', [App\Http\Controllers\GerenciarContaController::class, 'index'])->name('gerenciar.conta')->middleware('auth');
+Route::put('/gerenciar-conta/alterar', [App\Http\Controllers\GerenciarContaController::class, 'update'])->name('gerenciar.conta.alterar')->middleware('auth');
 
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');

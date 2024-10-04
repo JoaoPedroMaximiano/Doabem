@@ -10,13 +10,9 @@ export default function Login(){
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
 
-    function redirectCadastrar(){
-        router.visit('/doador/cadastrar');
-    }
-
     function login() {
         axios.post('/login', dados)
-        .then( Response => {
+        .then(() => {
             router.visit('/');
         })
         .catch(error => {
@@ -36,8 +32,8 @@ export default function Login(){
                 });
             } else {
                 Swal.fire({
-                    title: 'Erro inesperado',
-                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    title: 'Autenticação',
+                    text: 'CPF/CNPJ ou Senha Incorretos',
                     icon: 'error',
                 });
             }
@@ -69,7 +65,7 @@ export default function Login(){
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Entrar" onClick={login}/>
-            <Button texto="Registrar" onClick={redirectCadastrar} btnType="secondary" />
+            <Button texto="Registrar" onClick={() => router.visit('/doador/cadastrar')} btnType="secondary" />
         </div>
     </div>
 }
