@@ -1,6 +1,7 @@
+import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
 import { Head, usePage } from "@inertiajs/react";
-import { Handshake, MapPinArea } from "@phosphor-icons/react";
+import { Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
     let { localDoacao } = usePage().props;
@@ -31,6 +32,7 @@ export default function Detalhe() {
                 <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
             </div>
             <p>{localDoacao.descricao}</p>
+            <FloatButton onClick={()=> console.log('oi')} icone={<PencilSimple size={32} />}></FloatButton>
         </div>
             
     </Layout>

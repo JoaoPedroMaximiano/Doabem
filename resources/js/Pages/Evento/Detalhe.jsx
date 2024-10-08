@@ -1,6 +1,7 @@
+import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
 import { Head, usePage } from "@inertiajs/react";
-import { CalendarDots, Handshake, MapPinArea } from "@phosphor-icons/react";
+import { CalendarDots, Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
     let { evento } = usePage().props;
@@ -47,6 +48,7 @@ export default function Detalhe() {
                 </h1>
             </div>
             <p>{evento.descricao}</p>
+            <FloatButton onClick={()=> console.log('oi')} icone={<PencilSimple size={32} />}></FloatButton>
         </div>
             
     </Layout>
