@@ -5,16 +5,62 @@ import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import { useState } from "react";
 import { router } from "@inertiajs/react";
-import Swal from "sweetalert2";
 import Map from "@/Components/Map";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Cadastro() {
     let [dados, setDados] = useState({
         nome: '',
+        qtd: '',
+        descricao: '',
+        imagem: null,
+        link: '',
+        cep: '',
+        latitude: '',
+        longitude: '',
+        cidade: '',
+        estado: '',
+        uf: '',
     });
 
     let handleSalvar = () => {
-        Swal.fire("oi");
+        let formData = new FormData();
+
+        Object.keys(dados).forEach(key => {
+            formData.append(key, dados[key]);
+        });
+
+        axios.post('/necessidade/cadastrar/salvar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 422) {
+                const errors = error.response.data.errors;
+                let errorMessages = '';
+                Object.keys(errors).forEach((field) => {
+                    errors[field].forEach((message) => {
+                        errorMessages += `<li>${message}</li>`;
+                    });
+                });
+                Swal.fire({
+                    title: 'Erros de Validação',
+                    icon: 'error',
+                    html: `<ul>${errorMessages}</ul>`,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erro inesperado',
+                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    icon: 'error',
+                });
+            }
+        });
     }
 
     return <Layout titulo="Cadastrar necessidade">
@@ -35,10 +81,20 @@ export default function Cadastro() {
                 </Label>
 
                 <Label texto="Imagem">
-                    <Input inputType="image" value={dados.imagem} onChange={e => setDados(p => ({...p, imagem: e.target.value}))} />
+                    <Input
+                        inputType="file"
+                        value={dados.link}
+                        onChange={
+                            e => setDados(p => ({
+                                ...p,
+                                imagem: e.target.files[0],
+                                link: e.target.value
+                            }))
+                        }
+                    />
                 </Label>
 
-                <Map />
+                <Map setDados={setDados} />
             </div>
 
             <div className="flex flex-col gap-2.5">
