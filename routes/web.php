@@ -20,4 +20,8 @@ Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaDetalhe'])->name('detalhe.necessidade');
 
+Route::get('/eventos/{id}',  [App\Http\Controllers\EventoController::class, 'paginaDetalhe'])->name('detalhe.evento');
+
+Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.local.beneficente');
+
 require __DIR__.'/auth.php';
