@@ -100,7 +100,7 @@ export default function CadastrarEntidadeBeneficente(){
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Registrar conta" onClick={cadastrar}/>
-            <Button texto="Cancelar" onClick={() => router.visit('/login'))} btnType="secondary"/>
+            <Button texto="Cancelar" onClick={() => router.visit('/login')} btnType="secondary"/>
         </div>
     </div>
 }
