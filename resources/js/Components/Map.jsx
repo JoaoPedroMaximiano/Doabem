@@ -1,67 +1,78 @@
-import React, { useState, useRef, useEffect } from 'react';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import React, { useState } from 'react';
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import Label from './Label';
 import Input from './Input';
-import axios from 'axios';
+import Button from './Button';
+import { usePage } from '@inertiajs/react';
 
-export default function Map() {
+export default function Map({setDados}) {
+    let {api} = usePage().props;
     let [cep, setCep] = useState('');
-    let [endereco, setEndereco] = useState('');
     let [latitude, setLatitude] = useState(null);
     let [longitude, setLongitude] = useState(null);
-    let mapRef = useRef(null);
+
+    let { isLoaded } = useLoadScript({
+        googleMapsApiKey: api['google-maps'],
+    });
 
     let handleCepChange = (event) => {
         setCep(event.target.value);
     };
 
-    useEffect(() => {
+    let handleSearchCEP = () => {
         let cepRegex = /^\d{5}-\d{3}$/;
         if (cepRegex.test(cep)) {
-            axios.get(`https://www.cepaberto.com/api/v3/cep?cep=${cep.split('-').join('')}`, {
-                headers: {'Authorization': 'Token token=ebd84a2d39144564ba4f8cddf0b9d6f6'}
-            })
-            .then(response => {
-                const data = response.data;
-                console.log(data);
-                if (data.latitude && data.longitude) {
-                    setEndereco((data.logradouro ?? 'SN') + ', ' + (data.bairro ?? 'SN') + ', ' + data.cidade.nome + ' - ' + data.estado.sigla);
-                    setLatitude(data.latitude);
-                    setLongitude(data.longitude);
-                } else {
-                    setEndereco('CEP não encontrado.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao buscar CEP:', error);
-                setEndereco('Erro ao buscar CEP.');
-            });
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setDados(p => ({
+                        ...p,
+                        cep: cep,
+                        cidade: data.localidade,
+                        estado: data.estado,
+                        uf: data.uf,
+                    }));
+                    let endereco = data.logradouro + ', ' + data.bairro + ', ' + data.localidade + ' - ' + data.uf;
+                    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${endereco}&key=${api['google-maps']}`)
+                        .then((response) => response.json())
+                        .then((geocodeData) => {
+                            if (geocodeData.results && geocodeData.results.length > 0) {
+                                let location = geocodeData.results[0].geometry.location;
+                                setLatitude(location.lat);
+                                setLongitude(location.lng);
+                                setDados(p => ({
+                                    ...p,
+                                    latitude: location.lat,
+                                    longitude: location.lng,
+                                }));
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Erro ao buscar geolocalização:', error);
+                        });
+                    })
+                .catch((error) => {
+                    console.error('Erro ao buscar CEP:', error);
+                });
         }
-    }, [cep]); 
-
-
-    useEffect(() => {
-        if (latitude && longitude) {
-            let map = L.map(mapRef.current).setView([latitude, longitude], 13);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([latitude, longitude])
-                .addTo(map)
-                .bindPopup('Você está aqui')
-                .openPopup();
-        }
-    }, [latitude, longitude]);
-
+    }
+    
     return <>
         <Label texto="CEP">
             <Input value={cep} placeholder="Digite o CEP" onChange={handleCepChange} />
         </Label>
 
-        <p>{endereco}</p>
-        <div ref={mapRef} className={"h-[400px]"} />
-    </>
-}
+        <Button btnType={'tertiary'} texto="Pesquisar CEP" onClick={handleSearchCEP} />
+
+        {isLoaded && latitude !== null && longitude !== null && (
+            <GoogleMap
+                mapContainerStyle={{ height: '400px', width: '100%' }}
+                center={{ lat: latitude, lng: longitude }}
+                zoom={15}
+                defaultOptions={{mapTypeControl: false}}
+            >
+                <Marker position={{ lat: latitude, lng: longitude }} />
+            </GoogleMap>
+        )}
+    </>;
+};

@@ -35,4 +35,9 @@ class LocalDoacao extends Model
     {
         return $this->status === 'ativo';
     }
+
+    public static function getLocalDoacaoForListagem()
+    {
+        return self::where('status', 'ativo')->get()->toArray();
+    }
 }

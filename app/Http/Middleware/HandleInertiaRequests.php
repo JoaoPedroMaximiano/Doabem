@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'api' => [
+                'google-maps' => env('REACT_APP_GOOGLE_MAPS_API_KEY')
+            ],
         ]);
     }
 }

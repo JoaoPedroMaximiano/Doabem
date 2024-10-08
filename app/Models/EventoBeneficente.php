@@ -37,4 +37,13 @@ class EventoBeneficente extends Model
     {
         return $this->status === 'ativo';
     }
+
+    public static function getEventosBeneficentesForListagem()
+    {
+        return self::where('status', 'ativo')
+            ->whereDate('data_inicio', '<=', now())
+            ->whereDate('data_fim', '>=', now())
+            ->get()
+            ->toArray();
+    }
 }
