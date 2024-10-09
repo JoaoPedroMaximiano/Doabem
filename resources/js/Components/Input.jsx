@@ -8,4 +8,7 @@ export default function Input({inputType="text", placeholder="", ...props}) {
     if (inputType == "file") {
         return <input type="file" {...props}></input>
     }
+    if (inputType == "date") {
+        return <input type="date" {...props}></input>
+    }
 }

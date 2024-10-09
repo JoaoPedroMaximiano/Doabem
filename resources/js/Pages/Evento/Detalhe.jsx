@@ -1,6 +1,6 @@
 import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { CalendarDots, Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
@@ -48,7 +48,7 @@ export default function Detalhe() {
                 </h1>
             </div>
             <p>{evento.descricao}</p>
-            <FloatButton onClick={()=> console.log('oi')} icone={<PencilSimple size={32} />}></FloatButton>
+            <FloatButton onClick={()=> router.visit('/eventos/editar/'+evento.id)} icone={<PencilSimple size={32} />}></FloatButton>
         </div>
             
     </Layout>

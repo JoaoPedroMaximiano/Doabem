@@ -1,6 +1,6 @@
 import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
@@ -9,7 +9,7 @@ export default function Detalhe() {
     let { local } = usePage().props;
 
     const handleLinkClick = (event) => {
-        window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude, '_blank');
+        window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',14z?entry=ttu', '_blank');
     };
     return <Layout>
         <Head>
@@ -32,7 +32,7 @@ export default function Detalhe() {
                 <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
             </div>
             <p>{localDoacao.descricao}</p>
-            <FloatButton onClick={()=> console.log('oi')} icone={<PencilSimple size={32} />}></FloatButton>
+            <FloatButton onClick={()=> router.visit('/local-doacao/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>
         </div>
             
     </Layout>

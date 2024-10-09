@@ -19,9 +19,15 @@ Route::put('/gerenciar-conta/alterar', [App\Http\Controllers\GerenciarContaContr
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaDetalhe'])->name('detalhe.necessidade');
+Route::get('/necessidades/editar/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaEditar'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
 
+Route::get('/evento/cadastrar', [App\Http\Controllers\EventoController::class, 'create'])->name('cadastrar.evento')->middleware('checkNivelAcesso:entidade');
 Route::get('/eventos/{id}',  [App\Http\Controllers\EventoController::class, 'paginaDetalhe'])->name('detalhe.evento');
+Route::get('/eventos/editar/{id}',  [App\Http\Controllers\EventoController::class, 'paginaEditar'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
 
-Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.local.beneficente');
+Route::get('/local/cadastrar', [App\Http\Controllers\LocalDoacaoController::class, 'create'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
+Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.localDoacao');
+Route::get('/locais/editar/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaEditar'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
+
 
 require __DIR__.'/auth.php';
