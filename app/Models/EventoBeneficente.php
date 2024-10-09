@@ -10,6 +10,7 @@ class EventoBeneficente extends Model
     use HasFactory;
 
     protected $table = 'eventos_beneficentes';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_entidade_beneficente',

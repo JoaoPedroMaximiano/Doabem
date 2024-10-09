@@ -86,8 +86,8 @@ export default function Cadastro() {
 
                 <Label text="Data final">
                     <input type="date" 
-                        value={dados.dataInicio}
-                        onChange={e => setDados(p => ({...p, datafim: e.target.value}))}
+                        value={dados.dataFim}
+                        onChange={e => setDados(p => ({...p, dataFim: e.target.value}))}
                     />
                 </Label>
 

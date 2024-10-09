@@ -44,34 +44,8 @@ class NecessidadeController extends Controller
 
         Storage::putFileAs('public/'.$diretorio, $dados['imagem'], $nomeImagem);
         DB::beginTransaction();
-        $local = Local::where('cep', $dados['cep'])->first();
-        if (empty($local)) {
-            $cidade = Cidade::where('nome', $dados['cidade'])->first();
-            if (empty($cidade)) {
-                $uf = Uf::where('sigla', $dados['uf'])->first();
-                if (empty($uf)) {
-                    $uf = Uf::create([
-                        'nome' => $dados['estado'],
-                        'sigla' => $dados['uf'],
-                        'status' => 'ativo',
-                    ]);
-                }
-
-                $cidade = Cidade::create([
-                    'id_uf' => $uf->id,
-                    'nome' => $dados['cidade'],
-                    'status' => 'ativo',
-                ]);
-            }
-
-            $local = Local::create([
-                'cep' => $dados['cep'],
-                'id_cidade' => $cidade->id,
-                'latitude' => $dados['latitude'],
-                'longitude' => $dados['longitude'],
-                'status' => 'ativo',
-            ]);
-        }
+        
+        $local = Local::findOrCreateLocal($dados);
 
         Necessidade::create([
             'id_entidade_beneficente' => $idEntidade,
@@ -94,7 +68,7 @@ class NecessidadeController extends Controller
             'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
             'local' => Local::findOrFail($necessidade->id_local),
         ];
-        return Inertia::render('Necessidade/Cadastro', $response);
+        return Inertia::render('Necessidade/Detalhe', $response);
     }
 
     public function paginaEditar($id){

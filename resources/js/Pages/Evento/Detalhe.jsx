@@ -19,7 +19,7 @@ export default function Detalhe() {
     const anoFim = dataFim.getFullYear();
 
     const handleLinkClick = (event) => {
-        window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude, '_blank');
+        window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
     return <Layout>
         <Head>

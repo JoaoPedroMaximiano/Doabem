@@ -10,6 +10,7 @@ class LocalDoacao extends Model
     use HasFactory;
 
     protected $table = 'locais_doacoes';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_entidade_beneficente',

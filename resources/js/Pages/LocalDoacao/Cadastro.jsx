@@ -13,6 +13,7 @@ export default function Cadastro() {
     let [dados, setDados] = useState({
         nome: '',
         descricao: '',
+        imagem: null,
         cep: '',
         latitude: '',
         longitude: '',
@@ -28,7 +29,7 @@ export default function Cadastro() {
             formData.append(key, dados[key]);
         });
 
-        axios.post('/local-doacao/cadastrar/salvar', formData, {
+        axios.post('/local/cadastrar/salvar', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -71,6 +72,20 @@ export default function Cadastro() {
 
                 <Label texto="Descrição">
                     <TextArea placeholder="Digite a descricação" value={dados.descricao} onChange={e => setDados(p => ({...p, descricao: e.target.value}))} />
+                </Label>
+
+                <Label texto="Imagem">
+                    <Input
+                        inputType="file"
+                        value={dados.link}
+                        onChange={
+                            e => setDados(p => ({
+                                ...p,
+                                imagem: e.target.files[0],
+                                link: e.target.value
+                            }))
+                        }
+                    />
                 </Label>
 
                 <Map setDados={setDados} />
