@@ -9,7 +9,8 @@ class Uf extends Model
 {
     use HasFactory;
 
-    protected $table = 'ufs'; 
+    protected $table = 'ufs';
+    public $timestamps = false;
 
     protected $fillable = [
         'nome',

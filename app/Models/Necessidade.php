@@ -9,7 +9,8 @@ class Necessidade extends Model
 {
     use HasFactory;
     protected $table = 'necessidades';
-    
+    public $timestamps = false;
+
     protected $fillable = [
         'id_entidade_beneficente',
         'id_local',

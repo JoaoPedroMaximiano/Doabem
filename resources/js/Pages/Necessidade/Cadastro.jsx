@@ -15,7 +15,6 @@ export default function Cadastro() {
         qtd: '',
         descricao: '',
         imagem: null,
-        link: '',
         cep: '',
         latitude: '',
         longitude: '',
@@ -83,14 +82,13 @@ export default function Cadastro() {
                 <Label texto="Imagem">
                     <Input
                         inputType="file"
-                        value={dados.link}
                         onChange={
                             e => setDados(p => ({
                                 ...p,
                                 imagem: e.target.files[0],
-                                link: e.target.value
                             }))
                         }
+                        accept=".png, .jpg, .jpeg"
                     />
                 </Label>
 

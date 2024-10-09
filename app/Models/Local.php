@@ -9,7 +9,8 @@ class Local extends Model
 {
     use HasFactory;
 
-    protected $table = 'locais'; 
+    protected $table = 'locais';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_cidade',
