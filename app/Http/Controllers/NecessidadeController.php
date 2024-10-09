@@ -94,6 +94,19 @@ class NecessidadeController extends Controller
             'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
             'local' => Local::findOrFail($necessidade->id_local),
         ];
+        return Inertia::render('Necessidade/Cadastro', $response);
+    }
+
+    public function paginaEditar($id){
+        $necessidade = Necessidade::findOrfail($id);
+        
+        $response = [
+            'necessidade' => $necessidade,
+            'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
+            'local' => Local::findOrFail($necessidade->id_local),
+        ];
+        
+        dd($response);
         return Inertia::render('Necessidade/Detalhe', $response);
     }
 }
