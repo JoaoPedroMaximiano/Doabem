@@ -37,8 +37,12 @@ export default function Cadastro() {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        .then(response => {
-            console.log(response);
+        .then(() => {
+            Swal.fire({
+                title: 'Sucesso',
+                icon: "success",
+                html: `<ul>Cadastro realizado com sucesso</ul>`,
+            });
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {
