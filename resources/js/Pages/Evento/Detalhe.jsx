@@ -18,7 +18,7 @@ export default function Detalhe() {
     const mesFim = String(dataFim.getMonth() + 1).padStart(2, '0');
     const anoFim = dataFim.getFullYear();
 
-    const handleLinkClick = (event) => {
+    const handleLinkClick = () => {
         window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
     return <Layout>

@@ -9,7 +9,7 @@ export default function Detalhe() {
     let { entidade } = usePage().props;
     let { local } = usePage().props;
 
-    const handleLinkClick = (event) => {
+    const handleLinkClick = () => {
         window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
     return <Layout>

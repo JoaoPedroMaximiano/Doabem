@@ -30,6 +30,7 @@ export default function Cadastro() {
     useEffect(() => {
         if(localDoacao && local){
             setDados({
+                id: localDoacao.id || '',
                 nome: localDoacao.nome || '',
                 descricao: localDoacao.descricao || '',
                 cep: local.cep || '',
@@ -81,10 +82,54 @@ export default function Cadastro() {
             }
         });
     }
+    
+    let handleAlterar = () => {
+        let formData = new FormData();
+        
+        Object.keys(dados).forEach(key => {
+            formData.append(key, dados[key]);
+        });
+        
+        axios.put('/locais/editar/salvar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then(() => {
+            Swal.fire({
+                title: 'Sucesso',
+                icon: "success",
+                html: `<ul>Alteração realizada com sucesso</ul>`,
+            });
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 422) {
+                const errors = error.response.data.errors;
+                let errorMessages = '';
+                Object.keys(errors).forEach((field) => {
+                    errors[field].forEach((message) => {
+                        errorMessages += `<li>${message}</li>`;
+                    });
+                });
+                Swal.fire({
+                    title: 'Erros de Validação',
+                    icon: 'error',
+                    html: `<ul>${errorMessages}</ul>`,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erro inesperado',
+                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    icon: 'error',
+                });
+            }
+        });
+    }
 
     return <Layout titulo="Cadastrar local doação">
         <div className="flex flex-col gap-5">
-            <h1>Cadastrar local de doação</h1>
+            {dados.id === '' ? <h1>Cadastrar local de doação</h1> : <h1>Gerenciar local de doação</h1>}
+            
 
             <div className="flex flex-col gap-2.5">
                 <Label texto="Nome da local">
@@ -113,7 +158,7 @@ export default function Cadastro() {
             </div>
 
             <div className="flex flex-col gap-2.5">
-                <Button texto="Salvar" onClick={handleSalvar} />
+                <Button texto="Salvar" onClick={ dados.id === '' ? handleSalvar : handleAlterar} />
                 <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
             </div>
         </div>

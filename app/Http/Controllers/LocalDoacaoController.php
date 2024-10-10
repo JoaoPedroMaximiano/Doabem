@@ -55,7 +55,7 @@ class LocalDoacaoController extends Controller
         return response('Sucesso', 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request){
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
