@@ -4,6 +4,7 @@ import { Head, router, usePage } from "@inertiajs/react";
 import { CalendarDots, Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
+    let { auth } = usePage().props
     let { evento } = usePage().props;
     let { entidade } = usePage().props;
     let { local } = usePage().props;
