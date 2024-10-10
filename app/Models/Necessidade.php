@@ -49,4 +49,13 @@ class Necessidade extends Model
             ->toArray();
     }
 
+    public function doacoes()
+    {
+        return $this->hasMany(Doacao::class, 'id_necessidade');
+    }   
+    
+    public static function getQtdDoacoesPorNecessidade($idNecessidade)
+    {
+        return Doacao::where('id_necessidade', $idNecessidade)->sum('qtd');
+    }
 }

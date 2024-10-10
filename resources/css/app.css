@@ -57,9 +57,8 @@ textarea {
 
 .swal2-confirm { background-color: #06B6D4; }
 
-.border-test {
+.progressBar {
     border: 1px solid black;
     border-radius: 10px;
     height: 4vh;
-    background: linear-gradient(to right, #06B6D4 75%, #e0e0e0 75%);
 }

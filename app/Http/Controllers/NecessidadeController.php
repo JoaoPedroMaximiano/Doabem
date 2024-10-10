@@ -62,7 +62,8 @@ class NecessidadeController extends Controller
 
     public function paginaDetalhe($id){
         $necessidade = Necessidade::findOrfail($id);
-
+        $necessidade->qtd_doacoes = Necessidade::getQtdDoacoesPorNecessidade($id);
+        
         $response = [
             'necessidade' => $necessidade,
             'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),

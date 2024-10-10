@@ -33,7 +33,11 @@ export default function Detalhe() {
                 <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
             </div>
             <p>{localDoacao.descricao}</p>
-            {auth.user.id === entidade.id_usuario && (<FloatButton onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>)}
+            {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
+                <FloatButton 
+                    onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} 
+                    icone={<PencilSimple size={32} />}/>
+            )}
         </div>
             
     </Layout>
