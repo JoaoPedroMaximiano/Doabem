@@ -73,14 +73,19 @@ class NecessidadeController extends Controller
 
     public function paginaEditar($id){
         $necessidade = Necessidade::findOrfail($id);
-        
+        $entidade = EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente);
+        $usuario = Auth::user();
+
+        if ($usuario->id != $entidade->id_usuario) {
+            return redirect()->route('listagem')->with('error', 'Você não tem permissão para editar esta necessidade.');
+        }
+
         $response = [
             'necessidade' => $necessidade,
-            'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
+            'entidade' => $entidade,
             'local' => Local::findOrFail($necessidade->id_local),
         ];
         
-        dd($response);
         return Inertia::render('Necessidade/Detalhe', $response);
     }
 }

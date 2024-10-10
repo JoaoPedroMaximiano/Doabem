@@ -34,7 +34,7 @@ export default function Detalhe() {
             </div>
             <ProgressBar qtd_necessaria={45} qtd_falta={30}/>
             <p>{necessidade.descricao}</p>
-            <FloatButton onClick={()=> router.visit('/necessidades/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>
+            {auth.user.id === entidade.id_usuario && (<FloatButton onClick={()=> router.visit('/necessidades/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>)}
         </div>
             
     </Layout>

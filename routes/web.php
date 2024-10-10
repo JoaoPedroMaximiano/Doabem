@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [App\Http\Controllers\ListagemController::class, 'index']);
+Route::get('/', [App\Http\Controllers\ListagemController::class, 'index'])->name('listagem');
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login')->middleware('guest');
 Route::post('/login', [App\Http\Controllers\UsuarioController::class, 'autenticacao'])->name('autenticacao')->middleware('guest');

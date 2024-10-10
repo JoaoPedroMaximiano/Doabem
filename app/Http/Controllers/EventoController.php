@@ -70,14 +70,19 @@ class EventoController extends Controller
     
     public function paginaEditar($id){
         $evento = EventoBeneficente::findOrfail($id);
-        
+        $entidade = EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente);
+        $usuario = Auth::user();
+
+        if ($usuario->id != $entidade->id_usuario) {
+            return redirect()->route('listagem')->with('error', 'Você não tem permissão para editar esta necessidade.');
+        }
+
         $response = [
             'EventoBeneficente' => $evento,
-            'entidade' => EntidadeBeneficente::findOrFail($evento->id_entidade_beneficente),
+            'entidade' => $entidade,
             'local' => Local::findOrFail($evento->id_local),
         ];
 
-        dd($response);
         return Inertia::render('Evento/Detalhe', $response);
     }
 }

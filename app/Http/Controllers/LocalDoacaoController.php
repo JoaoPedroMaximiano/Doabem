@@ -109,7 +109,13 @@ class LocalDoacaoController extends Controller
 
     public function paginaEditar($id){
         $localDoacao = LocalDoacao::findOrfail($id);
-        
+        $entidade = EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente);
+        $usuario = Auth::user();
+
+        if ($usuario->id != $entidade->id_usuario) {
+            return redirect()->route('listagem')->with('error', 'Você não tem permissão para editar este local de doação.');
+        }
+
         $response = [
             'localDoacao' => $localDoacao,
             'local' => Local::findOrFail($localDoacao->id_local),

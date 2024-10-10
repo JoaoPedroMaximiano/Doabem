@@ -48,7 +48,7 @@ export default function Detalhe() {
                 </h1>
             </div>
             <p>{evento.descricao}</p>
-            <FloatButton onClick={()=> router.visit('/eventos/editar/'+evento.id)} icone={<PencilSimple size={32} />}></FloatButton>
+            {auth.user.id === entidade.id_usuario && (<FloatButton onClick={()=> router.visit('/eventos/editar/'+evento.id)} icone={<PencilSimple size={32} />}></FloatButton>)}
         </div>
             
     </Layout>

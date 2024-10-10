@@ -4,10 +4,12 @@ import { Head, router, usePage } from "@inertiajs/react";
 import { Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
+    let { auth } = usePage().props
     let { localDoacao } = usePage().props;
     let { entidade } = usePage().props;
     let { local } = usePage().props;
 
+    console.log(usePage().props)
     const handleLinkClick = (event) => {
         window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
@@ -32,7 +34,7 @@ export default function Detalhe() {
                 <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
             </div>
             <p>{localDoacao.descricao}</p>
-            <FloatButton onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>
+            {auth.user.id === entidade.id_usuario && (<FloatButton onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>)}
         </div>
             
     </Layout>
