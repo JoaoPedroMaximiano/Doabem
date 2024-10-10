@@ -55,6 +55,47 @@ class LocalDoacaoController extends Controller
         return response('Sucesso', 200);
     }
 
+    public function update(Request $request, $id){
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'descricao' => 'required|string',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'cep' => 'required|string|size:9',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+    
+        $usuario = Auth::user();
+        $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
+    
+        $localDoacao = LocalDoacao::findOrFail($id); 
+        
+        $dados = $request->all();
+    
+        if ($request->hasFile('imagem')) {
+            $nomeImagem = uniqid() . "." . $dados['imagem']->extension();
+            $diretorio = "LocaisDoacoes/";
+            
+            Storage::putFileAs('public/' . $diretorio, $dados['imagem'], $nomeImagem);
+            $dados['imagem'] = '/storage/' . $diretorio . $nomeImagem;
+        } else {
+            $dados['imagem'] = $localDoacao->imagem;
+        }
+    
+        DB::beginTransaction();
+        
+        $localDoacao->update([
+            'id_entidade_beneficente' => $idEntidade,
+            'nome' => $dados['nome'],
+            'descricao' => $dados['descricao'],
+            'imagem' => $dados['imagem'],
+            'status' => 'ativo',
+        ]);
+        
+        DB::commit();
+        return response('Atualização bem-sucedida', 200);
+    }
+
     public function paginaDetalhe($id){
         $localDoacao = LocalDoacao::findOrfail($id);
         
@@ -71,11 +112,9 @@ class LocalDoacaoController extends Controller
         
         $response = [
             'localDoacao' => $localDoacao,
-            'entidade' => EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente),
             'local' => Local::findOrFail($localDoacao->id_local),
         ];
 
-        dd($response);
-        return Inertia::render('LocalDoacao/Detalhe', $response);
+        return Inertia::render('LocalDoacao/Cadastro', $response);
     }
 }

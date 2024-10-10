@@ -4,13 +4,15 @@ import Label from "@/Components/Label";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import { useState } from "react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import Map from "@/Components/Map";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 export default function Cadastro() {
     let [dados, setDados] = useState({
+        id: '',
         nome: '',
         descricao: '',
         imagem: null,
@@ -21,6 +23,21 @@ export default function Cadastro() {
         estado: '',
         uf: '',
     });
+    
+    let { localDoacao } = usePage().props;
+    let { local } = usePage().props;
+    
+    useEffect(() => {
+        if(localDoacao && local){
+            setDados({
+                nome: localDoacao.nome || '',
+                descricao: localDoacao.descricao || '',
+                cep: local.cep || '',
+                latitude: local.latitude || '',
+                longitude: local.longitude || '',
+            });
+        } 
+    }, [localDoacao, local]);
 
     let handleSalvar = () => {
         let formData = new FormData();

@@ -32,7 +32,7 @@ export default function Detalhe() {
                 <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
             </div>
             <p>{localDoacao.descricao}</p>
-            <FloatButton onClick={()=> router.visit('/local-doacao/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>
+            <FloatButton onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} icone={<PencilSimple size={32} />}></FloatButton>
         </div>
             
     </Layout>

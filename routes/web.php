@@ -30,6 +30,6 @@ Route::get('/local/cadastrar', [App\Http\Controllers\LocalDoacaoController::clas
 Route::post('/local/cadastrar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'store'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.localDoacao');
 Route::get('/locais/editar/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaEditar'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
-
+Route::put('/locais/editar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'update'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 
 require __DIR__.'/auth.php';

@@ -4,6 +4,7 @@ import Label from './Label';
 import Input from './Input';
 import Button from './Button';
 import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 export default function Map({setDados}) {
     let {api} = usePage().props;
