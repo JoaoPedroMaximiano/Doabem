@@ -11,6 +11,9 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 
 export default function Cadastro() {
+    let { localDoacao } = usePage().props;
+    let { local } = usePage().props;
+
     let [dados, setDados] = useState({
         id: '',
         nome: '',
@@ -23,22 +26,21 @@ export default function Cadastro() {
         estado: '',
         uf: '',
     });
-    
-    let { localDoacao } = usePage().props;
-    let { local } = usePage().props;
-    
-    useEffect(() => {
-        if(localDoacao && local){
-            setDados({
-                id: localDoacao.id || '',
-                nome: localDoacao.nome || '',
-                descricao: localDoacao.descricao || '',
-                cep: local.cep || '',
-                latitude: local.latitude || '',
-                longitude: local.longitude || '',
-            });
-        } 
-    }, [localDoacao, local]);
+
+    if (localDoacao && local) {
+        setDados({
+            id: localDoacao.id || '',
+            nome: localDoacao.nome || '',
+            descricao: localDoacao.descricao || '',
+            cep: local.cep || '',
+            latitude: local.latitude || '',
+            longitude: local.longitude || '',
+            imagem: localDoacao.imagen,
+            cidade: '',
+            estado: '',
+            uf: '',
+        });
+    }
 
     let handleSalvar = () => {
         let formData = new FormData();
@@ -129,7 +131,6 @@ export default function Cadastro() {
     return <Layout titulo="Cadastrar local doação">
         <div className="flex flex-col gap-5">
             {dados.id === '' ? <h1>Cadastrar local de doação</h1> : <h1>Gerenciar local de doação</h1>}
-            
 
             <div className="flex flex-col gap-2.5">
                 <Label texto="Nome da local">
