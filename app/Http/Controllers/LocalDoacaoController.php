@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EntidadeBeneficente;
 use App\Models\Local;
-use App\Models\LocalDoacao; 
+use App\Models\LocalDoacao;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +37,7 @@ class LocalDoacaoController extends Controller
         $diretorio = "LocaisDoacoes/";
 
         Storage::putFileAs('public/'.$diretorio, $dados['imagem'], $nomeImagem);
-        
+
         DB::beginTransaction();
 
         $local = Local::findOrCreateLocal($dados);
@@ -64,26 +64,27 @@ class LocalDoacaoController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
-    
+
         $usuario = Auth::user();
         $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
-    
-        $localDoacao = LocalDoacao::findOrFail($id); 
-        
+
+        $localDoacao = LocalDoacao::findOrFail($id);
+
         $dados = $request->all();
-    
+
         if ($request->hasFile('imagem')) {
             $nomeImagem = uniqid() . "." . $dados['imagem']->extension();
             $diretorio = "LocaisDoacoes/";
-            
+            Storage::delete(str_replace($localDoacao->imagem, '/storage/', 'public/'));
+
             Storage::putFileAs('public/' . $diretorio, $dados['imagem'], $nomeImagem);
             $dados['imagem'] = '/storage/' . $diretorio . $nomeImagem;
         } else {
             $dados['imagem'] = $localDoacao->imagem;
         }
-    
+
         DB::beginTransaction();
-        
+
         $localDoacao->update([
             'id_entidade_beneficente' => $idEntidade,
             'nome' => $dados['nome'],
@@ -91,14 +92,14 @@ class LocalDoacaoController extends Controller
             'imagem' => $dados['imagem'],
             'status' => 'ativo',
         ]);
-        
+
         DB::commit();
         return response('Atualização bem-sucedida', 200);
     }
 
     public function paginaDetalhe($id){
         $localDoacao = LocalDoacao::findOrfail($id);
-        
+
         $response = [
             'localDoacao' => $localDoacao,
             'entidade' => EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente),

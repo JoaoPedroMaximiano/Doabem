@@ -13,7 +13,7 @@ export default function Layout({titulo, children}) {
         <div className="relative z-20 w-full bg-[#06B6D4] py-5 px-2.5">
             <div className="container mx-auto flex justify-between items-center px-4">
                 <a href="/" className="text-3xl text-white ">Logo</a>
-                <div className="pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
+                <div className="cursor-pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
                     {
                         isMenuHidden ?
                         <List size={32} color="#ffffff" /> :
@@ -54,7 +54,7 @@ function Menu() {
         listaMenu.push({nome: "Cadastrar doação", caminho: "/doacao/cadastrar"});
         listaMenu.push({nome: "Cadastrar necessidade", caminho: "/necessidade/cadastrar"});
         listaMenu.push({nome: "Cadastrar evento beneficente", caminho: "/evento/cadastrar"});
-        listaMenu.push({nome: "Cadastrar local beneficente", caminho: "/local/cadastrar"});
+        listaMenu.push({nome: "Cadastrar local de doação", caminho: "/local/cadastrar"});
         listaMenu.push({nome: "Relatório de doações", caminho: "/relatorio-doacoes"});
     }
 

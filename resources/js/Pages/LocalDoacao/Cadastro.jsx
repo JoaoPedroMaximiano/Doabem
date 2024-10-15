@@ -8,13 +8,12 @@ import { router, usePage } from "@inertiajs/react";
 import Map from "@/Components/Map";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 export default function Cadastro() {
     let { localDoacao } = usePage().props;
     let { local } = usePage().props;
 
-    let [dados, setDados] = useState({
+    let initialData = {
         id: '',
         nome: '',
         descricao: '',
@@ -25,22 +24,25 @@ export default function Cadastro() {
         cidade: '',
         estado: '',
         uf: '',
-    });
+    };
 
     if (localDoacao && local) {
-        setDados({
+        initialData = {
             id: localDoacao.id || '',
             nome: localDoacao.nome || '',
             descricao: localDoacao.descricao || '',
             cep: local.cep || '',
             latitude: local.latitude || '',
             longitude: local.longitude || '',
-            imagem: localDoacao.imagen,
+            imagem: localDoacao.imagem,
             cidade: '',
             estado: '',
             uf: '',
-        });
+        };
     }
+
+    let [dados, setDados] = useState(initialData);
+    let [imagemPreview, setImagemPreview] = useState(initialData.imagem);
 
     let handleSalvar = () => {
         let formData = new FormData();
@@ -84,14 +86,14 @@ export default function Cadastro() {
             }
         });
     }
-    
+
     let handleAlterar = () => {
         let formData = new FormData();
-        
+
         Object.keys(dados).forEach(key => {
             formData.append(key, dados[key]);
         });
-        
+
         axios.put('/locais/editar/salvar', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -141,21 +143,24 @@ export default function Cadastro() {
                     <TextArea placeholder="Digite a descricação" value={dados.descricao} onChange={e => setDados(p => ({...p, descricao: e.target.value}))} />
                 </Label>
 
-                <Label texto="Imagem">
+                {
+                    imagemPreview &&
+                    <img src={imagemPreview} alt="Imagem do local de doação" />
+                }
+                <Label texto={"Imagem"}>
                     <Input
                         inputType="file"
-                        value={dados.link}
-                        onChange={
-                            e => setDados(p => ({
-                                ...p,
-                                imagem: e.target.files[0],
-                                link: e.target.value
-                            }))
-                        }
+                        onChange={e => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                setDados(p => ({...p, imagem: file}));
+                                setImagemPreview(URL.createObjectURL(file));
+                            }
+                        }}
                     />
                 </Label>
 
-                <Map setDados={setDados} />
+                <Map setDados={setDados} dados={dados} />
             </div>
 
             <div className="flex flex-col gap-2.5">

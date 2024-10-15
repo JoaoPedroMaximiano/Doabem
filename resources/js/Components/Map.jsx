@@ -4,11 +4,12 @@ import Label from './Label';
 import Input from './Input';
 import Button from './Button';
 import { usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
 
-export default function Map({setDados}) {
+export default function Map({setDados, dados}) {
     let {api} = usePage().props;
-    let [cep, setCep] = useState('');
+
+    let initialCep = dados.cep || '';
+    let [cep, setCep] = useState(initialCep);
     let [latitude, setLatitude] = useState(null);
     let [longitude, setLongitude] = useState(null);
 
@@ -57,7 +58,7 @@ export default function Map({setDados}) {
                 });
         }
     }
-    
+
     return <>
         <Label texto="CEP">
             <Input value={cep} placeholder="Digite o CEP" onChange={handleCepChange} />
