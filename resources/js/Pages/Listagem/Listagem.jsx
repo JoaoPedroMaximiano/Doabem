@@ -6,7 +6,7 @@ import Card from "./Components/Card";
 
 export default function Listagem() {
     let {listagem} = usePage().props;
-
+    console.log(listagem);
     let [tipo, setTipo] = useState("Necessidades");
     let [lista, setLista] = useState(listagem);
     let [pesquisa, setPesquisa] = useState("");

@@ -4,13 +4,17 @@ import Label from "@/Components/Label";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import { useState } from "react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import Map from "@/Components/Map";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 export default function Cadastro() {
-    let [dados, setDados] = useState({
+    let { evento } = usePage().props;
+    let { local } = usePage().props;
+
+    let initialData = {
+        id: '',
         nome: '',
         descricao: '',
         dataInicio: '',
@@ -23,7 +27,27 @@ export default function Cadastro() {
         cidade: '',
         estado: '',
         uf: '',
-    });
+    };
+
+    if (evento && local) {
+        initialData = {
+            id: evento.id || '',
+            nome: evento.nome || '',
+            descricao: evento.descricao || '',
+            dataInicio: evento.data_inicio ? evento.data_inicio.slice(0, 10) : '',
+            dataFim: evento.data_fim ? evento.data_fim.slice(0, 10) : '',
+            cep: local.cep || '',
+            latitude: local.latitude || '',
+            longitude: local.longitude || '',
+            imagem: evento.imagem,
+            cidade: '',
+            estado: '',
+            uf: '',
+        };
+    }
+
+    let [dados, setDados] = useState(initialData);
+    let [imagemPreview, setImagemPreview] = useState(initialData.imagem);
 
     let handleSalvar = () => {
         let formData = new FormData();
@@ -68,9 +92,54 @@ export default function Cadastro() {
         });
     }
 
+    let handleAlterar = () => {
+        let formData = new FormData();
+
+        Object.keys(dados).forEach(key => {
+            formData.append(key, dados[key]);
+        });
+
+        formData.append('_method', 'PUT');
+
+        axios.post('/eventos/editar/salvar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then(() => {
+            Swal.fire({
+                title: 'Sucesso',
+                icon: "success",
+                html: `<ul>Alteração realizada com sucesso</ul>`,
+            });
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 422) {
+                const errors = error.response.data.errors;
+                let errorMessages = '';
+                Object.keys(errors).forEach((field) => {
+                    errors[field].forEach((message) => {
+                        errorMessages += `<li>${message}</li>`;
+                    });
+                });
+                Swal.fire({
+                    title: 'Erros de Validação',
+                    icon: 'error',
+                    html: `<ul>${errorMessages}</ul>`,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erro inesperado',
+                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    icon: 'error',
+                });
+            }
+        });
+    }
+
     return <Layout titulo="Cadastrar evento beneficente">
         <div className="flex flex-col gap-5">
-            <h1>Cadastrar evento beneficente</h1>
+            {dados.id === '' ? <h1>Cadastrar evento beneficente</h1> : <h1>Gerenciar evento beneficente</h1>}
 
             <div className="flex flex-col gap-2.5">
                 <Label texto="Nome da evento">
@@ -82,38 +151,41 @@ export default function Cadastro() {
                 </Label>
 
                 <Label text="Data inicio">
-                    <input type="date" 
+                    <input type="date"
                         value={dados.dataInicio}
                         onChange={e => setDados(p => ({...p, dataInicio: e.target.value}))}
                     />
                 </Label>
 
                 <Label text="Data final">
-                    <input type="date" 
+                    <input type="date"
                         value={dados.dataFim}
                         onChange={e => setDados(p => ({...p, dataFim: e.target.value}))}
                     />
                 </Label>
 
-                <Label texto="Imagem">
+                {
+                    imagemPreview &&
+                    <img src={imagemPreview} alt="Imagem do evento beneficente" />
+                }
+                <Label texto={"Imagem"}>
                     <Input
                         inputType="file"
-                        value={dados.link}
-                        onChange={
-                            e => setDados(p => ({
-                                ...p,
-                                imagem: e.target.files[0],
-                                link: e.target.value
-                            }))
-                        }
+                        onChange={e => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                setDados(p => ({...p, imagem: file}));
+                                setImagemPreview(URL.createObjectURL(file));
+                            }
+                        }}
                     />
                 </Label>
 
-                <Map setDados={setDados} />
+                <Map setDados={setDados} dados={dados} />
             </div>
 
             <div className="flex flex-col gap-2.5">
-                <Button texto="Salvar" onClick={handleSalvar} />
+                <Button texto="Salvar" onClick={ dados.id === '' ? handleSalvar : handleAlterar} />
                 <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
             </div>
         </div>

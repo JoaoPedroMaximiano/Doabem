@@ -32,6 +32,7 @@ class LocalDoacaoController extends Controller
 
         $usuario = Auth::user();
         $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
+
         $dados = $request->all();
         $nomeImagem = uniqid().".".$dados['imagem']->extension();
         $diretorio = "LocaisDoacoes/";
@@ -59,18 +60,16 @@ class LocalDoacaoController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'imagem' => 'nullable|max:2048',
             'cep' => 'required|string|size:9',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
 
-        $usuario = Auth::user();
-        $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
-
-        $localDoacao = LocalDoacao::findOrFail($id);
-
         $dados = $request->all();
+        $localDoacao = LocalDoacao::findOrFail($dados['id']);
+
+        $local = Local::findOrCreateLocal($dados);
 
         if ($request->hasFile('imagem')) {
             $nomeImagem = uniqid() . "." . $dados['imagem']->extension();
@@ -86,7 +85,7 @@ class LocalDoacaoController extends Controller
         DB::beginTransaction();
 
         $localDoacao->update([
-            'id_entidade_beneficente' => $idEntidade,
+            'id_local' => $local->id,
             'nome' => $dados['nome'],
             'descricao' => $dados['descricao'],
             'imagem' => $dados['imagem'],

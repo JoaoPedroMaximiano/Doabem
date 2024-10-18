@@ -94,7 +94,9 @@ export default function Cadastro() {
             formData.append(key, dados[key]);
         });
 
-        axios.put('/locais/editar/salvar', formData, {
+        formData.append('_method', 'PUT');
+
+        axios.post('/locais/editar/salvar', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

@@ -44,7 +44,7 @@ class NecessidadeController extends Controller
 
         Storage::putFileAs('public/'.$diretorio, $dados['imagem'], $nomeImagem);
         DB::beginTransaction();
-        
+
         $local = Local::findOrCreateLocal($dados);
 
         Necessidade::create([
@@ -63,7 +63,7 @@ class NecessidadeController extends Controller
     public function paginaDetalhe($id){
         $necessidade = Necessidade::findOrfail($id);
         $necessidade->qtd_doacoes = Necessidade::getQtdDoacoesPorNecessidade($id);
-        
+
         $response = [
             'necessidade' => $necessidade,
             'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
@@ -74,7 +74,7 @@ class NecessidadeController extends Controller
 
     public function paginaEditar($id){
         $necessidade = Necessidade::findOrfail($id);
-        $entidade = EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente);
+        $entidade = EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente);
         $usuario = Auth::user();
 
         if ($usuario->id != $entidade->id_usuario) {
@@ -86,7 +86,47 @@ class NecessidadeController extends Controller
             'entidade' => $entidade,
             'local' => Local::findOrFail($necessidade->id_local),
         ];
-        
-        return Inertia::render('Necessidade/Detalhe', $response);
+
+        return Inertia::render('Necessidade/Cadastro', $response);
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'descricao' => 'required|string',
+            'imagem' => 'required|max:2048',
+            'qtd' => 'required|integer|min:1',
+            'cep' => 'required|string|size:9',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+
+        $dados = $request->all();
+        $necessidade = Necessidade::findOrFail($dados['id']);
+
+        $local = Local::findOrCreateLocal($dados);
+
+        if ($request->hasFile('imagem')) {
+            $nomeImagem = uniqid() . "." . $dados['imagem']->extension();
+            $diretorio = "necessidades/";
+            Storage::delete(str_replace($necessidade->imagem, '/storage/', 'public/'));
+
+            Storage::putFileAs('public/' . $diretorio, $dados['imagem'], $nomeImagem);
+            $dados['imagem'] = '/storage/' . $diretorio . $nomeImagem;
+        } else {
+            $dados['imagem'] = $necessidade->imagem;
+        }
+
+        DB::beginTransaction();
+        $necessidade->update([
+            'id_local' => $local->id,
+            'nome' => $dados['nome'],
+            'descricao' => $dados['descricao'],
+            'imagem' => $dados['imagem'],
+            'status' => 'ativo',
+            'qtd_necessaria' => $dados['qtd'],
+        ]);
+        DB::commit();
+        return response('Atualização bem-sucedida', 200);
     }
 }

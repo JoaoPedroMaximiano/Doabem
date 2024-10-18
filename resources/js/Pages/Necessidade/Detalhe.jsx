@@ -1,6 +1,6 @@
 import Layout from "@/Components/Layout";
 import ProgressBar from "@/Components/ProgressBar";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { PencilSimple, Handshake, MapPinArea } from "@phosphor-icons/react";
 import FloatButton from "@/Components/FloatButton";
 
@@ -36,12 +36,12 @@ export default function Detalhe() {
             <ProgressBar qtd_necessaria={necessidade.qtd_necessaria} qtd_falta={necessidade.qtd_doacoes}/>
             <p>{necessidade.descricao}</p>
             {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
-                <FloatButton 
-                    onClick={() => router.visit('/necessidades/editar/' + localDoacao.id)} 
-                    icone={<PencilSimple size={32} />} 
+                <FloatButton
+                    onClick={() => router.visit('/necessidades/editar/' + necessidade.id)}
+                    icone={<PencilSimple size={32} />}
                 />
             )}
         </div>
-            
+
     </Layout>
 }
