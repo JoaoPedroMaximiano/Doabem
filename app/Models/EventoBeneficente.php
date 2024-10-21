@@ -41,10 +41,11 @@ class EventoBeneficente extends Model
 
     public static function getEventosBeneficentesForListagem()
     {
-        return self::where('status', 'ativo')
+        return self::where('eventos_beneficentes.status', 'ativo')
             ->whereDate('data_inicio', '<=', now())
             ->whereDate('data_fim', '>=', now())
-            ->get()
-            ->toArray();
+            ->where('locais.status', 'ativo')
+            ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local')
+            ->get()->toArray();
     }
 }

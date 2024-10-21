@@ -1,4 +1,17 @@
-export default function Input({inputType="text", placeholder="", ...props}) {
+import ReactInputMask from "react-input-mask";
+
+export default function Input({inputType="text", placeholder="", mask, ...props}) {
+    if (inputType === "text" && mask) {
+        return (
+            <ReactInputMask
+                mask={mask}
+                placeholder={placeholder}
+                autoComplete="off"
+                type="text"
+                {...props}
+            />
+        );
+    }
     if (inputType == "text") {
         return <input type="text" placeholder={placeholder} autoComplete="off" {...props} />
     }

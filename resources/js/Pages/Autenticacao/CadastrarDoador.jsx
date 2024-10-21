@@ -76,7 +76,7 @@ export default function CadastrarDoador(){
 
             <label>
                 <p>CPF</p>
-                <Input placeholder="Digite seu senha" name="cpf" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cpf: value }))}/>
+                <Input mask="999.999.999-99" placeholder="Digite seu senha" name="cpf" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cpf: value }))}/>
             </label>
 
             <label>

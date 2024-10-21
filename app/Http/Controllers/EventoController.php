@@ -71,7 +71,7 @@ class EventoController extends Controller
         return Inertia::render('Evento/Detalhe', $response);
     }
 
-    public function paginaEditar($id){
+    public function edit($id){
         $evento = EventoBeneficente::findOrfail($id);
         $entidade = EntidadeBeneficente::findOrFail($evento->id_entidade_beneficente);
         $usuario = Auth::user();

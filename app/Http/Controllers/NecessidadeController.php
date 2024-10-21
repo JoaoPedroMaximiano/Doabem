@@ -72,7 +72,7 @@ class NecessidadeController extends Controller
         return Inertia::render('Necessidade/Detalhe', $response);
     }
 
-    public function paginaEditar($id){
+    public function edit($id){
         $necessidade = Necessidade::findOrfail($id);
         $entidade = EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente);
         $usuario = Auth::user();

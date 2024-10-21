@@ -39,6 +39,9 @@ class LocalDoacao extends Model
 
     public static function getLocalDoacaoForListagem()
     {
-        return self::where('status', 'ativo')->get()->toArray();
+        return self::where('locais_doacoes.status', 'ativo')
+            ->where('locais.status', 'ativo')
+            ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local')
+            ->get()->toArray();
     }
 }

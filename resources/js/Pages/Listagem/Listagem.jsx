@@ -6,14 +6,13 @@ import Card from "./Components/Card";
 
 export default function Listagem() {
     let {listagem} = usePage().props;
-    console.log(listagem);
     let [tipo, setTipo] = useState("Necessidades");
     let [lista, setLista] = useState(listagem);
     let [pesquisa, setPesquisa] = useState("");
+    let [userLocation, setUserLocation] = useState(null);
 
-    let returnTipo = (tipo, valor) => {
-        if(tipo == valor) return "border-b border-[#06B6D4] text-[#06B6D4]";
-    }
+    /* Distância máxima para exibir um item em quilômetros */
+    let distanciaMaxima = 10;
 
     let mapTipo = {
         "Necessidades": "Necessidades",
@@ -21,11 +20,29 @@ export default function Listagem() {
         "Locais": "Locais de doação",
     };
 
+    let returnTipo = (tipo, valor) => {
+        if(tipo == valor) return "border-b border-[#06B6D4] text-[#06B6D4]";
+    }
+
+    let formatKm = (km) => {
+        return Number.parseFloat(km).toFixed(1).split('.').join(',');
+    }
+
     let handleType = tipo => {
         setTipo(tipo);
         setLista(listagem);
         setPesquisa("");
     }
+
+    let calculateDistance = (lat1, lon1, lat2, lon2) => {
+        let toRad = (value) => (value * Math.PI) / 180;
+        let R = 6371;
+        let dLat = toRad(lat2 - lat1);
+        let dLon = toRad(lon2 - lon1);
+        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
 
     useEffect(() => {
         setLista(prevLista => ({
@@ -34,6 +51,31 @@ export default function Listagem() {
         }));
     }, [pesquisa, tipo]);
 
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setUserLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userLocation) {
+            let { latitude, longitude } = userLocation;
+
+            let updatedList = { ...lista };
+            updatedList[tipo] = listagem[tipo]
+                .map(item => ({
+                    ...item,
+                    distancia: formatKm(calculateDistance(latitude, longitude, item.latitude, item.longitude))
+                }))
+                .filter(item => calculateDistance(latitude, longitude, item.latitude, item.longitude) <= distanciaMaxima);
+            setLista(updatedList);
+        }
+    }, [userLocation, tipo, listagem]);
 
     return <Layout titulo={tipo}>
         <div className="flex gap-5 mb-5 border-b border-[#C2C2C2]">
