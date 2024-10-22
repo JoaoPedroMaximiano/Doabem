@@ -16,6 +16,9 @@ Route::post('/entidade-beneficente/cadastrar/salvar', [App\Http\Controllers\Enti
 Route::get('/gerenciar-conta', [App\Http\Controllers\GerenciarContaController::class, 'index'])->name('gerenciar.conta')->middleware('auth');
 Route::put('/gerenciar-conta/alterar', [App\Http\Controllers\GerenciarContaController::class, 'update'])->name('gerenciar.conta.alterar')->middleware('auth');
 
+Route::get('/doacao/cadastrar', [App\Http\Controllers\DoacaoController::class, 'create'])->name('cadastrar.doacao')->middleware('checkNivelAcesso:entidade');
+Route::post('/doacao/cadastrar/salvar', [App\Http\Controllers\DoacaoController::class, 'store'])->name('salvar.doacao')->middleware('checkNivelAcesso:entidade');
+
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaDetalhe'])->name('detalhe.necessidade');

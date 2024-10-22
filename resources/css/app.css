@@ -11,14 +11,15 @@ h1 {
 }
 
 h2 {
-    @apply text-sm font-bold;
-}
+    @apply text-sm;
+    @apply font-bold;
+} 
 
 p {
     @apply text-base;
 }
 
-input, input[type=text], input[type=password], textarea {
+input, input[type=text], input[type=number], input[type=date], input[type=password], select, textarea {
     color: #000000;
     border: #C2C2C2 1px solid;
     border-radius: 4px;

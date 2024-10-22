@@ -96,7 +96,6 @@ export default function CadastrarDoador(){
                     <EyeSlash size={32} onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} className={"absolute top-1.5 right-2 " + (!isConfirmPasswordVisible ? "hidden" : "block")} />
                 </div>
             </label>
-
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Registrar conta" onClick={cadastrar}/>
