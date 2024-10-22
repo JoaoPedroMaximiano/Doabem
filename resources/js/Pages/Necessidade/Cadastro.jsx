@@ -136,7 +136,7 @@ export default function Cadastro() {
 
     return <Layout titulo="Cadastrar necessidade">
         <div className="flex flex-col gap-5">
-            <h1>Cadastrar necessidade</h1>
+            {dados.id === '' ? <h1>Cadastrar necessidade</h1> : <h1>Gerenciar necessidade</h1>}
 
             <div className="flex flex-col gap-2.5">
                 <Label texto="Nome da necessidade">
