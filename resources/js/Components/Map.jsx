@@ -61,7 +61,7 @@ export default function Map({setDados, dados}) {
 
     return <>
         <Label texto="CEP">
-            <Input value={cep} placeholder="Digite o CEP" onChange={handleCepChange} />
+            <Input value={cep} placeholder="Digite o CEP" mask="99999-999" onChange={handleCepChange} />
         </Label>
 
         <Button btnType={'tertiary'} texto="Pesquisar CEP" onClick={handleSearchCEP} />

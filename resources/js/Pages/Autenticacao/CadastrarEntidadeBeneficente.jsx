@@ -77,7 +77,7 @@ export default function CadastrarEntidadeBeneficente(){
 
             <label>
                 <p>CNPJ</p>
-                <Input placeholder="Digite seu CNPJ" name="cnpj" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cnpj: value }))}/>
+                <Input mask="99.999.999/9999-99" placeholder="Digite seu CNPJ" name="cnpj" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cnpj: value }))}/>
             </label>
 
             <label>

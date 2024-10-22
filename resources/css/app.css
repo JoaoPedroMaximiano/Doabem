@@ -18,7 +18,7 @@ p {
     @apply text-base;
 }
 
-input[type=text], input[type=password], textarea {
+input, input[type=text], input[type=password], textarea {
     color: #000000;
     border: #C2C2C2 1px solid;
     border-radius: 4px;
