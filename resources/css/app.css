@@ -63,3 +63,16 @@ textarea {
     border-radius: 10px;
     height: 4vh;
 }
+
+.card-relatorio-out {
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+
+.card-relatorio-in {
+    padding: 5px 5px;
+}
+
+.borda-teste {
+    border: 1px solid #000000;
+}

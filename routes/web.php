@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\ListagemController::class, 'index'])->name('listagem');
+Route::get('/relatorio-doacoes', [App\Http\Controllers\RelatorioController::class, 'relatorioDoacaoPage'])->name('relatorio.doacao.entidade')->middleware('checkNivelAcesso:entidade');;
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login')->middleware('guest');
 Route::post('/login', [App\Http\Controllers\UsuarioController::class, 'autenticacao'])->name('autenticacao')->middleware('guest');
