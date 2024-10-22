@@ -39,14 +39,15 @@ class Necessidade extends Model
 
     public static function getNecessidadesForListagem()
     {
-        return self::where('status', 'ativo')
+        return self::where('necessidades.status', 'ativo')
             ->where('qtd_necessaria', '>', function ($query) {
                 $query->selectRaw('COUNT(doacoes.id)')
                     ->from('doacoes')
                     ->where('doacoes.id_necessidade', 'necessidades.id');
             })
-            ->get()
-            ->toArray();
+            ->where('necessidades.status', 'ativo')
+            ->join('locais', 'locais.id', '=', 'necessidades.id_local')
+            ->get(['necessidades.id', 'necessidades.nome', 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public function doacoes()

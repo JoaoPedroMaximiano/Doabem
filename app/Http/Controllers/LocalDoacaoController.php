@@ -107,7 +107,7 @@ class LocalDoacaoController extends Controller
         return Inertia::render('LocalDoacao/Detalhe', $response);
     }
 
-    public function paginaEditar($id){
+    public function edit($id){
         $localDoacao = LocalDoacao::findOrfail($id);
         $entidade = EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente);
         $usuario = Auth::user();

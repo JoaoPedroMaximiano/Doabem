@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\ListagemController::class, 'index'])->name('listagem');
+Route::get('/relatorio-doacoes', [App\Http\Controllers\RelatorioController::class, 'relatorioDoacaoPage'])->name('relatorio.doacao.entidade')->middleware('checkNivelAcesso:entidade');;
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login')->middleware('guest');
 Route::post('/login', [App\Http\Controllers\UsuarioController::class, 'autenticacao'])->name('autenticacao')->middleware('guest');
@@ -16,22 +17,25 @@ Route::post('/entidade-beneficente/cadastrar/salvar', [App\Http\Controllers\Enti
 Route::get('/gerenciar-conta', [App\Http\Controllers\GerenciarContaController::class, 'index'])->name('gerenciar.conta')->middleware('auth');
 Route::put('/gerenciar-conta/alterar', [App\Http\Controllers\GerenciarContaController::class, 'update'])->name('gerenciar.conta.alterar')->middleware('auth');
 
+Route::get('/doacao/cadastrar', [App\Http\Controllers\DoacaoController::class, 'create'])->name('cadastrar.doacao')->middleware('checkNivelAcesso:entidade');
+Route::post('/doacao/cadastrar/salvar', [App\Http\Controllers\DoacaoController::class, 'store'])->name('salvar.doacao')->middleware('checkNivelAcesso:entidade');
+
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaDetalhe'])->name('detalhe.necessidade');
-Route::get('/necessidades/editar/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaEditar'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
+Route::get('/necessidades/editar/{id}',  [App\Http\Controllers\NecessidadeController::class, 'edit'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::put('/necessidades/editar/salvar',  [App\Http\Controllers\NecessidadeController::class, 'update'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/evento/cadastrar', [App\Http\Controllers\EventoController::class, 'create'])->name('cadastrar.evento')->middleware('checkNivelAcesso:entidade');
 Route::post('/evento/cadastrar/salvar', [App\Http\Controllers\EventoController::class, 'store'])->name('cadastrar.evento')->middleware('checkNivelAcesso:entidade');
 Route::get('/eventos/{id}',  [App\Http\Controllers\EventoController::class, 'paginaDetalhe'])->name('detalhe.evento');
-Route::get('/eventos/editar/{id}',  [App\Http\Controllers\EventoController::class, 'paginaEditar'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
+Route::get('/eventos/editar/{id}',  [App\Http\Controllers\EventoController::class, 'edit'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
 Route::put('/eventos/editar/salvar',  [App\Http\Controllers\EventoController::class, 'update'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/local/cadastrar', [App\Http\Controllers\LocalDoacaoController::class, 'create'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::post('/local/cadastrar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'store'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.localDoacao');
-Route::get('/locais/editar/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaEditar'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
+Route::get('/locais/editar/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'edit'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::put('/locais/editar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'update'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 
 require __DIR__.'/auth.php';

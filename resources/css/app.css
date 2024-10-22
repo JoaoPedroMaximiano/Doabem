@@ -11,14 +11,15 @@ h1 {
 }
 
 h2 {
-    @apply text-sm font-bold;
-}
+    @apply text-sm;
+    @apply font-bold;
+} 
 
 p {
     @apply text-base;
 }
 
-input[type=text], input[type=password], textarea {
+input, input[type=text], input[type=number], input[type=date], input[type=password], select, textarea {
     color: #000000;
     border: #C2C2C2 1px solid;
     border-radius: 4px;
@@ -61,4 +62,17 @@ textarea {
     border: 1px solid black;
     border-radius: 10px;
     height: 4vh;
+}
+
+.card-relatorio-out {
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+
+.card-relatorio-in {
+    padding: 5px 5px;
+}
+
+.borda-teste {
+    border: 1px solid #000000;
 }
