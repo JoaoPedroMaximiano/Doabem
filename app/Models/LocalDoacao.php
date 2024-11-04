@@ -42,6 +42,6 @@ class LocalDoacao extends Model
         return self::where('locais_doacoes.status', 'ativo')
             ->where('locais.status', 'ativo')
             ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local')
-            ->get()->toArray();
+            ->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 }
