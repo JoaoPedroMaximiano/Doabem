@@ -2,13 +2,16 @@ import Layout from "@/Components/Layout";
 import Label from "@/Components/Label";
 import Input from "@/Components/Input";
 import Button from "@/Components/Button";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { PlusCircle } from "@phosphor-icons/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Radio from "@/Components/Radio";
+import Select from "@/Components/Select";
 
 export default function Cadastro() {
+    let { necessidades, eventos, locais } = usePage().props;
     let [dados, setDados] = useState({
         cpf: '',
         descricao: '',
@@ -56,6 +59,8 @@ export default function Cadastro() {
         });
     }
 
+    let [tipoDoacao, setTipoDoacao] = useState('necessidade');
+
     return <Layout titulo="Cadastro de doação">
         <div className="flex flex-col gap-5">
             <h1>Cadastro de doação</h1>
@@ -71,25 +76,23 @@ export default function Cadastro() {
 
                 <div className="flex flex-col gap-2.5">
                     <p>Tipo de doação</p>
-                    <label className="flex gap-2.5 items-center">
-                        <input type="radio" name="tipoDoacao" value="necessidade" />
-                        <p>Necessidade</p>
-                    </label>
-                    <label className="flex gap-2.5 items-center">
-                        <input type="radio" name="tipoDoacao" value="evento" />
-                        <p>Evento beneficente</p>
-                    </label>
-                    <label className="flex gap-2.5 items-center">
-                        <input type="radio" name="tipoDoacao" value="local" />
-                        <p>Local de doação</p>
-                    </label>
+                    <Radio texto="Necessidade" name="tipo-doacao" value="necessidade" onChange={() => setTipoDoacao('necessidade')} checked={tipoDoacao=="necessidade"} />
+                    <Radio texto="Evento beneficente" name="tipo-doacao" value="evento" onChange={() => setTipoDoacao('evento')} checked={tipoDoacao=="evento"} />
+                    <Radio texto="Local de doação" name="tipo-doacao" value="local" onChange={() => setTipoDoacao('local')} checked={tipoDoacao=="local"} />
 
-                    <select>
-                        <option>oi</option>
-                        <option>teste</option>
-                    </select>
+                    {
+                        tipoDoacao == 'necessidade' &&
+                        <Select options={necessidades} />
+                    }
+                    {
+                        tipoDoacao == 'evento' &&
+                        <Select options={eventos} />
+                    }
+                    {
+                        tipoDoacao == 'local' &&
+                        <Select options={locais} />
+                    }
                 </div>
-
 
                 <Label texto="Descrição">
                     <Input placeholder="Digite a descrição da doação" name="descricao" value={dados.descricao} onChange={handleChange} />
