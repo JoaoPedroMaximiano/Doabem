@@ -60,7 +60,7 @@ class NecessidadeController extends Controller
         return response('Sucesso', 200);
     }
 
-    public function paginaDetalhe($id){
+    public function view($id){
         $necessidade = Necessidade::findOrfail($id);
         $necessidade->qtd_doacoes = Necessidade::getQtdDoacoesPorNecessidade($id);
 

@@ -22,19 +22,19 @@ Route::post('/doacao/cadastrar/salvar', [App\Http\Controllers\DoacaoController::
 
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
-Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'paginaDetalhe'])->name('detalhe.necessidade');
+Route::get('necessidades/{id}',  [App\Http\Controllers\NecessidadeController::class, 'view'])->name('detalhe.necessidade');
 Route::get('/necessidades/editar/{id}',  [App\Http\Controllers\NecessidadeController::class, 'edit'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::put('/necessidades/editar/salvar',  [App\Http\Controllers\NecessidadeController::class, 'update'])->name('editar.necessidade')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/evento/cadastrar', [App\Http\Controllers\EventoController::class, 'create'])->name('cadastrar.evento')->middleware('checkNivelAcesso:entidade');
 Route::post('/evento/cadastrar/salvar', [App\Http\Controllers\EventoController::class, 'store'])->name('cadastrar.evento')->middleware('checkNivelAcesso:entidade');
-Route::get('/eventos/{id}',  [App\Http\Controllers\EventoController::class, 'paginaDetalhe'])->name('detalhe.evento');
+Route::get('/eventos/{id}',  [App\Http\Controllers\EventoController::class, 'view'])->name('detalhe.evento');
 Route::get('/eventos/editar/{id}',  [App\Http\Controllers\EventoController::class, 'edit'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
 Route::put('/eventos/editar/salvar',  [App\Http\Controllers\EventoController::class, 'update'])->name('editar.evento')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/local/cadastrar', [App\Http\Controllers\LocalDoacaoController::class, 'create'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::post('/local/cadastrar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'store'])->name('cadastrar.localDoacao')->middleware('checkNivelAcesso:entidade');
-Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'paginaDetalhe'])->name('detalhe.localDoacao');
+Route::get('/locais/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'view'])->name('detalhe.localDoacao');
 Route::get('/locais/editar/{id}',  [App\Http\Controllers\LocalDoacaoController::class, 'edit'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::put('/locais/editar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'update'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 
