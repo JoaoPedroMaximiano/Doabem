@@ -3,21 +3,33 @@ import FloatButton from "@/Components/FloatButton";
 import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Layout from "@/Components/Layout";
-import { CaretDown, MagnifyingGlass, PencilSimple } from "@phosphor-icons/react";
+import RelatorioDoacoesCard from "@/Components/RelatorioDoacoesCard";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function ListagemDoacao() {
     let [dados, setDados] = useState();
     let [expandirFiltro, setExpandirFiltro] = useState(true);
-    let [expandirRelatorio, setExpandirRelatorio] = useState(false);
 
     const showFiltro = () => {
         setExpandirFiltro(prev => !prev);
     }
 
-    const showRelatorio = () => {
-        setExpandirRelatorio(prev => !prev);
-    };
+    const doacoes = [
+        {
+            data: "12/01/2024",
+            itens: [
+                { descricao: 'Casaco', doador: 'Antônio Carlos', quantidade: 1 },
+                { descricao: 'Tênis', doador: 'Carlos José', quantidade: 2 }
+            ]
+        },
+        {
+            data: "12/02/2024",
+            itens: [
+                { descricao: 'Alimentos', doador: 'João Souza', quantidade: 5 }
+            ]
+        }
+    ];
 
     return <Layout titulo={'Relatório de doação'}>
         <div className="flex flex-col gap-5">
@@ -27,7 +39,7 @@ export default function ListagemDoacao() {
                     <p className="text-sm">voltar</p>
                 </a>
             </div>
-            
+
             <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirFiltro ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="flex flex-col gap-2.5">
                     <Label texto="Descrição da doação">
@@ -53,36 +65,10 @@ export default function ListagemDoacao() {
                     <Button texto="Filtrar" onClick={() => {}} />
                 </div>
             </div>
-            <div className="card-relatorio-out bg-white">
-                <div className="flex flex-row items-center justify-between h-10" onClick={showRelatorio}>
-                    <p>Doações (5 qtd.)</p>
-                    <div className="flex flex-row items-center justify-between">
-                        <p>Janeiro de 2024</p>
-                        <CaretDown size={24} />
-                    </div>
-                </div>
-                <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirRelatorio ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
-                        <div className="pl-2">
-                            <p><u>Casaco</u></p>
-                            <p><u>Antônio Carlos</u></p>
-                        </div>
-                        <div className="flex flex-col items-end pr-2">
-                            <p><u>1 qtd.</u></p>
-                            <PencilSimple size={24} />
-                        </div>
-                    </div>
-                    <div className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
-                        <div className="pl-2">
-                            <p><u>Casaco</u></p>
-                            <p><u>Antônio Carlos</u></p>
-                        </div>
-                        <div className="flex flex-col items-end pr-2">
-                            <p><u>1 qtd.</u></p>
-                            <PencilSimple size={24} />
-                        </div>
-                    </div>
-                </div>
+            <div>
+                {doacoes.map((doacao, index) => (
+                    <RelatorioDoacoesCard key={index} data={doacao.data} itens={doacao.itens} />
+                ))}
             </div>
             <FloatButton onClick={showFiltro} icone={<MagnifyingGlass size={32} />}/>
         </div>
