@@ -96,7 +96,7 @@ class LocalDoacaoController extends Controller
         return response('Atualização bem-sucedida', 200);
     }
 
-    public function paginaDetalhe($id){
+    public function view($id){
         $localDoacao = LocalDoacao::findOrfail($id);
 
         $response = [

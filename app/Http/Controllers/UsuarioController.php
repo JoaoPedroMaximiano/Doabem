@@ -11,22 +11,6 @@ use Inertia\Inertia;
 
 class UsuarioController extends Controller
 {
-    public function index()
-    {
-        $usuario = Usuario::create([
-            'login' => 'entidade',
-            'senha' => '1234',
-            'email' => 'entidade@doacao.com',
-            'celular' => '11987654321',
-            'status' => 'ativo',
-        ]);
-
-        if ($usuario->isAtivo());
-
-        $usuarios = Usuario::all();
-        dd($usuarios);
-    }
-
     public function logout(){
         Auth::logout();
         return redirect('/');

@@ -50,6 +50,24 @@ class Necessidade extends Model
             ->get(['necessidades.id', 'necessidades.nome', 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
+    public static function getNecessidadesForCadastroDoacao()
+    {
+        $array = self::where('necessidades.status', 'ativo')
+            ->where('qtd_necessaria', '>', function ($query) {
+                $query->selectRaw('COUNT(doacoes.id)')
+                    ->from('doacoes')
+                    ->where('doacoes.id_necessidade', 'necessidades.id');
+            })
+            ->where('necessidades.status', 'ativo')
+            ->get(['necessidades.id', 'necessidades.nome'])->toArray();
+
+        $res = [];
+        foreach ($array as $item) {
+            $res[] = ['value' => $item['id'], 'label' => $item['nome']];
+        }
+        return $res;
+    }
+
     public function doacoes()
     {
         return $this->hasMany(Doacao::class, 'id_necessidade');

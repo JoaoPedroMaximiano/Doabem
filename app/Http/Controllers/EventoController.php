@@ -60,7 +60,7 @@ class EventoController extends Controller
         return response('Sucesso', 200);
     }
 
-    public function paginaDetalhe($id){
+    public function view($id){
         $evento = EventoBeneficente::findOrfail($id);
 
         $response = [
