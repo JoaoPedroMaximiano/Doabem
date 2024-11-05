@@ -46,6 +46,20 @@ class EventoBeneficente extends Model
             ->whereDate('data_fim', '>=', now())
             ->where('locais.status', 'ativo')
             ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local')
-            ->get()->toArray();
+            ->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+    }
+
+    public static function getEventosBeneficentesForCadastroDoacao()
+    {
+        $array = self::where('eventos_beneficentes.status', 'ativo')
+            ->whereDate('data_inicio', '<=', now())
+            ->whereDate('data_fim', '>=', now())
+            ->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome'])->toArray();
+
+        $res = [];
+        foreach ($array as $item) {
+            $res[] = ['value' => $item['id'], 'label' => $item['nome']];
+        }
+        return $res;
     }
 }

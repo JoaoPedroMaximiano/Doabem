@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cidade;
 use App\Models\EntidadeBeneficente;
 use App\Models\Local;
 use App\Models\Necessidade;
-use App\Models\Uf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,7 +58,7 @@ class NecessidadeController extends Controller
         return response('Sucesso', 200);
     }
 
-    public function paginaDetalhe($id){
+    public function view($id){
         $necessidade = Necessidade::findOrfail($id);
         $necessidade->qtd_doacoes = Necessidade::getQtdDoacoesPorNecessidade($id);
 

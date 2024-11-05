@@ -8,7 +8,15 @@ import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function ListagemDoacao() {
-    let [dados, setDados] = useState();
+    let { doacoes } = usePage().props
+    const [dados, setDados] = useState({
+        nome: '',
+        cpf: '',
+        dataInicio: '',
+        dataFim: '',
+    });
+    const [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
+
     let [expandirFiltro, setExpandirFiltro] = useState(true);
 
     const showFiltro = () => {
@@ -30,6 +38,59 @@ export default function ListagemDoacao() {
             ]
         }
     ];
+    const showRelatorio = () => {
+        setExpandirRelatorio(prev => !prev);
+    };
+
+    const formatarData = (data) => {
+        const [dia, mes, ano] = data.split('/');
+        const novaData = new Date(`${ano}-${mes}-${dia}`);
+        return novaData.toISOString().split('T')[0]; // Retorna no formato 'yyyy-MM-dd'
+      };
+
+    const handleFiltro = () => {
+        // Usamos o map para percorrer as chaves (mesAno) e filtrar as doações dentro de cada mês
+        const novoFiltro = Object.keys(doacoesAgrupadas).map((mesAno) => {
+          const doacoesDoMes = doacoesAgrupadas[mesAno];
+
+          // Filtra as doações desse mês
+          const doacoesFiltradasMes = doacoesDoMes.filter((doacao) => {
+            const descricaoMatch = dados.nome
+              ? doacao.descricao.toLowerCase().includes(dados.nome.toLowerCase())
+              : true;
+
+            const cpfMatch = dados.cpf
+              ? doacao.cpf_doador.includes(dados.cpf)
+              : true;
+
+            const dataInicioMatch = dados.dataInicio
+              ? dayjs(doacao.data_recebimento).isSameOrAfter(dados.dataInicio)
+              : true;
+
+            const dataFimMatch = dados.dataFim
+              ? dayjs(doacao.data_recebimento).isSameOrBefore(dados.dataFim)
+              : true;
+
+            return descricaoMatch && cpfMatch && dataInicioMatch && dataFimMatch;
+          });
+
+          // Retorna o mês apenas se houver doações filtradas
+          if (doacoesFiltradasMes.length > 0) {
+            return { mesAno, doacoes: doacoesFiltradasMes };
+          }
+
+          return null; // Se não houver doações para esse mês, retorna null
+        }).filter(item => item !== null); // Filtra os `null`s (meses sem doações após filtro)
+
+        // Atualiza o estado com as doações filtradas
+        // Transforma de volta para um objeto agrupado por mesAno
+        const doacoesAgrupadasFiltradas = novoFiltro.reduce((acc, item) => {
+          acc[item.mesAno] = item.doacoes;
+          return acc;
+        }, {});
+
+        setDoacoesFiltradas(doacoesAgrupadasFiltradas);
+      };
 
     return <Layout titulo={'Relatório de doação'}>
         <div className="flex flex-col gap-5">
