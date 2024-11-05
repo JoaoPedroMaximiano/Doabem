@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cidade;
 use App\Models\EntidadeBeneficente;
 use App\Models\Local;
 use App\Models\Necessidade;
-use App\Models\Uf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
