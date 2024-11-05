@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doacao;
+use App\Models\Doador;
 use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
 use App\Models\LocalDoacao;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DoacaoController extends Controller
 {
@@ -21,6 +25,37 @@ class DoacaoController extends Controller
 
     public function store(Request $request)
     {
-        return response($request->all(), 200);
+        $request->validate([
+            'cpf' => 'required|exists:doadores,cpf',
+            'descricao' => 'required|string',
+            'idTipoDoacao' => 'required|integer',
+            'qtd' => 'required|integer|min:1',
+            'tipoDoacao' => 'required|string|in:necessidade,evento,local',
+        ]);
+        $doador = Doador::where('cpf', $request->cpf)->first();
+
+        $dadosInsert = [
+            'id_doador' => $doador->id,
+            'id_entidade_beneficente' => Auth::id(),
+            'id_destino_final' => null,
+            'descricao' => $request->descricao,
+            'qtd' => $request->qtd,
+        ];
+
+        $dadosInsert['id_necessidade'] = $request->tipoDoacao == 'necessidade' ? $request->idTipoDoacao : null;
+        $dadosInsert['id_evento_beneficente'] = $request->tipoDoacao == 'evento' ? $request->idTipoDoacao : null;
+        $dadosInsert['id_local_doacao'] = $request->tipoDoacao == 'local' ? $request->idTipoDoacao : null;
+        
+        DB::beginTransaction();
+        Doacao::insert($dadosInsert);
+        DB::commit();
+
+        return response()->json(['message' => "Sucesso"]);
+    }
+
+    public function verifyDonator(Request $request)
+    {
+        $doador = Doador::where('cpf', $request->cpf)->first();
+        return response()->json(['exists' => !empty($doador)]);
     }
 }

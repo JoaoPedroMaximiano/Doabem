@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
+import ModalLaravel from '@/Components/ModalLaravel';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
@@ -56,7 +56,7 @@ export default function DeleteUserForm({ className }) {
 
             <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
+            <ModalLaravel show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
                         Are you sure you want to delete your account?
@@ -93,7 +93,7 @@ export default function DeleteUserForm({ className }) {
                         </DangerButton>
                     </div>
                 </form>
-            </Modal>
+            </ModalLaravel>
         </section>
     );
 }

@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Radio from "@/Components/Radio";
 import Select from "@/Components/Select";
+import Modal from "@/Components/Modal";
+import ModalCadastrarDoador from "./Components/ModalCadastrarDoador";
 
 export default function Cadastro() {
     let { necessidades, eventos, locais } = usePage().props;
@@ -18,6 +20,10 @@ export default function Cadastro() {
         qtd: ''
     });
 
+    let [tipoDoacao, setTipoDoacao] = useState('necessidade');
+    let [isModalOpen, setIsModalOpen] = useState(false);
+    let [selectValue, setSelectValue] = useState('');
+
     let handleChange = (e) => {
         let { name, value } = e.target;
         setDados(prevDados => ({
@@ -26,8 +32,29 @@ export default function Cadastro() {
         }));
     };
 
+    let handleSelectChange = (e) => {
+        setSelectValue(e.target.value);
+    };
+
+    let handleTipoDoacaoChange = (e) => {
+        setSelectValue('');
+        setTipoDoacao(e.target.value);
+    };
+
     let handleSalvar = () => {
-        axios.post('/doacao/cadastrar/salvar', dados)
+        if (!selectValue) {
+            Swal.fire({
+                title: 'Dados incorretos',
+                text: 'Selecione um tipo de doação!',
+                icon: 'warning',
+            });
+            return;
+        }
+        axios.post('/doacao/cadastrar/salvar', {
+            ...dados,
+            tipoDoacao,
+            idTipoDoacao: selectValue
+        })
         .then(() => {
             Swal.fire({
                 title: 'Sucesso',
@@ -59,38 +86,59 @@ export default function Cadastro() {
         });
     }
 
-    let [tipoDoacao, setTipoDoacao] = useState('necessidade');
+    let verifyIfDonatorExists = (cpf) => {
+        axios.post('/doacao/cadastrar/verify-donator', {cpf: cpf})
+        .then(response => {
+            if (!response.data.exists) {
+                Swal.fire({
+                    title: 'CPF não encontrado.',
+                    icon: "success",
+                    html: `<ul>Cadastre um doador!</ul>`,
+                });
+            }
+        })
+        .catch(() => {
+            Swal.fire({
+                title: 'Erro inesperado',
+                text: 'Ocorreu um erro, tente novamente mais tarde.',
+                icon: 'error',
+            });
+        });
+    }
 
     return <Layout titulo="Cadastro de doação">
         <div className="flex flex-col gap-5">
             <h1>Cadastro de doação</h1>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <ModalCadastrarDoador />
+            </Modal>
 
             <div className="flex flex-col gap-5">
                 <div className="flex items-end gap-2.5">
                     <Label texto="CPF" className="w-full">
-                        <Input mask="999.999.999-99" placeholder="Digite o CPF do doador" name="cpf" value={dados.cpf} onChange={handleChange} />
+                        <Input mask="999.999.999-99" placeholder="Digite o CPF do doador" name="cpf" value={dados.cpf} onChange={handleChange} onBlur={() => verifyIfDonatorExists(dados.cpf)} />
                     </Label>
 
-                    <PlusCircle className="cursor-pointer" size={42} />
+                    <PlusCircle className="cursor-pointer" size={42} onClick={() => setIsModalOpen(true)} />
                 </div>
 
                 <div className="flex flex-col gap-2.5">
                     <p>Tipo de doação</p>
-                    <Radio texto="Necessidade" name="tipo-doacao" value="necessidade" onChange={() => setTipoDoacao('necessidade')} checked={tipoDoacao=="necessidade"} />
-                    <Radio texto="Evento beneficente" name="tipo-doacao" value="evento" onChange={() => setTipoDoacao('evento')} checked={tipoDoacao=="evento"} />
-                    <Radio texto="Local de doação" name="tipo-doacao" value="local" onChange={() => setTipoDoacao('local')} checked={tipoDoacao=="local"} />
+                    <Radio texto="Necessidade" name="tipo-doacao" value="necessidade" onChange={handleTipoDoacaoChange} checked={tipoDoacao=="necessidade"} />
+                    <Radio texto="Evento beneficente" name="tipo-doacao" value="evento" onChange={handleTipoDoacaoChange} checked={tipoDoacao=="evento"} />
+                    <Radio texto="Local de doação" name="tipo-doacao" value="local" onChange={handleTipoDoacaoChange} checked={tipoDoacao=="local"} />
 
                     {
                         tipoDoacao == 'necessidade' &&
-                        <Select options={necessidades} />
+                        <Select value={selectValue} onChange={handleSelectChange} options={necessidades} />
                     }
                     {
                         tipoDoacao == 'evento' &&
-                        <Select options={eventos} />
+                        <Select value={selectValue} onChange={handleSelectChange} options={eventos} />
                     }
                     {
                         tipoDoacao == 'local' &&
-                        <Select options={locais} />
+                        <Select value={selectValue} onChange={handleSelectChange} options={locais} />
                     }
                 </div>
 
