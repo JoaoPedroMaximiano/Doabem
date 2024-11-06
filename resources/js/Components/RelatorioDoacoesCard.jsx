@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { CaretDown, PencilSimple } from "@phosphor-icons/react";
+import { router } from '@inertiajs/react';
 
 function RelatorioDoacoesCard({ data, itens }) {
     const [expandirRelatorio, setExpandirRelatorio] = useState(false);
-
     const showRelatorio = () => {
         setExpandirRelatorio(!expandirRelatorio);
     };
 
-    // Extrair mês e ano da data
-    const dataParts = data.split('/');
-    const mes = new Date(0, parseInt(dataParts[1], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
+
+    const dataParts = data.split('-');
+    const mes = new Date(parseInt(dataParts[2], 10), parseInt(dataParts[1], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
     const ano = dataParts[2];
 
     return (
@@ -26,12 +26,12 @@ function RelatorioDoacoesCard({ data, itens }) {
                 {itens.map((doacao, index) => (
                     <div key={index} className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
                         <div className="pl-2">
-                            <p><u>{doacao.descricao}</u></p>
-                            <p><u>{doacao.doador}</u></p>
+                            <p><u>{doacao.descricao.substring(0, 20)}{doacao.descricao.length > 20 ? '...' : ''}</u></p>
+                            <p><u>{doacao.nome.substring(0, 20)}{doacao.nome.length > 20 ? '...' : ''}</u></p>
                         </div>
-                        <div className="flex flex-col items-end pr-2">
+                        <div className="flex flex-col items-end pr-2 w-20">
                             <p><u>{doacao.quantidade} qtd.</u></p>
-                            <PencilSimple size={24} />
+                            <PencilSimple size={24} onClick={() => router.visit('/doacoes/editar/' + doacao.id_doacao)} />
                         </div>
                     </div>
                 ))}

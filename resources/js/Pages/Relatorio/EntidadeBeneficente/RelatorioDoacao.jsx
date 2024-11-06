@@ -4,11 +4,12 @@ import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Layout from "@/Components/Layout";
 import RelatorioDoacoesCard from "@/Components/RelatorioDoacoesCard";
+import { usePage } from "@inertiajs/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function ListagemDoacao() {
-    let { doacoes } = usePage().props
+    let { doacoes } = usePage().props;
     const [dados, setDados] = useState({
         nome: '',
         cpf: '',
@@ -23,74 +24,28 @@ export default function ListagemDoacao() {
         setExpandirFiltro(prev => !prev);
     }
 
-    const doacoes = [
-        {
-            data: "12/01/2024",
-            itens: [
-                { descricao: 'Casaco', doador: 'Antônio Carlos', quantidade: 1 },
-                { descricao: 'Tênis', doador: 'Carlos José', quantidade: 2 }
-            ]
-        },
-        {
-            data: "12/02/2024",
-            itens: [
-                { descricao: 'Alimentos', doador: 'João Souza', quantidade: 5 }
-            ]
-        }
-    ];
-    const showRelatorio = () => {
-        setExpandirRelatorio(prev => !prev);
-    };
-
-    const formatarData = (data) => {
-        const [dia, mes, ano] = data.split('/');
-        const novaData = new Date(`${ano}-${mes}-${dia}`);
-        return novaData.toISOString().split('T')[0]; // Retorna no formato 'yyyy-MM-dd'
-      };
-
     const handleFiltro = () => {
-        // Usamos o map para percorrer as chaves (mesAno) e filtrar as doações dentro de cada mês
-        const novoFiltro = Object.keys(doacoesAgrupadas).map((mesAno) => {
-          const doacoesDoMes = doacoesAgrupadas[mesAno];
+        const { nome, cpf, dataInicio, dataFim } = dados;
 
-          // Filtra as doações desse mês
-          const doacoesFiltradasMes = doacoesDoMes.filter((doacao) => {
-            const descricaoMatch = dados.nome
-              ? doacao.descricao.toLowerCase().includes(dados.nome.toLowerCase())
-              : true;
+        const doacoesFiltradas = Object.entries(doacoes).reduce((acc, [data, { itens }]) => {
+          const itensFiltrados = itens.filter(item => {
+            const dataItem = new Date(item.data);
+            const isNomeMatch = item.descricao.toLowerCase().includes(nome.toLowerCase());
+            const isCpfMatch = item.cpf.includes(cpf);
+            const isDataInicioMatch = dataInicio ? dataItem >= new Date(dataInicio) : true;
+            const isDataFimMatch = dataFim ? dataItem <= new Date(dataFim) : true;
 
-            const cpfMatch = dados.cpf
-              ? doacao.cpf_doador.includes(dados.cpf)
-              : true;
-
-            const dataInicioMatch = dados.dataInicio
-              ? dayjs(doacao.data_recebimento).isSameOrAfter(dados.dataInicio)
-              : true;
-
-            const dataFimMatch = dados.dataFim
-              ? dayjs(doacao.data_recebimento).isSameOrBefore(dados.dataFim)
-              : true;
-
-            return descricaoMatch && cpfMatch && dataInicioMatch && dataFimMatch;
+            return isNomeMatch && isCpfMatch && isDataInicioMatch && isDataFimMatch;
           });
 
-          // Retorna o mês apenas se houver doações filtradas
-          if (doacoesFiltradasMes.length > 0) {
-            return { mesAno, doacoes: doacoesFiltradasMes };
+          if (itensFiltrados.length > 0) {
+            acc[data] = { itens: itensFiltrados };
           }
-
-          return null; // Se não houver doações para esse mês, retorna null
-        }).filter(item => item !== null); // Filtra os `null`s (meses sem doações após filtro)
-
-        // Atualiza o estado com as doações filtradas
-        // Transforma de volta para um objeto agrupado por mesAno
-        const doacoesAgrupadasFiltradas = novoFiltro.reduce((acc, item) => {
-          acc[item.mesAno] = item.doacoes;
           return acc;
         }, {});
 
-        setDoacoesFiltradas(doacoesAgrupadasFiltradas);
-      };
+        setDoacoesFiltradas(doacoesFiltradas);
+    };
 
     return <Layout titulo={'Relatório de doação'}>
         <div className="flex flex-col gap-5">
@@ -104,31 +59,49 @@ export default function ListagemDoacao() {
             <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirFiltro ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="flex flex-col gap-2.5">
                     <Label texto="Descrição da doação">
-                        <Input placeholder="Digite descrição da doação" value={dados} onChange={e => setDados(p => ({ ...p, nome: e.target.value }))} />
+                        <Input
+                        placeholder="Digite descrição da doação"
+                        value={dados.nome}
+                        onChange={e => setDados(p => ({ ...p, nome: e.target.value }))}
+                        />
                     </Label>
+
                     <Label texto="CPF do doador">
-                        <Input placeholder="Digite o cpf do doador" value={dados} onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))} />
+                        <Input
+                        placeholder="Digite o cpf do doador"
+                        value={dados.cpf}
+                        onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))}
+                        />
                     </Label>
+
                     <Label texto="Data inicio">
-                        <input className="w-full"
-                            type="date"
-                            value={dados}
-                            onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))} />
+                        <input
+                        className="w-full"
+                        type="date"
+                        value={dados.dataInicio}
+                        onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))}
+                        />
                     </Label>
 
                     <Label texto="Data fim">
-                        <input className="w-full"
-                            type="date"
-                            value={dados}
-                            onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))} />
+                        <input
+                        className="w-full"
+                        type="date"
+                        value={dados.dataFim}
+                        onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))}
+                        />
                     </Label>
 
-                    <Button texto="Filtrar" onClick={() => {}} />
+                    <Button texto="Filtrar" onClick={handleFiltro} />
                 </div>
             </div>
             <div>
-                {doacoes.map((doacao, index) => (
-                    <RelatorioDoacoesCard key={index} data={doacao.data} itens={doacao.itens} />
+                {Object.entries(doacoesFiltradas).map(([data, doacao], index) => (
+                    <RelatorioDoacoesCard
+                        key={index}
+                        data={data}
+                        itens={doacao.itens}
+                    />
                 ))}
             </div>
             <FloatButton onClick={showFiltro} icone={<MagnifyingGlass size={32} />}/>
