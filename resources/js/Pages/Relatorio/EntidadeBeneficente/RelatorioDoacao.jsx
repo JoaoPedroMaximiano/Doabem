@@ -10,30 +10,30 @@ import { useState } from "react";
 
 export default function ListagemDoacao() {
     let { doacoes } = usePage().props;
-    const [dados, setDados] = useState({
+    let [dados, setDados] = useState({
         nome: '',
         cpf: '',
         dataInicio: '',
         dataFim: '',
     });
-    const [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
+    let [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
 
     let [expandirFiltro, setExpandirFiltro] = useState(true);
 
-    const showFiltro = () => {
+    let showFiltro = () => {
         setExpandirFiltro(prev => !prev);
     }
 
-    const handleFiltro = () => {
-        const { nome, cpf, dataInicio, dataFim } = dados;
+    let handleFiltro = () => {
+        let { nome, cpf, dataInicio, dataFim } = dados;
 
-        const doacoesFiltradas = Object.entries(doacoes).reduce((acc, [data, { itens }]) => {
-          const itensFiltrados = itens.filter(item => {
-            const dataItem = new Date(item.data);
-            const isNomeMatch = item.descricao.toLowerCase().includes(nome.toLowerCase());
-            const isCpfMatch = item.cpf.includes(cpf);
-            const isDataInicioMatch = dataInicio ? dataItem >= new Date(dataInicio) : true;
-            const isDataFimMatch = dataFim ? dataItem <= new Date(dataFim) : true;
+        let doacoesFiltradas = Object.entries(doacoes).reduce((acc, [data, { itens }]) => {
+          let itensFiltrados = itens.filter(item => {
+            let dataItem = new Date(item.data);
+            let isNomeMatch = item.descricao.toLowerCase().includes(nome.toLowerCase());
+            let isCpfMatch = item.cpf.includes(cpf);
+            let isDataInicioMatch = dataInicio ? dataItem >= new Date(dataInicio) : true;
+            let isDataFimMatch = dataFim ? dataItem <= new Date(dataFim) : true;
 
             return isNomeMatch && isCpfMatch && isDataInicioMatch && isDataFimMatch;
           });
@@ -60,35 +60,35 @@ export default function ListagemDoacao() {
                 <div className="flex flex-col gap-2.5">
                     <Label texto="Descrição da doação">
                         <Input
-                        placeholder="Digite descrição da doação"
-                        value={dados.nome}
-                        onChange={e => setDados(p => ({ ...p, nome: e.target.value }))}
+                            placeholder="Digite descrição da doação"
+                            value={dados.nome}
+                            onChange={e => setDados(p => ({ ...p, nome: e.target.value }))}
                         />
                     </Label>
 
                     <Label texto="CPF do doador">
                         <Input
-                        placeholder="Digite o cpf do doador"
-                        value={dados.cpf}
-                        onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))}
+                            placeholder="Digite o cpf do doador"
+                            value={dados.cpf}
+                            onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))}
                         />
                     </Label>
 
-                    <Label texto="Data inicio">
+                    <Label texto="Data início">
                         <input
-                        className="w-full"
-                        type="date"
-                        value={dados.dataInicio}
-                        onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))}
+                            className="w-full"
+                            type="date"
+                            value={dados.dataInicio}
+                            onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))}
                         />
                     </Label>
 
                     <Label texto="Data fim">
                         <input
-                        className="w-full"
-                        type="date"
-                        value={dados.dataFim}
-                        onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))}
+                            className="w-full"
+                            type="date"
+                            value={dados.dataFim}
+                            onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))}
                         />
                     </Label>
 
@@ -107,5 +107,4 @@ export default function ListagemDoacao() {
             <FloatButton onClick={showFiltro} icone={<MagnifyingGlass size={32} />}/>
         </div>
     </Layout>
-
 }
