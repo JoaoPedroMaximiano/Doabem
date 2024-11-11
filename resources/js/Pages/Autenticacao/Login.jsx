@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 export default function Login(){
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
+    let [tipoAcesso, setTipoAcesso] = useState('CPF');
 
     function login() {
         axios.post('/login', dados)
@@ -45,10 +46,13 @@ export default function Login(){
             <title>Login</title>
         </Head>
         <div className="flex flex-col gap-2.5">
-            <h1 className="font-bold text-xl">Entrar</h1>
+            <div className="flex justify-between items-center">
+                <h1 className="font-bold text-xl">Entrar</h1>
+                <p className="text-[#06B6D4] underline" onClick={() => setTipoAcesso(tipoAcesso == "CPF" ? "CPNJ" : "CPF")}>{tipoAcesso == "CPF" ? "Sou uma entidade beneficente" : "Sou um doador"}</p>
+            </div>
             <label>
-                <p>CPF ou CNPJ</p>
-                <Input placeholder={"Digite o CPF ou CNPJ"} name="CPF" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cpf: value }))} />
+                <p>{tipoAcesso}</p>
+                <Input placeholder={"Digite o "+tipoAcesso} mask={tipoAcesso == "CPF" ? "999.999.999-99" : "99.999.999/9999-99"} name="CPF" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cpf: value }))} />
             </label>
             <label>
                 <p>Senha</p>
