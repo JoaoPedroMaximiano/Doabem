@@ -1,6 +1,6 @@
 import Layout from "@/Components/Layout";
 import ProgressBar from "@/Components/ProgressBar";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { PencilSimple, Handshake, MapPinArea } from "@phosphor-icons/react";
 import FloatButton from "@/Components/FloatButton";
 
@@ -9,7 +9,7 @@ export default function Detalhe() {
     let { necessidade } = usePage().props;
     let { entidade } = usePage().props;
     let { local } = usePage().props;
-    const handleLinkClick = () => {
+    let handleLinkClick = () => {
         window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
 
@@ -20,9 +20,9 @@ export default function Detalhe() {
         <div className="flex flex-col gap-2.5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{necessidade.nome}</h1>
-                <a href="/" className="underline text-[#06B6D4] w-100">
-                    <p className="text-sm">voltar</p>
-                </a>
+                <Link href="/" className="underline text-[#06B6D4] w-100">
+                    <p className="text-sm">Voltar</p>
+                </Link>
             </div>
             <img src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />
             <div className="flex flex-row items-center gap-2.5">
@@ -42,6 +42,5 @@ export default function Detalhe() {
                 />
             )}
         </div>
-
     </Layout>
 }

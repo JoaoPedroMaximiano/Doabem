@@ -1,4 +1,4 @@
-import { Head, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { List, X } from "@phosphor-icons/react";
 import { useState } from "react";
 
@@ -12,7 +12,9 @@ export default function Layout({titulo, children}) {
 
         <div className="relative z-20 w-full bg-[#06B6D4] py-5 px-2.5">
             <div className="container mx-auto flex justify-between items-center px-4">
-                <a href="/" className="text-3xl text-white ">Logo</a>
+                <Link href="/" className="text-3xl text-white">
+                    Logo
+                </Link>
                 <div className="cursor-pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
                     {
                         isMenuHidden ?
@@ -64,6 +66,6 @@ function Menu() {
     }
 
     return listaMenu.map((item, i) => {
-        return <a href={item.caminho} key={i} className="text-white text-xl py-2">{item.nome}</a>
+        return <Link href={item.caminho} key={i} className="text-white text-xl py-2">{item.nome}</Link>
     });
 }

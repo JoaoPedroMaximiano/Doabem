@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import Input from "@/Components/Input";
-import { Head, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
@@ -51,9 +51,9 @@ export default function CadastrarDoador(){
         </Head>
         <div className="flex flex-col gap-2.5">
             <h1 className="font-bold text-x1">Criar nova conta</h1>
-            <a href="/entidade-beneficente/cadastrar" className="underline text-[#06B6D4] w-100">
+            <Link href="/entidade-beneficente/cadastrar" className="underline text-[#06B6D4] w-100">
                 <p className="text-sm">Sou uma entidade beneficente</p>
-            </a>
+            </Link>
             <label>
                 <p>Login</p>
                 <Input placeholder="Digite seu login" name="login" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, login: value }))}/>

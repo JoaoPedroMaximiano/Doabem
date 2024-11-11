@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import Input from "@/Components/Input";
-import { Head, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
@@ -63,9 +63,9 @@ export default function Login(){
                 </div>
             </label>
 
-            <a href="/" className="underline text-[#06B6D4] w-100">
+            <Link href="/" className="underline text-[#06B6D4] w-100">
                 <p className="text-sm text-right">Voltar a tela inicial</p>
-            </a>
+            </Link>
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Entrar" onClick={login}/>
