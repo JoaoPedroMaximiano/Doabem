@@ -3,75 +3,49 @@ import FloatButton from "@/Components/FloatButton";
 import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Layout from "@/Components/Layout";
+import RelatorioDoacoesCard from "@/Components/RelatorioDoacoesCard";
 import { usePage } from "@inertiajs/react";
-import { CaretDown, MagnifyingGlass, PencilSimple } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function ListagemDoacao() {
-    let { doacoes } = usePage().props
-    const [dados, setDados] = useState({
+    let { doacoes } = usePage().props;
+    let [dados, setDados] = useState({
         nome: '',
         cpf: '',
         dataInicio: '',
         dataFim: '',
     });
-    const [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
+    let [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
 
     let [expandirFiltro, setExpandirFiltro] = useState(true);
-    let [expandirRelatorio, setExpandirRelatorio] = useState(false);
 
-    const showFiltro = () => {
+    let showFiltro = () => {
         setExpandirFiltro(prev => !prev);
     }
 
-    const showRelatorio = () => {
-        setExpandirRelatorio(prev => !prev);
-    };
-    
-    const formatarData = (data) => {
-        const [dia, mes, ano] = data.split('/');
-        const novaData = new Date(`${ano}-${mes}-${dia}`);
-        return novaData.toISOString().split('T')[0]; 
-      };
+    let handleFiltro = () => {
+        let { nome, cpf, dataInicio, dataFim } = dados;
 
-    const handleFiltro = () => {
-        const novoFiltro = Object.keys(doacoesAgrupadas).map((mesAno) => {
-          const doacoesDoMes = doacoesAgrupadas[mesAno];
-    
-          const doacoesFiltradasMes = doacoesDoMes.filter((doacao) => {
-            const descricaoMatch = dados.nome
-              ? doacao.descricao.toLowerCase().includes(dados.nome.toLowerCase())
-              : true;
-    
-            const cpfMatch = dados.cpf
-              ? doacao.cpf_doador.includes(dados.cpf)
-              : true;
-    
-            const dataInicioMatch = dados.dataInicio
-              ? dayjs(doacao.data_recebimento).isSameOrAfter(dados.dataInicio)
-              : true;
-    
-            const dataFimMatch = dados.dataFim
-              ? dayjs(doacao.data_recebimento).isSameOrBefore(dados.dataFim)
-              : true;
-    
-            return descricaoMatch && cpfMatch && dataInicioMatch && dataFimMatch;
+        let doacoesFiltradas = Object.entries(doacoes).reduce((acc, [data, { itens }]) => {
+          let itensFiltrados = itens.filter(item => {
+            let dataItem = new Date(item.data);
+            let isNomeMatch = item.descricao.toLowerCase().includes(nome.toLowerCase());
+            let isCpfMatch = item.cpf.includes(cpf);
+            let isDataInicioMatch = dataInicio ? dataItem >= new Date(dataInicio) : true;
+            let isDataFimMatch = dataFim ? dataItem <= new Date(dataFim) : true;
+
+            return isNomeMatch && isCpfMatch && isDataInicioMatch && isDataFimMatch;
           });
-    
-          if (doacoesFiltradasMes.length > 0) {
-            return { mesAno, doacoes: doacoesFiltradasMes };
+
+          if (itensFiltrados.length > 0) {
+            acc[data] = { itens: itensFiltrados };
           }
-    
-          return null;
-        }).filter(item => item !== null);
-    
-        const doacoesAgrupadasFiltradas = novoFiltro.reduce((acc, item) => {
-          acc[item.mesAno] = item.doacoes;
           return acc;
         }, {});
-    
-        setDoacoesFiltradas(doacoesAgrupadasFiltradas);
-      };
+
+        setDoacoesFiltradas(doacoesFiltradas);
+    };
 
     return <Layout titulo={'Relatório de doação'}>
         <div className="flex flex-col gap-5">
@@ -81,65 +55,56 @@ export default function ListagemDoacao() {
                     <p className="text-sm">voltar</p>
                 </a>
             </div>
-            
+
             <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirFiltro ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="flex flex-col gap-2.5">
                     <Label texto="Descrição da doação">
-                        <Input placeholder="Digite descrição da doação" value={dados} onChange={e => setDados(p => ({ ...p, nome: e.target.value }))} />
+                        <Input
+                            placeholder="Digite descrição da doação"
+                            value={dados.nome}
+                            onChange={e => setDados(p => ({ ...p, nome: e.target.value }))}
+                        />
                     </Label>
+
                     <Label texto="CPF do doador">
-                        <Input mask="999.999.999-99" placeholder="Digite o cpf do doador" value={dados} onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))} />
+                        <Input
+                            placeholder="Digite o cpf do doador"
+                            value={dados.cpf}
+                            onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))}
+                        />
                     </Label>
-                    <Label texto="Data inicio">
-                        <input className="w-full"
+
+                    <Label texto="Data início">
+                        <input
+                            className="w-full"
                             type="date"
-                            value={dados}
-                            onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))} />
+                            value={dados.dataInicio}
+                            onChange={e => setDados(p => ({ ...p, dataInicio: e.target.value }))}
+                        />
                     </Label>
 
                     <Label texto="Data fim">
-                        <input className="w-full"
+                        <input
+                            className="w-full"
                             type="date"
-                            value={dados}
-                            onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))} />
+                            value={dados.dataFim}
+                            onChange={e => setDados(p => ({ ...p, dataFim: e.target.value }))}
+                        />
                     </Label>
 
-                    <Button texto="Filtrar" onClick={() => {}} />
+                    <Button texto="Filtrar" onClick={handleFiltro} />
                 </div>
             </div>
-            <div className="card-relatorio-out bg-white">
-                <div className="flex flex-row items-center justify-between h-10" onClick={showRelatorio}>
-                    <p>Doações (5 qtd.)</p>
-                    <div className="flex flex-row items-center justify-between">
-                        <p>Janeiro de 2024</p>
-                        <CaretDown size={24} />
-                    </div>
-                </div>
-                <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirRelatorio ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
-                        <div className="pl-2">
-                            <p><u>Casaco</u></p>
-                            <p><u>Antônio Carlos</u></p>
-                        </div>
-                        <div className="flex flex-col items-end pr-2">
-                            <p><u>1 qtd.</u></p>
-                            <PencilSimple size={24} />
-                        </div>
-                    </div>
-                    <div className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
-                        <div className="pl-2">
-                            <p><u>Casaco</u></p>
-                            <p><u>Antônio Carlos</u></p>
-                        </div>
-                        <div className="flex flex-col items-end pr-2">
-                            <p><u>1 qtd.</u></p>
-                            <PencilSimple size={24} />
-                        </div>
-                    </div>
-                </div>
+            <div>
+                {Object.entries(doacoesFiltradas).map(([data, doacao], index) => (
+                    <RelatorioDoacoesCard
+                        key={index}
+                        data={data}
+                        itens={doacao.itens}
+                    />
+                ))}
             </div>
             <FloatButton onClick={showFiltro} icone={<MagnifyingGlass size={32} />}/>
         </div>
     </Layout>
-
 }
