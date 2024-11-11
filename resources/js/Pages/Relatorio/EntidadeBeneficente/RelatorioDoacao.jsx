@@ -31,15 +31,13 @@ export default function ListagemDoacao() {
     const formatarData = (data) => {
         const [dia, mes, ano] = data.split('/');
         const novaData = new Date(`${ano}-${mes}-${dia}`);
-        return novaData.toISOString().split('T')[0]; // Retorna no formato 'yyyy-MM-dd'
+        return novaData.toISOString().split('T')[0]; 
       };
 
     const handleFiltro = () => {
-        // Usamos o map para percorrer as chaves (mesAno) e filtrar as doações dentro de cada mês
         const novoFiltro = Object.keys(doacoesAgrupadas).map((mesAno) => {
           const doacoesDoMes = doacoesAgrupadas[mesAno];
     
-          // Filtra as doações desse mês
           const doacoesFiltradasMes = doacoesDoMes.filter((doacao) => {
             const descricaoMatch = dados.nome
               ? doacao.descricao.toLowerCase().includes(dados.nome.toLowerCase())
@@ -60,16 +58,13 @@ export default function ListagemDoacao() {
             return descricaoMatch && cpfMatch && dataInicioMatch && dataFimMatch;
           });
     
-          // Retorna o mês apenas se houver doações filtradas
           if (doacoesFiltradasMes.length > 0) {
             return { mesAno, doacoes: doacoesFiltradasMes };
           }
     
-          return null; // Se não houver doações para esse mês, retorna null
-        }).filter(item => item !== null); // Filtra os `null`s (meses sem doações após filtro)
+          return null;
+        }).filter(item => item !== null);
     
-        // Atualiza o estado com as doações filtradas
-        // Transforma de volta para um objeto agrupado por mesAno
         const doacoesAgrupadasFiltradas = novoFiltro.reduce((acc, item) => {
           acc[item.mesAno] = item.doacoes;
           return acc;
@@ -93,7 +88,7 @@ export default function ListagemDoacao() {
                         <Input placeholder="Digite descrição da doação" value={dados} onChange={e => setDados(p => ({ ...p, nome: e.target.value }))} />
                     </Label>
                     <Label texto="CPF do doador">
-                        <Input placeholder="Digite o cpf do doador" value={dados} onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))} />
+                        <Input mask="999.999.999-99" placeholder="Digite o cpf do doador" value={dados} onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))} />
                     </Label>
                     <Label texto="Data inicio">
                         <input className="w-full"
