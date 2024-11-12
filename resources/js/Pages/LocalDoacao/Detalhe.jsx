@@ -1,6 +1,6 @@
 import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
@@ -19,9 +19,7 @@ export default function Detalhe() {
         <div className="flex flex-col gap-2.5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{localDoacao.nome}</h1>
-                <a href="/" className="underline text-[#06B6D4] w-100">
-                    <p className="text-sm">voltar</p>
-                </a>
+                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <img src={localDoacao.imagem == null ? "/storage/blank.svg" : localDoacao.imagem} />
             <div className="flex flex-row items-center gap-2.5">

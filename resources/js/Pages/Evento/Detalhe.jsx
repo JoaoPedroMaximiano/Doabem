@@ -1,6 +1,6 @@
 import FloatButton from "@/Components/FloatButton";
 import Layout from "@/Components/Layout";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { CalendarDots, Handshake, MapPinArea, PencilSimple } from "@phosphor-icons/react";
 
 export default function Detalhe() {
@@ -8,18 +8,18 @@ export default function Detalhe() {
     let { evento } = usePage().props;
     let { entidade } = usePage().props;
     let { local } = usePage().props;
-    const dataInicio = new Date(evento.data_inicio);
-    const dataFim = new Date(evento.data_fim);
+    let dataInicio = new Date(evento.data_inicio);
+    let dataFim = new Date(evento.data_fim);
     
-    const diaInicio = String(dataInicio.getDate()).padStart(2, '0');
-    const mesInicio = String(dataInicio.getMonth() + 1).padStart(2, '0');
-    const anoInicio = dataInicio.getFullYear();
+    let diaInicio = String(dataInicio.getDate()).padStart(2, '0');
+    let mesInicio = String(dataInicio.getMonth() + 1).padStart(2, '0');
+    let anoInicio = dataInicio.getFullYear();
     
-    const diaFim = String(dataFim.getDate()).padStart(2, '0');
-    const mesFim = String(dataFim.getMonth() + 1).padStart(2, '0');
-    const anoFim = dataFim.getFullYear();
+    let diaFim = String(dataFim.getDate()).padStart(2, '0');
+    let mesFim = String(dataFim.getMonth() + 1).padStart(2, '0');
+    let anoFim = dataFim.getFullYear();
 
-    const handleLinkClick = () => {
+    let handleLinkClick = () => {
         window.open('https://www.google.com/maps/@'+local.latitude+","+local.longitude+',17z?entry=ttu', '_blank');
     };
     return <Layout>
@@ -29,9 +29,7 @@ export default function Detalhe() {
         <div className="flex flex-col gap-2.5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{evento.nome}</h1>
-                <a href="/" className="underline text-[#06B6D4] w-100">
-                    <p className="text-sm">voltar</p>
-                </a>
+                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <img src={evento.imagem == null ? "/storage/blank.svg" : evento.imagem} />
             <div className="flex flex-row items-center gap-2.5">

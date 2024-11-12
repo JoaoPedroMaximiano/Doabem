@@ -4,7 +4,7 @@ import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Layout from "@/Components/Layout";
 import RelatorioDoacoesCard from "@/Components/RelatorioDoacoesCard";
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
 
@@ -51,9 +51,9 @@ export default function ListagemDoacao() {
         <div className="flex flex-col gap-5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{'Relatório de doações'}</h1>
-                <a href="/" className="underline text-[#06B6D4] w-100">
-                    <p className="text-sm">voltar</p>
-                </a>
+                <Link href="/" className="underline text-[#06B6D4] w-100">
+                    <p className="text-sm">Voltar</p>
+                </Link>
             </div>
 
             <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirFiltro ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
