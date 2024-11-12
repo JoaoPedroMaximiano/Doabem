@@ -37,17 +37,20 @@ class Necessidade extends Model
         return $this->status === 'ativo';
     }
 
-    public static function getNecessidadesForListagem()
+    public static function getNecessidadesForListagem($idEntidade)
     {
-        return self::where('necessidades.status', 'ativo')
+        $query = self::where('necessidades.status', 'ativo')
             ->where('qtd_necessaria', '>', function ($query) {
                 $query->selectRaw('COUNT(doacoes.id)')
                     ->from('doacoes')
                     ->where('doacoes.id_necessidade', 'necessidades.id');
             })
             ->where('necessidades.status', 'ativo')
-            ->join('locais', 'locais.id', '=', 'necessidades.id_local')
-            ->get(['necessidades.id', 'necessidades.nome', 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+            ->join('locais', 'locais.id', '=', 'necessidades.id_local');
+        if ($idEntidade) {
+            $query->where('necessidades.id_entidade_beneficente', $idEntidade);
+        }
+        return $query->get(['necessidades.id', 'necessidades.nome', 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public static function getNecessidadesForCadastroDoacao()

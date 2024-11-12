@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,12 +40,26 @@ class EventoBeneficente extends Model
         return $this->status === 'ativo';
     }
 
-    public static function getEventosBeneficentesForListagem()
+    public static function getEventosBeneficentesForListagem($idEntidade)
+    {
+        $query = self::where('eventos_beneficentes.status', 'ativo')
+            ->whereDate('data_inicio', '<=', now())
+            ->whereDate('data_fim', '>=', now())
+            ->where('locais.status', 'ativo')
+            ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local');
+            if ($idEntidade) {
+                $query->where('eventos_beneficentes.id_entidade_beneficente', $idEntidade);
+            }
+        return $query->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+    }
+
+    public static function getEventosBeneficentesForListagemEntidade()
     {
         return self::where('eventos_beneficentes.status', 'ativo')
             ->whereDate('data_inicio', '<=', now())
             ->whereDate('data_fim', '>=', now())
             ->where('locais.status', 'ativo')
+            ->where('eventos_beneficentes.id_entidade_beneficente', Auth::id())
             ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local')
             ->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }

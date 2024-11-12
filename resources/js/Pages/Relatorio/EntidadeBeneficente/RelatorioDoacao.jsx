@@ -68,6 +68,7 @@ export default function ListagemDoacao() {
 
                     <Label texto="CPF do doador">
                         <Input
+                            mask="999.999.999-99"
                             placeholder="Digite o cpf do doador"
                             value={dados.cpf}
                             onChange={e => setDados(p => ({ ...p, cpf: e.target.value }))}

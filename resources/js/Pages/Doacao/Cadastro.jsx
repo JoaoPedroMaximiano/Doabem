@@ -92,7 +92,7 @@ export default function Cadastro() {
             if (!response.data.exists) {
                 Swal.fire({
                     title: 'CPF não encontrado.',
-                    icon: "success",
+                    icon: "error",
                     html: `<ul>Cadastre um doador!</ul>`,
                 });
             }

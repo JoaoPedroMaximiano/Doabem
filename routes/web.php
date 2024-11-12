@@ -9,7 +9,7 @@ Route::post('/login', [App\Http\Controllers\UsuarioController::class, 'autentica
 Route::get('/logout', [App\Http\Controllers\UsuarioController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::get('/doador/cadastrar', [App\Http\Controllers\DoadorController::class, 'create'])->name('cadastrar.doador')->middleware('guest');
-Route::post('/doador/cadastrar/salvar', [App\Http\Controllers\DoadorController::class, 'store'])->name('salvar.doador')->middleware('guest');
+Route::post('/doador/cadastrar/salvar', [App\Http\Controllers\DoadorController::class, 'store'])->name('salvar.doador')->middleware('checkNivelAcesso:guestEntidade');
 
 Route::get('/entidade-beneficente/cadastrar', [App\Http\Controllers\EntidadeBeneficenteController::class, 'create'])->name('cadastrar.entidadeBeneficinte')->middleware('guest');
 Route::post('/entidade-beneficente/cadastrar/salvar', [App\Http\Controllers\EntidadeBeneficenteController::class, 'store'])->name('salvar.entidadeBeneficinte')->middleware('guest');
