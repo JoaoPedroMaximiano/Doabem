@@ -25,7 +25,7 @@ class NecessidadeController extends Controller
             'descricao' => 'required|string',
             'imagem' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'qtd' => 'required|integer|min:1',
-            'cep' => 'required|string|size:9',
+            'cep' => 'required|string|size:8',
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|size:2',
             'estado' => 'required|string|max:255',
@@ -94,7 +94,7 @@ class NecessidadeController extends Controller
             'descricao' => 'required|string',
             'imagem' => 'required|max:2048',
             'qtd' => 'required|integer|min:1',
-            'cep' => 'required|string|size:9',
+            'cep' => 'required|string|size:8',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);

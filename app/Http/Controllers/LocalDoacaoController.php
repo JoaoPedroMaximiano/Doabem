@@ -22,7 +22,7 @@ class LocalDoacaoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
             'imagem' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'cep' => 'required|string|size:9',
+            'cep' => 'required|string|size:8',
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|size:2',
             'estado' => 'required|string|max:255',
@@ -61,7 +61,7 @@ class LocalDoacaoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
             'imagem' => 'nullable|max:2048',
-            'cep' => 'required|string|size:9',
+            'cep' => 'required|string|size:8',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
