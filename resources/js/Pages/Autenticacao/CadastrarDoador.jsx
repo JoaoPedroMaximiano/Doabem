@@ -17,7 +17,7 @@ export default function CadastrarDoador(){
 
     function cadastrar() {
         axios.post('/doador/cadastrar/salvar', dados)
-        .then( Response => {
+        .then( () => {
             router.visit('/');
         })
         .catch(error => {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,12 +38,15 @@ class LocalDoacao extends Model
         return $this->status === 'ativo';
     }
 
-    public static function getLocalDoacaoForListagem()
+    public static function getLocalDoacaoForListagem($idEntidade)
     {
-        return self::where('locais_doacoes.status', 'ativo')
+        $query = self::where('locais_doacoes.status', 'ativo')
             ->where('locais.status', 'ativo')
-            ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local')
-            ->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+            ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local');
+            if ($idEntidade) {
+                $query->where('locais_doacoes.id_entidade_beneficente', $idEntidade);
+            }            
+            return $query->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public static function getLocalDoacaoForCadastroDoacao()
