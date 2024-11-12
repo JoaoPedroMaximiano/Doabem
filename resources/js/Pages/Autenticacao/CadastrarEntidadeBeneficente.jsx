@@ -62,7 +62,7 @@ export default function CadastrarEntidadeBeneficente(){
 
             <label>
                 <p>Celular</p>
-                <Input placeholder="Digite seu celular" name="celular" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, celular: value }))}/>
+                <Input mask={'(99) 99999-9999'} placeholder="Digite seu celular" name="celular" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, celular: value }))}/>
             </label>
 
             <label>
