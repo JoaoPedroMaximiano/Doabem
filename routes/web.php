@@ -39,6 +39,7 @@ Route::get('/locais/{id}', [App\Http\Controllers\LocalDoacaoController::class, '
 Route::get('/locais/editar/{id}', [App\Http\Controllers\LocalDoacaoController::class, 'edit'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 Route::put('/locais/editar/salvar', [App\Http\Controllers\LocalDoacaoController::class, 'update'])->name('editar.localDoacao')->middleware('checkNivelAcesso:entidade');
 
-Route::get('/monitorar-doacoes', [App\Http\Controllers\MonitorarDoacoesController::class, 'index'])->name('monitorar.doacoes');
+Route::get('/monitorar-doacoes', [App\Http\Controllers\MonitorarDoacoesController::class, 'index'])->name('monitorar-doacoes');
+Route::post('/monitorar-doacoes/get-lista-doacoes', [App\Http\Controllers\MonitorarDoacoesController::class, 'getListaDoacoes'])->name('monitorar-doacoes.lista');
 
 require __DIR__.'/auth.php';

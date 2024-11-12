@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Doacao extends Model
 {
@@ -54,5 +55,42 @@ class Doacao extends Model
     public function getFormattedDataRecebimentoAttribute()
     {
         return $this->data_recebimento->format('d/m/Y H:i');
-    }   
+    }
+
+    public static function getDoacoesDestinosByIdDoador($idDoador)
+    {
+        $sql = "SELECT
+                    d.id,
+                    d.descricao,
+                    d.qtd,
+                    dd.status,
+                    DATE_FORMAT(dd.data_atualizacao, '%d/%m/%Y - %H:%i') AS data_atualizacao
+                FROM doacoes d
+                JOIN destinos_doacoes dd
+                    ON dd.id_doacao = d.id
+                WHERE d.id_doador = :idDoador
+                ORDER BY dd.data_atualizacao";
+
+        $res = DB::select($sql, [
+            'idDoador' => $idDoador
+        ]);
+
+        $array = [];
+        foreach ($res as $item) {
+            if (!isset($array[$item->id])) {
+                $array[$item->id] = [
+                    'id' => $item->id,
+                    'descricao' => $item->descricao,
+                    'qtd' => $item->qtd,
+                    'itens' => [],
+                ];
+            }
+            $array[$item->id]['itens'][] = [
+                'status' => $item->status,
+                'data_atualizacao' => $item->data_atualizacao,
+            ];
+        }
+
+        return $array;
+    }
 }
