@@ -53,17 +53,6 @@ class EventoBeneficente extends Model
         return $query->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
-    public static function getEventosBeneficentesForListagemEntidade()
-    {
-        return self::where('eventos_beneficentes.status', 'ativo')
-            ->whereDate('data_inicio', '<=', now())
-            ->whereDate('data_fim', '>=', now())
-            ->where('locais.status', 'ativo')
-            ->where('eventos_beneficentes.id_entidade_beneficente', Auth::id())
-            ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local')
-            ->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
-    }
-
     public static function getEventosBeneficentesForCadastroDoacao()
     {
         $array = self::where('eventos_beneficentes.status', 'ativo')
