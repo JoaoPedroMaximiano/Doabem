@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DestinoDoacao;
 use App\Models\Doacao;
 use App\Models\DestinoFinal;
 use App\Models\DestinoDoacao;
@@ -78,9 +79,44 @@ class DoacaoController extends Controller
         ]);
     }
 
+    public function update(Request $request) 
+    {
+        $request->validate([
+            'descricao' => 'required|string',
+            'qtd' => 'required|integer|min:1',
+        ]);
+    
+        $dados = $request->all();
+        $doacao = Doacao::findOrFail($dados['id']);
+    
+        DB::beginTransaction();
+    
+        $doacao->update([
+            'descricao' => $dados['descricao'],
+            'qtd' => $dados['qtd'],
+            'data_recebimento' => $dados['dataRecebimento'],
+            'id_destino_final' => $dados['idDestinoFinal']
+        ]);
+    
+        DB::table('destinos_doacoes')
+            ->where('id_doacao', $doacao->id)
+            ->delete();
+    
+        foreach ($dados['destinoFinal'] as $destinoFinal) {
+            DestinoDoacao::create([
+                'id_doacao' => $doacao->id,
+                'status' => 'ativo',
+                'data_atualizacao' => now()
+            ]);
+        }
+        
+        DB::commit();
+    
+        return response('Atualização bem sucedida', 200);
+    }
+
     public function storeFinalDestination(Request $request)
     {
-
     }
 
     public function verifyDonator(Request $request)
