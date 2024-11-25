@@ -5,7 +5,7 @@ import Layout from "@/Components/Layout";
 import Modal from "@/Components/Modal";
 import Select from "@/Components/Select";
 import { router, usePage } from "@inertiajs/react";
-import { PlusCircle } from "@phosphor-icons/react";
+import { PlusCircle, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
 import ModalCadastrarDestinoFinal from "./Components/ModalCadastrarDestinoFinal";
 
@@ -47,6 +47,13 @@ export default function Gerenciar() {
         setSelectValue(e.target.value);
     };
 
+    let removeStatus = (id) => {
+        setDados(prevDados => ({
+            ...prevDados,
+            situacoes: prevDados.situacoes.filter(item => item.id !== id)
+        }));
+    };
+
     let handleSalvar = () => {
 
     }
@@ -82,8 +89,10 @@ export default function Gerenciar() {
                     {dados.situacoes.map((item, i) => {
                         return <div className="p-2.5 flex justify-between" key={i}>
                             <p>{item.status}</p>
-                            <p>{formatDate(item.data_atualizacao)}</p>
-
+                            <div className="flex items-center gap-2.5">
+                                <p>{formatDate(item.data_atualizacao)}</p>
+                                <Trash size={20} className="cursor-pointer" onClick={() => removeStatus(item.id)} />
+                            </div>
                         </div>
                     })}
                     <div className="p-2.5 underline text-[#06B6D4] text-center">Adicionar situação</div>
