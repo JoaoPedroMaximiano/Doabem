@@ -18,7 +18,7 @@ export default function Gerenciar() {
         descricao: doacao.descricao,
         qtd: doacao.qtd,
         dataRecebimento: doacao.data_recebimento,
-        destinoFinal: '',
+        idDestinoFinal: doacao.id_destino_final,
         situacoes: situacoes,
     });
 

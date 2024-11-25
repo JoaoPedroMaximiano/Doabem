@@ -97,10 +97,7 @@ class DoacaoController extends Controller
             'id_destino_final' => $dados['idDestinoFinal']
         ]);
     
-        DB::table('destinos_doacoes')
-            ->where('id_doacao', $doacao->id)
-            ->delete();
-    
+        DestinoDoacao::where('id_doacao', $doacao->id)->delete();
         foreach ($dados['destinoFinal'] as $destinoFinal) {
             DestinoDoacao::create([
                 'id_doacao' => $doacao->id,
@@ -116,6 +113,7 @@ class DoacaoController extends Controller
 
     public function storeFinalDestination(Request $request)
     {
+
     }
 
     public function verifyDonator(Request $request)
