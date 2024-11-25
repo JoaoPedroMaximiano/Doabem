@@ -27,4 +27,7 @@ export default function Input({inputType="text", placeholder="", mask, ...props}
     if (inputType == "date") {
         return <input type="date" {...props}></input>
     }
+    if (inputType == "datetime-local") {
+        return <input type="datetime-local" {...props}></input>
+    }
 }

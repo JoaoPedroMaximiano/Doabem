@@ -1,5 +1,6 @@
 import Button from "@/Components/Button";
 import Input from "@/Components/Input";
+import Label from "@/Components/Label";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
@@ -9,7 +10,6 @@ export default function ModalCadastrarDoador() {
     let [isPasswordVisible, setIsPasswordVisible] = useState(false);
     let [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
     let [dados, setDados] = useState({});
-    
 
     function cadastrar() {
         axios.post('/doador/cadastrar/salvar', dados)
@@ -48,48 +48,41 @@ export default function ModalCadastrarDoador() {
     return <div className="flex flex-col gap-2.5">
         <h2>Cadastrar doador</h2>
         <div className="flex flex-col gap-2.5">
-            <label>
-                <p>Login</p>
+            <Label texto="Login">
                 <Input placeholder="Digite seu login" name="login" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, login: value }))}/>
-            </label>
+            </Label>
 
-            <label>
-                <p>E-mail</p>
+            <Label texto="E-mail">
                 <Input placeholder="Digite seu e-mail" name="email" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, email: value }))}/>
-            </label>
+            </Label>
 
-            <label>
-                <p>Celular</p>
+            <Label texto="Celular">
                 <Input mask={'(99) 99999-9999'} placeholder="Digite seu celular" name="celular" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, celular: value }))}/>
-            </label>
+            </Label>
 
-            <label>
-                <p>Nome completo</p>
+            <Label texto="Nome completo">
                 <Input placeholder="Digite seu nome completo" name="nomeCompleto" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, nomeCompleto: value }))}/>
-            </label>
+            </Label>
 
-            <label>
-                <p>CPF</p>
+            <Label texto="CPF">
                 <Input mask="999.999.999-99" placeholder="Digite seu CPF" name="cpf" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, cpf: value }))}/>
-            </label>
+            </Label>
 
-            <label>
-                <p>Senha</p>
+            <Label texto="Senha">
                 <div className="relative">
                     <Input inputType={ isPasswordVisible ? "text" : "password"} placeholder="Digite sua senha" className="!pr-10"  onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, senha: value }))} />
                     <Eye size={32} onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={"absolute top-1.5 right-2 " + (isPasswordVisible ? "hidden" : "block")} />
                     <EyeSlash size={32} onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={"absolute top-1.5 right-2 " + (!isPasswordVisible ? "hidden" : "block")} />
                 </div>
-            </label>
+            </Label>
 
-            <label>
-                <p>Confirmar senha</p>
+            <Label texto="Confirmar senha">
                 <div className="relative">
                     <Input inputType={ isConfirmPasswordVisible ? "text" : "password"} placeholder="Confirmar senha" className="!pr-10" onChange={({ target: { value } }) => setDados(prevDados => ({ ...prevDados, senha_confirmation: value }))}/>
                     <Eye size={32} onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} className={"absolute top-1.5 right-2 " + (isConfirmPasswordVisible ? "hidden" : "block")} />
                     <EyeSlash size={32} onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} className={"absolute top-1.5 right-2 " + (!isConfirmPasswordVisible ? "hidden" : "block")} />
                 </div>
-            </label>
+            </Label>
         </div>
         <div className="flex flex-col gap-2.5">
             <Button texto="Registrar conta" onClick={cadastrar}/>

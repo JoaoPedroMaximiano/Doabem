@@ -3,10 +3,10 @@ import FloatButton from "@/Components/FloatButton";
 import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Layout from "@/Components/Layout";
-import RelatorioDoacoesCard from "@/Components/RelatorioDoacoesCard";
 import { Link, usePage } from "@inertiajs/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useState } from "react";
+import DoacoesCard from "./Components/DoacoesCard";
 
 export default function ListagemDoacao() {
     let { doacoes } = usePage().props;
@@ -98,7 +98,7 @@ export default function ListagemDoacao() {
             </div>
             <div>
                 {Object.entries(doacoesFiltradas).map(([data, doacao], index) => (
-                    <RelatorioDoacoesCard
+                    <DoacoesCard
                         key={index}
                         data={data}
                         itens={doacao.itens}

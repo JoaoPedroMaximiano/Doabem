@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { CaretDown, PencilSimple } from "@phosphor-icons/react";
 import { router } from '@inertiajs/react';
 
-function RelatorioDoacoesCard({ data, itens }) {
-    const [expandirRelatorio, setExpandirRelatorio] = useState(false);
-    const showRelatorio = () => {
+export default function DoacoesCard({ data, itens }) {
+    let [expandirRelatorio, setExpandirRelatorio] = useState(false);
+    let showRelatorio = () => {
         setExpandirRelatorio(!expandirRelatorio);
     };
 
-
-    const dataParts = data.split('-');
-    const mes = new Date(parseInt(dataParts[2], 10), parseInt(dataParts[1], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
-    const ano = dataParts[2];
+    let dataParts = data.split('-');
+    let mes = new Date(parseInt(dataParts[2], 10), parseInt(dataParts[1], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
+    let ano = dataParts[2];
 
     return (
         <div className="card-relatorio-out bg-white mb-2">
@@ -31,13 +30,11 @@ function RelatorioDoacoesCard({ data, itens }) {
                         </div>
                         <div className="flex flex-col items-end pr-2 w-20">
                             <p><u>{doacao.quantidade} qtd.</u></p>
-                            <PencilSimple size={24} onClick={() => router.visit('/doacoes/editar/' + doacao.id_doacao)} />
+                            <PencilSimple size={24} onClick={() => router.visit('/doacao/gerenciar/' + doacao.id_doacao)} />
                         </div>
                     </div>
                 ))}
             </div>
         </div>
     );
-}
-
-export default RelatorioDoacoesCard;
+};

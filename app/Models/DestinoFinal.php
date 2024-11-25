@@ -13,7 +13,13 @@ class DestinoFinal extends Model
 
     protected $fillable = [
         'nome',
+        'id_entidade_beneficente',
     ];
+
+    public function entidadeBeneficente()
+    {
+        return $this->belongsTo(EntidadeBeneficente::class, 'identidade_beneficente');
+    }
 
     public function getFormattedName()
     {

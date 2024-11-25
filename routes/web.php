@@ -20,6 +20,7 @@ Route::put('/gerenciar-conta/alterar', [App\Http\Controllers\GerenciarContaContr
 Route::get('/doacao/cadastrar', [App\Http\Controllers\DoacaoController::class, 'create'])->name('cadastrar.doacao')->middleware('checkNivelAcesso:entidade');
 Route::post('/doacao/cadastrar/salvar', [App\Http\Controllers\DoacaoController::class, 'store'])->name('salvar.doacao')->middleware('checkNivelAcesso:entidade');
 Route::post('/doacao/cadastrar/verify-donator', [App\Http\Controllers\DoacaoController::class, 'verifyDonator'])->name('verificar.doador')->middleware('checkNivelAcesso:entidade');
+Route::get('/doacao/gerenciar/{id}', [App\Http\Controllers\DoacaoController::class, 'edit'])->name('gerenciar.doacao')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
@@ -41,5 +42,7 @@ Route::put('/locais/editar/salvar', [App\Http\Controllers\LocalDoacaoController:
 
 Route::get('/monitorar-doacoes', [App\Http\Controllers\MonitorarDoacoesController::class, 'index'])->name('monitorar-doacoes');
 Route::post('/monitorar-doacoes/get-lista-doacoes', [App\Http\Controllers\MonitorarDoacoesController::class, 'getListaDoacoes'])->name('monitorar-doacoes.lista');
+
+Route::post('/destino-final/cadastrar/salvar', [App\Http\Controllers\DoacaoController::class, 'storeFinalDestination'])->name('salvar.destino-final')->middleware('checkNivelAcesso:entidade');
 
 require __DIR__.'/auth.php';

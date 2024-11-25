@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doacao;
+use App\Models\DestinoFinal;
+use App\Models\DestinoDoacao;
 use App\Models\Doador;
 use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
@@ -51,6 +53,34 @@ class DoacaoController extends Controller
         DB::commit();
 
         return response()->json(['message' => "Sucesso"]);
+    }
+
+    public function edit($id)
+    {
+        $doacao = Doacao::find($id);
+        if (!$doacao) {
+            return redirect('/');
+        }
+        $destinosFinaisTemp = DestinoFinal::where('id_entidade_beneficente', $doacao->id_entidade_beneficente)->get();
+        $destinosFinais = [];
+        foreach ($destinosFinaisTemp as $destino) {
+            $destinosFinais[] = [
+                'value' => $destino->id,
+                'label' => $destino->nome,
+            ];
+        }
+
+        $situacoes = DestinoDoacao::where('id_doacao', $doacao->id)->get();
+        return Inertia::render('Doacao/Gerenciar', [
+            'doacao' => $doacao,
+            'destinosFinais' => $destinosFinais,
+            'situacoes' => $situacoes,
+        ]);
+    }
+
+    public function storeFinalDestination(Request $request)
+    {
+
     }
 
     public function verifyDonator(Request $request)
