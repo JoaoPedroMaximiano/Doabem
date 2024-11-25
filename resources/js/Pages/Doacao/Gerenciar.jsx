@@ -12,7 +12,7 @@ import ModalCadastrarDestinoFinal from "./Components/ModalCadastrarDestinoFinal"
 export default function Gerenciar() {
     let { doacao, destinosFinais, situacoes } = usePage().props;
 
-    let [isModalOpen, setIsModalOpen] = useState(false);
+    let [isModalFinalDestinationOpen, setIsModalFinalDestinationOpen] = useState(false);
     let [selectValue, setSelectValue] = useState('');
     let [dados, setDados] = useState({
         descricao: doacao.descricao,
@@ -54,7 +54,7 @@ export default function Gerenciar() {
     return <Layout titulo="Gerencimanto de doação">
         <div className="flex flex-col gap-5">
             <h1>Gerenciamento de doação</h1>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Modal isOpen={isModalFinalDestinationOpen} onClose={() => setIsModalFinalDestinationOpen(false)}>
                 <ModalCadastrarDestinoFinal />
             </Modal>
 
@@ -71,7 +71,7 @@ export default function Gerenciar() {
                 <Label texto="Destino final">
                     <div className="flex gap-2.5">
                         <Select value={selectValue} onChange={handleSelectChange} options={destinosFinais} />
-                        <PlusCircle className="cursor-pointer" size={42} onClick={() => setIsModalOpen(true)} />
+                        <PlusCircle className="cursor-pointer" size={42} onClick={() => setIsModalFinalDestinationOpen(true)} />
                     </div>
                 </Label>
             </div>
@@ -83,6 +83,7 @@ export default function Gerenciar() {
                         return <div className="p-2.5 flex justify-between" key={i}>
                             <p>{item.status}</p>
                             <p>{formatDate(item.data_atualizacao)}</p>
+
                         </div>
                     })}
                     <div className="p-2.5 underline text-[#06B6D4] text-center">Adicionar situação</div>
