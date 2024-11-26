@@ -127,14 +127,20 @@ class DoacaoController extends Controller
         ]);
 
         $usuario = Auth::user();
-        $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
-      
-        $dados = $request->all();
 
-        $destinoFinal = DestinoFinal::create([
-            'id_entidade_beneficente' => $idEntidade,
-            'nome' => $dados['nome']
-        ]);
+        $entidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first();
+
+        if (!$entidade) {
+            return response()->json([
+                'error' => 'Nenhuma entidade associada ao usuário.',
+            ], 400);
+        }
+
+        $dados = $request->all();
+        $destinoFinal = new DestinoFinal;
+        $destinoFinal->nome = $dados['nome'];
+        $destinoFinal->id_entidade_beneficente = $entidade->id;
+        $destinoFinal->save();
 
         return response()->json([
             'message' => 'Destino Final criado com sucesso!',

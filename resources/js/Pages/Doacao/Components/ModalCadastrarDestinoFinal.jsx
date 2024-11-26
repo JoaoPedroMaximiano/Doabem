@@ -5,12 +5,14 @@ import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-export default function ModalCadastrarDestinoFinal() {
+export default function ModalCadastrarDestinoFinal({setOptionsDestinosFinais}) {
     let [nome, setNome] = useState({});
 
     function cadastrar() {
         axios.post('/destino-final/cadastrar/salvar', { nome: nome })
-        .then( () => {
+        .then(response => {
+            // TODO
+            // setOptionsDestinosFinais(response.destinoFinal);
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",

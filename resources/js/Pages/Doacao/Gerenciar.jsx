@@ -16,6 +16,7 @@ export default function Gerenciar() {
     let [isModalFinalDestinationOpen, setIsModalFinalDestinationOpen] = useState(false);
     let [isModalAddStatusOpen, setIsModalAddStatusOpen] = useState(false);
     let [selectValue, setSelectValue] = useState('');
+    let [optionsDestinosFinais, setOptionsDestinosFinais] = useState(destinosFinais);
     let [dados, setDados] = useState({
         descricao: doacao.descricao,
         qtd: doacao.qtd,
@@ -64,7 +65,7 @@ export default function Gerenciar() {
         <div className="flex flex-col gap-5">
             <h1>Gerenciamento de doação</h1>
             <Modal isOpen={isModalFinalDestinationOpen} onClose={() => setIsModalFinalDestinationOpen(false)}>
-                <ModalCadastrarDestinoFinal />
+                <ModalCadastrarDestinoFinal setOptionsDestinosFinais={setOptionsDestinosFinais} />
             </Modal>
             <Modal isOpen={isModalAddStatusOpen} onClose={() => setIsModalAddStatusOpen(false)}>
                 <ModalAdicionarSituacao setDados={setDados} />
@@ -82,7 +83,7 @@ export default function Gerenciar() {
                 </Label>
                 <Label texto="Destino final">
                     <div className="flex gap-2.5">
-                        <Select value={selectValue} onChange={handleSelectChange} options={destinosFinais} />
+                        <Select value={selectValue} onChange={handleSelectChange} options={optionsDestinosFinais} />
                         <PlusCircle className="cursor-pointer" size={42} onClick={() => setIsModalFinalDestinationOpen(true)} />
                     </div>
                 </Label>
