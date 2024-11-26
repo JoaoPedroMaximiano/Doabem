@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('destinos_doacoes', function (Blueprint $table) {
             $table->id('id');
             $table->foreignId('id_doacao')->constrained('doacoes');
-            $table->enum('status', ['Recebida', 'Em Preparação', 'Em Trânsito', 'Entregue', 'Cancelada']);
+            $table->enum('status', ['Recebida', 'Em preparação', 'Em trânsito', 'Entregue', 'Cancelada']);
             $table->dateTime('data_atualizacao');
         });
     }
