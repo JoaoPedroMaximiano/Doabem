@@ -10,6 +10,7 @@ class DestinoFinal extends Model
     use HasFactory;
 
     protected $table = 'destinos_finais';
+    public $timestamps = false;
 
     protected $fillable = [
         'nome',

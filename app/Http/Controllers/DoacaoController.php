@@ -6,6 +6,7 @@ use App\Models\DestinoDoacao;
 use App\Models\Doacao;
 use App\Models\DestinoFinal;
 use App\Models\Doador;
+use App\Models\EntidadeBeneficente;
 use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
 use App\Models\LocalDoacao;
@@ -36,9 +37,11 @@ class DoacaoController extends Controller
         ]);
         $doador = Doador::where('cpf', $request->cpf)->first();
 
+        $usuario = Auth::user();
+        $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
         $dadosInsert = [
             'id_doador' => $doador->id,
-            'id_entidade_beneficente' => Auth::id(),
+            'id_entidade_beneficente' => $idEntidade,
             'id_destino_final' => null,
             'descricao' => $request->descricao,
             'qtd' => $request->qtd,
@@ -47,9 +50,15 @@ class DoacaoController extends Controller
         $dadosInsert['id_necessidade'] = $request->tipoDoacao == 'necessidade' ? $request->idTipoDoacao : null;
         $dadosInsert['id_evento_beneficente'] = $request->tipoDoacao == 'evento' ? $request->idTipoDoacao : null;
         $dadosInsert['id_local_doacao'] = $request->tipoDoacao == 'local' ? $request->idTipoDoacao : null;
-        
         DB::beginTransaction();
-        Doacao::insert($dadosInsert);
+        $doacao = Doacao::create($dadosInsert);
+        
+        DestinoDoacao::create([
+            'id_doacao' => $doacao->id,
+            'status' => 'Recebida',
+            'data_atualizacao' => now()
+        ]); 
+
         DB::commit();
 
         return response()->json(['message' => "Sucesso"]);
@@ -101,7 +110,7 @@ class DoacaoController extends Controller
         foreach ($dados['destinoFinal'] as $destinoFinal) {
             DestinoDoacao::create([
                 'id_doacao' => $doacao->id,
-                'status' => 'ativo',
+                'status' => $destinoFinal['status'],
                 'data_atualizacao' => now()
             ]);
         }
@@ -113,7 +122,24 @@ class DoacaoController extends Controller
 
     public function storeFinalDestination(Request $request)
     {
+        $request->validate([
+            'nome' => 'required|string',
+        ]);
 
+        $usuario = Auth::user();
+        $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
+      
+        $dados = $request->all();
+
+        $destinoFinal = DestinoFinal::create([
+            'id_entidade_beneficente' => $idEntidade,
+            'nome' => $dados['nome']
+        ]);
+
+        return response()->json([
+            'message' => 'Destino Final criado com sucesso!',
+            'destinoFinal' => $destinoFinal
+        ], 200);
     }
 
     public function verifyDonator(Request $request)

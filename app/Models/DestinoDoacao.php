@@ -10,6 +10,7 @@ class DestinoDoacao extends Model
     use HasFactory;
 
     protected $table = 'destinos_doacoes'; 
+    public $timestamps = false;
 
     protected $fillable = [
         'id_doacao',

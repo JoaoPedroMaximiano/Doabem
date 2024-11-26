@@ -10,6 +10,7 @@ class Doacao extends Model
 {
     use HasFactory;
     protected $table = 'doacoes';
+    public $timestamps = false;
     protected $fillable = [
         'id_doador',
         'id_entidade_beneficente',
