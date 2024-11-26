@@ -7,12 +7,14 @@ import Select from "@/Components/Select";
 import { router, usePage } from "@inertiajs/react";
 import { PlusCircle, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
+import ModalAdicionarSituacao from "./Components/ModalAdicionarSituacao";
 import ModalCadastrarDestinoFinal from "./Components/ModalCadastrarDestinoFinal";
 
 export default function Gerenciar() {
     let { doacao, destinosFinais, situacoes } = usePage().props;
 
     let [isModalFinalDestinationOpen, setIsModalFinalDestinationOpen] = useState(false);
+    let [isModalAddStatusOpen, setIsModalAddStatusOpen] = useState(false);
     let [selectValue, setSelectValue] = useState('');
     let [dados, setDados] = useState({
         descricao: doacao.descricao,
@@ -64,6 +66,9 @@ export default function Gerenciar() {
             <Modal isOpen={isModalFinalDestinationOpen} onClose={() => setIsModalFinalDestinationOpen(false)}>
                 <ModalCadastrarDestinoFinal />
             </Modal>
+            <Modal isOpen={isModalAddStatusOpen} onClose={() => setIsModalAddStatusOpen(false)}>
+                <ModalAdicionarSituacao setDados={setDados} />
+            </Modal>
 
             <div className="flex flex-col gap-2.5">
                 <Label texto="Descrição">
@@ -95,7 +100,12 @@ export default function Gerenciar() {
                             </div>
                         </div>
                     })}
-                    <div className="p-2.5 underline text-[#06B6D4] text-center">Adicionar situação</div>
+                    <div
+                        className="p-2.5 underline text-[#06B6D4] text-center"
+                        onClick={() => setIsModalAddStatusOpen(true)}
+                    >
+                        Adicionar situação
+                    </div>
                 </div>
             </div>
 
