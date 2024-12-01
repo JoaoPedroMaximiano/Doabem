@@ -3,6 +3,7 @@ import Input from "@/Components/Input";
 import Label from "@/Components/Label";
 import Select from "@/Components/Select";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function ModalAdicionarSituacao({setDados}) {
     let [selectValue, setSelectValue] = useState('');
@@ -31,6 +32,12 @@ export default function ModalAdicionarSituacao({setDados}) {
             ...prevDados,
             situacoes: [...prevDados.situacoes, novoStatus]
         }));
+
+        Swal.fire({
+            title: 'Sucesso',
+            icon: "success",
+            html: `<ul>situação adionada com sucesso</ul>`,
+        });
     }
 
     let handleSelectChange = (e) => {

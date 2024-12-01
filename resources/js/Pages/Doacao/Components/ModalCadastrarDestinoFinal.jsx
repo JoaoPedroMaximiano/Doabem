@@ -11,8 +11,10 @@ export default function ModalCadastrarDestinoFinal({setOptionsDestinosFinais}) {
     function cadastrar() {
         axios.post('/destino-final/cadastrar/salvar', { nome: nome })
         .then(response => {
-            // TODO
-            // setOptionsDestinosFinais(response.destinoFinal);
+            setOptionsDestinosFinais(prevOptions => [
+                ...prevOptions,
+                response.data.destinoFinal
+            ]);
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",

@@ -9,34 +9,39 @@ import { PlusCircle, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
 import ModalAdicionarSituacao from "./Components/ModalAdicionarSituacao";
 import ModalCadastrarDestinoFinal from "./Components/ModalCadastrarDestinoFinal";
+import Swal from "sweetalert2";
 
 export default function Gerenciar() {
     let { doacao, destinosFinais, situacoes } = usePage().props;
 
     let [isModalFinalDestinationOpen, setIsModalFinalDestinationOpen] = useState(false);
     let [isModalAddStatusOpen, setIsModalAddStatusOpen] = useState(false);
-    let [selectValue, setSelectValue] = useState('');
+    let [selectValue, setSelectValue] = useState(() => {
+        const selectedOption = destinosFinais.find(destinosFinal => destinosFinal.value === doacao.id_destino_final);
+        return selectedOption ? selectedOption.value : '';
+    });
     let [optionsDestinosFinais, setOptionsDestinosFinais] = useState(destinosFinais);
     let [dados, setDados] = useState({
+        id: doacao.id,
         descricao: doacao.descricao,
-        qtd: doacao.qtd,
+        quantidade: doacao.qtd,
         dataRecebimento: doacao.data_recebimento,
-        idDestinoFinal: doacao.id_destino_final,
+        idDestinoFinal: doacao.idDestinoFinal,
         situacoes: situacoes,
     });
 
     let formatDate = (dateString) => {
         let date = new Date(dateString);
-        
+
         let day = String(date.getDate()).padStart(2, '0');
         let month = String(date.getMonth() + 1).padStart(2, '0');
         let year = date.getFullYear();
-        
+
         let hours = String(date.getHours()).padStart(2, '0');
         let minutes = String(date.getMinutes()).padStart(2, '0');
-        
+
         return `${day}/${month}/${year} - ${hours}:${minutes}`;
-      };
+    };
 
     let handleChange = (e) => {
         let { name, value } = e.target;
@@ -47,7 +52,13 @@ export default function Gerenciar() {
     };
 
     let handleSelectChange = (e) => {
-        setSelectValue(e.target.value);
+        const selectedValue = e.target.value;
+        setSelectValue(selectedValue);
+
+        setDados(prevDados => ({
+            ...prevDados,
+            idDestinoFinal: selectedValue,
+        }));
     };
 
     let removeStatus = (id) => {
@@ -58,7 +69,36 @@ export default function Gerenciar() {
     };
 
     let handleSalvar = () => {
-
+        axios.put('/doacao/gerenciar/alterar', dados)
+        .then(() => {
+            Swal.fire({
+                title: 'Sucesso',
+                icon: "success",
+                html: `<ul>Atualização realizado com sucesso</ul>`,
+            });
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 422) {
+                let errors = error.response.data.errors;
+                let errorMessages = '';
+                Object.keys(errors).forEach((field) => {
+                    errors[field].forEach((message) => {
+                        errorMessages += `<li>${message}</li>`;
+                    });
+                });
+                Swal.fire({
+                    title: 'Erros de Validação',
+                    icon: 'error',
+                    html: `<ul>${errorMessages}</ul>`,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erro inesperado',
+                    text: 'Ocorreu um erro, tente novamente mais tarde.',
+                    icon: 'error',
+                });
+            }
+        });
     }
 
     return <Layout titulo="Gerencimanto de doação">
@@ -76,7 +116,7 @@ export default function Gerenciar() {
                     <Input placeholder="Digite a descrição da doação" name="descricao" value={dados.descricao} onChange={handleChange} />
                 </Label>
                 <Label texto="Quantidade">
-                    <Input inputType="number" placeholder="Digite a quantidade de itens doados" name="qtd" value={dados.qtd} onChange={handleChange} />
+                    <Input inputType="number" placeholder="Digite a quantidade de itens doados" name="quantidade" value={dados.quantidade} onChange={handleChange} />
                 </Label>
                 <Label texto="Data de recebimento">
                     <Input inputType="datetime-local" placeholder="Digite a data de recebimento" name="dataRecebimento" value={dados.dataRecebimento} onChange={handleChange} />

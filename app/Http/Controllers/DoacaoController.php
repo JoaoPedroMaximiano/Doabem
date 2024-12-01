@@ -52,12 +52,12 @@ class DoacaoController extends Controller
         $dadosInsert['id_local_doacao'] = $request->tipoDoacao == 'local' ? $request->idTipoDoacao : null;
         DB::beginTransaction();
         $doacao = Doacao::create($dadosInsert);
-        
+
         DestinoDoacao::create([
             'id_doacao' => $doacao->id,
             'status' => 'Recebida',
             'data_atualizacao' => now()
-        ]); 
+        ]);
 
         DB::commit();
 
@@ -87,36 +87,35 @@ class DoacaoController extends Controller
         ]);
     }
 
-    public function update(Request $request) 
+    public function update(Request $request)
     {
         $request->validate([
             'descricao' => 'required|string',
-            'qtd' => 'required|integer|min:1',
+            'quantidade' => 'required|integer|min:1',
         ]);
-    
+
         $dados = $request->all();
         $doacao = Doacao::findOrFail($dados['id']);
-    
+
         DB::beginTransaction();
-    
+
         $doacao->update([
             'descricao' => $dados['descricao'],
-            'qtd' => $dados['qtd'],
+            'qtd' => $dados['quantidade'],
             'data_recebimento' => $dados['dataRecebimento'],
             'id_destino_final' => $dados['idDestinoFinal']
         ]);
-    
         DestinoDoacao::where('id_doacao', $doacao->id)->delete();
-        foreach ($dados['destinoFinal'] as $destinoFinal) {
+        foreach ($dados['situacoes'] as $destinoFinal) {
             DestinoDoacao::create([
                 'id_doacao' => $doacao->id,
                 'status' => $destinoFinal['status'],
                 'data_atualizacao' => now()
             ]);
         }
-        
+
         DB::commit();
-    
+
         return response('Atualização bem sucedida', 200);
     }
 
@@ -144,7 +143,10 @@ class DoacaoController extends Controller
 
         return response()->json([
             'message' => 'Destino Final criado com sucesso!',
-            'destinoFinal' => $destinoFinal
+            'destinoFinal' => [
+                'value' => $destinoFinal->id,
+                'label' => $destinoFinal->nome,
+            ]
         ], 200);
     }
 

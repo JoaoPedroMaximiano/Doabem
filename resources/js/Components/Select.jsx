@@ -1,4 +1,4 @@
-export default function Select({options, ...props}) {
+export default function Select({options,...props}) {
     if (options && options.length > 0) {
         return <select {...props}>
             <option value="">Selecione</option>

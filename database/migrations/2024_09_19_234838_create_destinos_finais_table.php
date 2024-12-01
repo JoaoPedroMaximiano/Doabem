@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('destinos_finais', function (Blueprint $table) {
             $table->id('id');
             $table->string('nome');
-            $table->foreignId('id_entidade_beneficente')->constrained('entidade_beneficentes');
         });
     }
 
