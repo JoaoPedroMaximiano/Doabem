@@ -143,6 +143,7 @@ export default function GerenciarConta(){
                 <label>
                     <p>CNPJ</p>
                     <Input
+                        mask="99.999.999/9999-99"
                         placeholder="Digite seu CNPJ"
                         name="cnpj"
                         value={dados.cnpj}
@@ -198,7 +199,7 @@ export default function GerenciarConta(){
             </div>
             <div className="flex flex-col gap-2.5">
                 <Button texto="Salvar alterações" onClick={confimarAtualizar}/>
-                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/gerenciar-conta')}/>
+                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')}/>
             </div>
         </div>
     </Layout>;

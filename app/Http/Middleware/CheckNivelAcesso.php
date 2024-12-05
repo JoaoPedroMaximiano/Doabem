@@ -17,14 +17,26 @@ class CheckNivelAcesso
      */
     public function handle(Request $request, Closure $next, $nivelAcesso)
     {
+        if ($nivelAcesso == 'guestEntidade' && !Auth::check()) {
+            return $next($request);
+        }
+
+        // Caso de usuários logados
         if (Auth::check()) {
             if (Auth::user()->nivel_acesso == $nivelAcesso) {
                 return $next($request);
-            } if (($nivelAcesso == 'guestEntidade') && (is_null(Auth::user()) or Auth::user()->nivel_acesso == 'entidade')) {
+            }
+
+            if (
+                $nivelAcesso == 'guestEntidade' &&
+                (is_null(Auth::user()) || Auth::user()->nivel_acesso == 'entidade')
+            ) {
                 return $next($request);
             }
         }
 
+        // Redireciona se nenhuma condição for satisfeita
         return redirect('/')->with('error', 'Você não tem permissão para acessar esta página.');
+
     }
 }

@@ -21,7 +21,7 @@ class EntidadeBeneficenteController extends Controller
         $request->validate([
             'login' => 'required|string|max:255|unique:usuarios,login',
             'email' => 'required|email|max:255|unique:usuarios,email',
-            'celular' => 'required|string|min:10|max:14',
+            'celular' => 'required|string|min:10|max:15',
             'senha' => 'required|string|min:6|confirmed',
             'cnpj' => 'required|string|unique:entidade_beneficentes,cnpj',
             'razaoSocial' => 'required|string|max:255',

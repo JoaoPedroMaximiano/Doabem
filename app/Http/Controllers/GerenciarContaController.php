@@ -46,7 +46,7 @@ class GerenciarContaController extends Controller
         $validatedData = $request->validate([
             'login' => 'required|string|max:255|unique:usuarios,login,' . Auth::id(),
             'email' => 'required|email|max:255|unique:usuarios,email,' . Auth::id(),
-            'celular' => 'required|string|min:10|max:14',
+            'celular' => 'required|string|min:10|max:15',
             'senha' => 'nullable|string|min:6|confirmed',
             'cnpj' => 'required|string|unique:entidade_beneficentes,cnpj,' . Auth::id() . ',id_usuario',
             'razaoSocial' => 'required|string|max:255',
@@ -74,7 +74,7 @@ class GerenciarContaController extends Controller
         $validatedData = $request->validate([
             'login' => 'required|string|max:255|unique:usuarios,login,' . Auth::id(),
             'email' => 'required|email|max:255|unique:usuarios,email,' . Auth::id(),
-            'celular' => 'required|string|min:10|max:14',
+            'celular' => 'required|string|min:10|max:15',
             'senha' => 'nullable|string|min:6|confirmed',
             'cpf' => 'required|string|unique:doadores,cpf,' . Auth::id() . ',id_usuario',
         ], [

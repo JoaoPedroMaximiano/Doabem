@@ -132,6 +132,7 @@ export default function GerenciarConta(){
                     <label>
                         <p>CPF</p>
                         <Input
+                            mask="999.999.999-99"
                             placeholder="Digite seu CPF"
                             name="cpf"
                             value={dados.cpf}
@@ -187,7 +188,7 @@ export default function GerenciarConta(){
                 </div>
                 <div className="flex flex-col gap-2.5">
                     <Button texto="Salvar alterações" onClick={confimarAtualizar} />
-                    <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/gerenciar-conta')} />
+                    <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
                 </div>
             </div>
         </Layout>

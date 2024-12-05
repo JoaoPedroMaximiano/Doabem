@@ -21,7 +21,7 @@ class DoadorController extends Controller
         $request->validate([
             'login' => 'required|string|unique:usuarios,login',
             'email' => 'required|email|unique:usuarios,email',
-            'celular' => 'required|string|min:11',
+            'celular' => 'required|string|min:15',
             'nomeCompleto' => 'required|string',
             'cpf' => 'required|string|unique:doadores,cpf',
             'senha' => 'required|string|min:6|confirmed',
