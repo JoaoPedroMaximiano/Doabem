@@ -113,6 +113,7 @@ export default function GerenciarConta(){
                 <label>
                     <p>Celular</p>
                     <Input
+                        mask={'(99) 99999-9999'}
                         placeholder="Digite seu celular"
                         name="celular"
                         value={dados.celular}
