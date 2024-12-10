@@ -25,7 +25,7 @@ class NecessidadeController extends Controller
             'descricao' => 'required|string',
             'imagem' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'qtd' => 'required|integer|min:1',
-            'cep' => 'required|string|size:8',
+            'cep' => 'required|string|size:9',
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|size:2',
             'estado' => 'required|string|max:255',
@@ -37,6 +37,8 @@ class NecessidadeController extends Controller
         $idEntidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->first('id')->id;
 
         $dados = $request->all();
+        $dados['latitude'] = 10;
+        $dados['longitude'] = 10;
         $nomeImagem = uniqid().".".$dados['imagem']->extension();
         $diretorio = "necessidades/";
 
@@ -45,7 +47,7 @@ class NecessidadeController extends Controller
 
         $local = Local::findOrCreateLocal($dados);
 
-        Necessidade::create([
+        $necessidade = Necessidade::create([
             'id_entidade_beneficente' => $idEntidade,
             'id_local' => $local->id,
             'nome' => $dados['nome'],
@@ -54,8 +56,10 @@ class NecessidadeController extends Controller
             'status' => 'ativo',
             'qtd_necessaria' => $dados['qtd'],
         ]);
+
         DB::commit();
-        return response('Sucesso', 200);
+
+        return response($necessidade->id, 200);
     }
 
     public function view($id){
@@ -94,7 +98,7 @@ class NecessidadeController extends Controller
             'descricao' => 'required|string',
             'imagem' => 'required|max:2048',
             'qtd' => 'required|integer|min:1',
-            'cep' => 'required|string|size:8',
+            'cep' => 'required|string|size:9',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
@@ -125,6 +129,7 @@ class NecessidadeController extends Controller
             'qtd_necessaria' => $dados['qtd'],
         ]);
         DB::commit();
-        return response('Atualização bem-sucedida', 200);
+
+        return response($necessidade->id, 200);
     }
 }

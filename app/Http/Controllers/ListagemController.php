@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EntidadeBeneficente;
 use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
 use App\Models\LocalDoacao;
@@ -14,7 +15,8 @@ class ListagemController extends Controller
     {
         $user = Auth::user();
         $idEntidade = null;
-        if ($user && $user->nivel_acesso == 'entidade') $idEntidade = $user->id;
+
+        if ($user && $user->nivel_acesso == 'entidade') $idEntidade = EntidadeBeneficente::where('id_usuario', $user->id)->first('id')->id;
 
         return Inertia::render('Listagem/Listagem', [
             'listagem' => [

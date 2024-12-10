@@ -22,7 +22,7 @@ export default function Detalhe() {
                 <h1 className="font-bold text-x1">{necessidade.nome}</h1>
                 <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
-            <img src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />
+            <img class="max-w-[600px] max-h-[600px] object-contain" src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />
             <div className="flex flex-row items-center gap-2.5">
                 <Handshake size={32} />
                 <h1 className="text-lg">{entidade.razao_social}</h1>

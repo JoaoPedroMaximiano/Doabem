@@ -6,6 +6,7 @@ import Card from "./Components/Card";
 
 export default function Listagem() {
     let {listagem} = usePage().props;
+    let { auth } = usePage().props;
     let [tipo, setTipo] = useState("Necessidades");
     let [lista, setLista] = useState(listagem);
     let [pesquisa, setPesquisa] = useState("");
@@ -52,7 +53,7 @@ export default function Listagem() {
     }, [pesquisa, tipo]);
 
     useEffect(() => {
-        if ("geolocation" in navigator) {
+        if ("geolocation" in navigator && auth.nivel_acesso != 'entidade') {
             navigator.geolocation.getCurrentPosition((position) => {
                 setUserLocation({
                     latitude: position.coords.latitude,
@@ -78,7 +79,7 @@ export default function Listagem() {
     }, [userLocation, tipo, listagem]);
 
     return <Layout titulo={tipo}>
-        <div className="flex gap-5 mb-5 border-b border-[#C2C2C2]">
+        <div className="flex cursor-pointer gap-5 mb-5 border-b border-[#C2C2C2]">
             <p className={returnTipo(tipo, "Necessidades")} onClick={() => handleType("Necessidades")}>Necessidades</p>
             <p className={returnTipo(tipo, "Eventos")} onClick={() => handleType("Eventos")}>Eventos</p>
             <p className={returnTipo(tipo, "Locais")} onClick={() => handleType("Locais")}>Locais</p>

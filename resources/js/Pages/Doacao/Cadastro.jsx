@@ -87,6 +87,9 @@ export default function Cadastro() {
     }
 
     let verifyIfDonatorExists = (cpf) => {
+        let cpftemp = cpf.replace(/[^\d]/g, '');
+        if (cpftemp.length !== 11) {return;}
+
         axios.post('/doacao/cadastrar/verify-donator', {cpf: cpf})
         .then(response => {
             if (!response.data.exists) {
