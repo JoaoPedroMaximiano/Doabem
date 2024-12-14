@@ -26,8 +26,8 @@ class EventoController extends Controller
             'cep' => 'required|string|size:9',
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|size:2',
-            'data_inicio' => 'required',
-            'data_fim' => 'required',
+            'dataInicio' => 'required',
+            'dataFim' => 'required',
             'estado' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -45,7 +45,7 @@ class EventoController extends Controller
 
         $local = Local::findOrCreateLocal($dados);
 
-        EventoBeneficente::create([
+        $evento = EventoBeneficente::create([
             'id_entidade_beneficente' => $idEntidade,
             'id_local' => $local->id,
             'nome' => $dados['nome'],
@@ -57,7 +57,7 @@ class EventoController extends Controller
         ]);
 
         DB::commit();
-        return response('Sucesso', 200);
+        return response($evento->id, 200);
     }
 
     public function view($id){
@@ -129,6 +129,6 @@ class EventoController extends Controller
         ]);
 
         DB::commit();
-        return response('Atualização bem-sucedida', 200);
+        return response($evento->id, 200);
     }
 }

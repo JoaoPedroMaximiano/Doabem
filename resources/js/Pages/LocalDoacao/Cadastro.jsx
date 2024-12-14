@@ -56,12 +56,13 @@ export default function Cadastro() {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        .then(() => {
+        .then((response) => {
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",
                 html: `<ul>Cadastro realizado com sucesso</ul>`,
             });
+            router.visit('/locais/'+response.data);
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {
@@ -101,12 +102,13 @@ export default function Cadastro() {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        .then(() => {
+        .then((response) => {
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",
                 html: `<ul>Alteração realizada com sucesso</ul>`,
             });
+            router.visit('/locais/'+response.data);
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {

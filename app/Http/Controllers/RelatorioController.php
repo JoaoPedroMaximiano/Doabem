@@ -14,21 +14,21 @@ class RelatorioController extends Controller
         $usuario = Auth::user();
         $entidade = EntidadeBeneficente::where('id_usuario', $usuario->id)->firstOrFail();
 
-        $doacoes = Doacao::with('doador:id,nome,cpf')
-        ->where('id_entidade_beneficente', $entidade->id)
-        ->select('id', 'id_doador', 'id_entidade_beneficente', 'id_destino_final', 'id_necessidade', 'id_evento_beneficente', 'id_local_doacao', 'descricao', 'qtd', 'data_recebimento')
-        ->get();
+        $doacoes = Doacao::where('id_entidade_beneficente', $entidade->id)
+                ->select('id', 'id_doador', 'id_entidade_beneficente', 'id_destino_final', 'id_necessidade', 'id_evento_beneficente', 'id_local_doacao', 'descricao', 'qtd', 'data_recebimento')
+                ->orderBy('data_recebimento')
+                ->get();
 
         $response = [];
         foreach ($doacoes as $doacao) {
             $dataRecebimento = Carbon::parse($doacao->data_recebimento);
-            $diaMesAno = $dataRecebimento->format('d-m-Y');
+            $mesAno = $dataRecebimento->format('m-Y');
 
-            if (!isset($response[$diaMesAno])) {
-                $response[$diaMesAno] = [];
+            if (!isset($response[$mesAno])) {
+                $response[$mesAno] = [];
             }
 
-            $response[$diaMesAno]['itens'][] = [
+            $response[$mesAno]['itens'][] = [
                 'id_doacao' => $doacao->id,
                 'descricao' => $doacao->descricao,
                 'cpf' => $doacao->doador->cpf,

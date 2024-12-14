@@ -17,22 +17,26 @@ export default function Detalhe() {
         <Head>
             <title>{necessidade.nome}</title>
         </Head>
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{necessidade.nome}</h1>
                 <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
-            <img class="max-w-[600px] max-h-[600px] object-contain" src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />
-            <div className="flex flex-row items-center gap-2.5">
-                <Handshake size={32} />
-                <h1 className="text-lg">{entidade.razao_social}</h1>
+            <div className="flex flex-wrap gap-10">
+                <img class="max-w-[300px] md:max-w-[600px] max-h-[600px] object-contain" src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />
+                <div className="min-w-[300px] md:min-w-[600px]">
+                    <div className="flex flex-row items-center gap-2.5">
+                        <Handshake size={32} />
+                        <h1 className="text-lg">{entidade.razao_social}</h1>
+                    </div>
+                    <div className="flex flex-row items-center gap-2.5" onClick={handleLinkClick}>
+                        <MapPinArea size={32} className="text-[#06B6D4]"/>
+                        <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
+                    </div>
+                    <ProgressBar qtd_necessaria={necessidade.qtd_necessaria} qtd_falta={necessidade.qtd_doacoes}/>
+                    <p>{necessidade.descricao}</p>
+                </div>
             </div>
-            <div className="flex flex-row items-center gap-2.5" onClick={handleLinkClick}>
-                <MapPinArea size={32} className="text-[#06B6D4]"/>
-                <h1 className="text-lg underline text-[#06B6D4]">Localização</h1>
-            </div>
-            <ProgressBar qtd_necessaria={necessidade.qtd_necessaria} qtd_falta={necessidade.qtd_doacoes}/>
-            <p>{necessidade.descricao}</p>
             {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
                 <FloatButton
                     onClick={() => router.visit('/necessidades/editar/' + necessidade.id)}

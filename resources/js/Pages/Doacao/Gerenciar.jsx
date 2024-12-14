@@ -105,7 +105,7 @@ export default function Gerenciar() {
         <div className="flex flex-col gap-5">
             <h1>Gerenciamento de doação</h1>
             <Modal isOpen={isModalFinalDestinationOpen} onClose={() => setIsModalFinalDestinationOpen(false)}>
-                <ModalCadastrarDestinoFinal setOptionsDestinosFinais={setOptionsDestinosFinais} />
+                <ModalCadastrarDestinoFinal setOptionsDestinosFinais={setOptionsDestinosFinais} setIsModalFinalDestinationOpen={setIsModalFinalDestinationOpen}/>
             </Modal>
             <Modal isOpen={isModalAddStatusOpen} onClose={() => setIsModalAddStatusOpen(false)}>
                 <ModalAdicionarSituacao setDados={setDados} />

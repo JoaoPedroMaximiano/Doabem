@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-export default function ModalCadastrarDestinoFinal({setOptionsDestinosFinais}) {
+export default function ModalCadastrarDestinoFinal({setOptionsDestinosFinais, setIsModalFinalDestinationOpen}) {
     let [nome, setNome] = useState({});
 
     function cadastrar() {
@@ -15,11 +15,13 @@ export default function ModalCadastrarDestinoFinal({setOptionsDestinosFinais}) {
                 ...prevOptions,
                 response.data.destinoFinal
             ]);
+            setIsModalFinalDestinationOpen(false);
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",
                 html: `<ul>Cadastro realizado com sucesso</ul>`,
             });
+            setIsModalFinalDestinationOpen(false);
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {

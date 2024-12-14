@@ -9,12 +9,12 @@ export default function DoacoesCard({ data, itens }) {
     };
 
     let dataParts = data.split('-');
-    let mes = new Date(parseInt(dataParts[2], 10), parseInt(dataParts[1], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
-    let ano = dataParts[2];
+    let mes = new Date(parseInt(dataParts[1], 10), parseInt(dataParts[0], 10) - 1).toLocaleString('pt-BR', { month: 'long' });
+    let ano = dataParts[1];
 
     return (
         <div className="card-relatorio-out bg-white mb-2">
-            <div className="flex flex-row items-center justify-between h-10" onClick={showRelatorio}>
+            <div className="flex flex-row items-center justify-between h-10 cursor-pointer" onClick={showRelatorio}>
                 <p>Doações ({itens.length} qtd.)</p>
                 <div className="flex flex-row items-center justify-between">
                     <p>{`${mes.charAt(0).toUpperCase() + mes.slice(1)} de ${ano}`}</p>
@@ -25,12 +25,21 @@ export default function DoacoesCard({ data, itens }) {
                 {itens.map((doacao, index) => (
                     <div key={index} className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
                         <div className="pl-2">
-                            <p><u>{doacao.descricao.substring(0, 20)}{doacao.descricao.length > 20 ? '...' : ''}</u></p>
-                            <p><u>{doacao.nome.substring(0, 20)}{doacao.nome.length > 20 ? '...' : ''}</u></p>
+                        <p className="underline md:hidden">
+                            {doacao.descricao.substring(0, 20)}
+                            {doacao.descricao.length > 20 ? '...' : ''}
+                        </p>
+                        <p className="underline hidden md:block">{doacao.descricao}</p>
+
+                        <p className="underline md:hidden">
+                            {doacao.nome.substring(0, 20)}
+                            {doacao.nome.length > 20 ? '...' : ''}
+                        </p>
+                        <p className="underline hidden md:block">{doacao.nome}</p>
                         </div>
                         <div className="flex flex-col items-end pr-2 w-20">
                             <p><u>{doacao.quantidade} qtd.</u></p>
-                            <PencilSimple size={24} onClick={() => router.visit('/doacao/gerenciar/' + doacao.id_doacao)} />
+                            <PencilSimple className='cursor-pointer' size={24} onClick={() => router.visit('/doacao/gerenciar/' + doacao.id_doacao)} />
                         </div>
                     </div>
                 ))}

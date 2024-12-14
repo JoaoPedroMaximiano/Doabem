@@ -13,7 +13,7 @@ export default function Layout({titulo, children}) {
         <div className="relative z-20 w-full bg-[#06B6D4] py-5 px-2.5">
             <div className="container mx-auto flex justify-between items-center px-4">
                 <Link href="/" className="text-3xl text-white">
-                    Logo
+                    DOABEM
                 </Link>
                 <div className="cursor-pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
                     {

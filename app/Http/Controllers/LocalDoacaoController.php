@@ -43,7 +43,7 @@ class LocalDoacaoController extends Controller
 
         $local = Local::findOrCreateLocal($dados);
 
-        LocalDoacao::create([
+        $localDoacao = LocalDoacao::create([
             'id_entidade_beneficente' => $idEntidade,
             'id_local' => $local->id,
             'nome' => $dados['nome'],
@@ -53,7 +53,7 @@ class LocalDoacaoController extends Controller
         ]);
 
         DB::commit();
-        return response('Sucesso', 200);
+        return response($localDoacao->id, 200);
     }
 
     public function update(Request $request){
@@ -93,7 +93,7 @@ class LocalDoacaoController extends Controller
         ]);
 
         DB::commit();
-        return response('Atualização bem-sucedida', 200);
+        return response($localDoacao->id, 200);
     }
 
     public function view($id){
