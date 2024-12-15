@@ -44,12 +44,14 @@ function Menu() {
     let {auth} = usePage().props;
 
     let listaMenu = [
+        {nome: "Início", caminho: "/"},
+        {nome: "Doações e Necessidades", caminho: "/listagem"},
         {nome: "Monitorar doações", caminho: "/monitorar-doacoes"},
     ];
 
     if (!auth?.user){
-        listaMenu.push({nome: "Entrar", caminho: "/login"});
         listaMenu.push({nome: "Criar nova conta", caminho: "/doador/cadastrar"});
+        listaMenu.push({nome: "Entrar", caminho: "/login"});
     }
 
     if (auth?.user?.nivel_acesso == 'entidade') {

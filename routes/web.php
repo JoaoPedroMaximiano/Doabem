@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [App\Http\Controllers\ListagemController::class, 'index'])->name('listagem');
+Route::get('/', [App\Http\Controllers\LandingController::class, 'index'])->name('landing');
+Route::get('/listagem', [App\Http\Controllers\ListagemController::class, 'index'])->name('listagem');
 Route::get('/relatorio-doacoes', [App\Http\Controllers\RelatorioController::class, 'relatorioDoacaoPage'])->name('relatorio.doacao.entidade')->middleware('checkNivelAcesso:entidade');;
 
 Route::get('/login', [App\Http\Controllers\UsuarioController::class, 'loginPage'])->name('login')->middleware('guest');
