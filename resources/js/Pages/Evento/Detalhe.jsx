@@ -10,11 +10,11 @@ export default function Detalhe() {
     let { local } = usePage().props;
     let dataInicio = new Date(evento.data_inicio);
     let dataFim = new Date(evento.data_fim);
-    
+
     let diaInicio = String(dataInicio.getDate()).padStart(2, '0');
     let mesInicio = String(dataInicio.getMonth() + 1).padStart(2, '0');
     let anoInicio = dataInicio.getFullYear();
-    
+
     let diaFim = String(dataFim.getDate()).padStart(2, '0');
     let mesFim = String(dataFim.getMonth() + 1).padStart(2, '0');
     let anoFim = dataFim.getFullYear();
@@ -29,7 +29,7 @@ export default function Detalhe() {
         <div className="flex flex-col gap-2.5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{evento.nome}</h1>
-                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
+                <Link href="/listagem" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <img src={evento.imagem == null ? "/storage/blank.svg" : evento.imagem} />
             <div className="flex flex-row items-center gap-2.5">
@@ -48,11 +48,11 @@ export default function Detalhe() {
             </div>
             <p>{evento.descricao}</p>
             {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
-                <FloatButton 
-                    onClick={()=> router.visit('/eventos/editar/'+evento.id)} 
+                <FloatButton
+                    onClick={()=> router.visit('/eventos/editar/'+evento.id)}
                     icone={<PencilSimple size={32} />}/>
             )}
         </div>
-            
+
     </Layout>
 }

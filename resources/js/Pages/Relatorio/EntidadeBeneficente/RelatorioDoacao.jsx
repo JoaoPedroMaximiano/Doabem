@@ -18,7 +18,7 @@ export default function ListagemDoacao() {
     });
     let [doacoesFiltradas, setDoacoesFiltradas] = useState(doacoes);
 
-    let [expandirFiltro, setExpandirFiltro] = useState(true);
+    let [expandirFiltro, setExpandirFiltro] = useState(false);
 
     let showFiltro = () => {
         setExpandirFiltro(prev => !prev);
@@ -51,7 +51,7 @@ export default function ListagemDoacao() {
         <div className="flex flex-col gap-5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{'Relatório de doações'}</h1>
-                <Link href="/" className="underline text-[#06B6D4] w-100">
+                <Link href="/listagem" className="underline text-[#06B6D4] w-100">
                     <p className="text-sm">Voltar</p>
                 </Link>
             </div>

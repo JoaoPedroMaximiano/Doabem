@@ -11,9 +11,8 @@ export default function Listagem() {
     let [lista, setLista] = useState(listagem);
     let [pesquisa, setPesquisa] = useState("");
     let [userLocation, setUserLocation] = useState(null);
-
     /* Distância máxima para exibir um item em quilômetros */
-    let distanciaMaxima = 10;
+    let distanciaMaxima = 20;
 
     let mapTipo = {
         "Necessidades": "Necessidades",
@@ -95,7 +94,7 @@ export default function Listagem() {
         }
         {
             lista[tipo].length > 0 &&
-            <div className="gap-2 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7">
+            <div className="gap-2 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6">
                 {lista[tipo].map((item, i) => {
                     return <Card card={item} tipo={tipo.toLowerCase()} key={i} />
                 })}

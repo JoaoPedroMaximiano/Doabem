@@ -6,7 +6,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function MonitorarDoacoes() {
-    let [listaDoacoes, setListaDoacoes] = useState([]); 
+    let [listaDoacoes, setListaDoacoes] = useState([]);
 
     let handleEnter = (e) => {
         if (e.key === 'Enter') {
@@ -47,11 +47,11 @@ export default function MonitorarDoacoes() {
         <div className="flex flex-col gap-5">
             <div className="flex justify-between items-center">
                 <h1>Monitorar doações</h1>
-                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
+                <Link href="/listagem" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
 
             <Input placeholder={"Digite o CPF para buscar doações"} mask={"999.999.999-99"} name="CPF" onKeyDown={handleEnter} />
-            
+
             <ListaDoacoes lista={listaDoacoes} />
         </div>
     </Layout>

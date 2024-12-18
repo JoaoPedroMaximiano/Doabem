@@ -19,10 +19,15 @@ class DoacaoController extends Controller
 {
     public function create()
     {
+        $user = Auth::user();
+        $idEntidade = null;
+
+        if ($user && $user->nivel_acesso == 'entidade') $idEntidade = EntidadeBeneficente::where('id_usuario', $user->id)->first('id')->id;
+
         return Inertia::render('Doacao/Cadastro', [
-            'necessidades' => Necessidade::getNecessidadesForCadastroDoacao(),
-            'eventos' => EventoBeneficente::getEventosBeneficentesForCadastroDoacao(),
-            'locais' => LocalDoacao::getLocalDoacaoForCadastroDoacao(),
+            'necessidades' => Necessidade::getNecessidadesForCadastroDoacao($idEntidade),
+            'eventos' => EventoBeneficente::getEventosBeneficentesForCadastroDoacao($idEntidade),
+            'locais' => LocalDoacao::getLocalDoacaoForCadastroDoacao($idEntidade),
         ]);
     }
 

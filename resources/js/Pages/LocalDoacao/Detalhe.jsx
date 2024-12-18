@@ -19,7 +19,7 @@ export default function Detalhe() {
         <div className="flex flex-col gap-2.5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{localDoacao.nome}</h1>
-                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
+                <Link href="/listagem" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <img src={localDoacao.imagem == null ? "/storage/blank.svg" : localDoacao.imagem} />
             <div className="flex flex-row items-center gap-2.5">
@@ -32,11 +32,11 @@ export default function Detalhe() {
             </div>
             <p>{localDoacao.descricao}</p>
             {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
-                <FloatButton 
-                    onClick={()=> router.visit('/locais/editar/'+localDoacao.id)} 
+                <FloatButton
+                    onClick={()=> router.visit('/locais/editar/'+localDoacao.id)}
                     icone={<PencilSimple size={32} />}/>
             )}
         </div>
-            
+
     </Layout>
 }

@@ -19,6 +19,7 @@ export default function Cadastro() {
         descricao: '',
         qtd: ''
     });
+    console.log(usePage().props);
 
     let [tipoDoacao, setTipoDoacao] = useState('necessidade');
     let [isModalOpen, setIsModalOpen] = useState(false);

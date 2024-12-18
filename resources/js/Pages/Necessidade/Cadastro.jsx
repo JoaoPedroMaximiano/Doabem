@@ -8,6 +8,7 @@ import { router, usePage } from "@inertiajs/react";
 import Map from "@/Components/Map";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ToggleSwitch from "@/Components/ToggleSwitch";
 
 export default function Cadastro() {
     let { necessidade } = usePage().props;
@@ -25,6 +26,7 @@ export default function Cadastro() {
         cidade: '',
         estado: '',
         uf: '',
+        status: 'ativo',
     };
 
     if (necessidade && local) {
@@ -37,6 +39,7 @@ export default function Cadastro() {
             latitude: local.latitude || '',
             longitude: local.longitude || '',
             imagem: necessidade.imagem,
+            status: necessidade.status || 'inativo',
             cidade: '',
             estado: '',
             uf: '',
@@ -48,7 +51,6 @@ export default function Cadastro() {
 
     let handleSalvar = () => {
         let formData = new FormData();
-
         Object.keys(dados).forEach(key => {
             formData.append(key, dados[key]);
         });
@@ -152,7 +154,9 @@ export default function Cadastro() {
                 <Label texto="Descrição">
                     <TextArea placeholder="Digite a descricação" value={dados.descricao} onChange={e => setDados(p => ({...p, descricao: e.target.value}))} />
                 </Label>
-
+                <Label texto="Situação">
+                    <ToggleSwitch value={dados.status === 'ativo'} checked={dados.status === 'ativo'} onChange={e => setDados(p => ({...p, status: e.target.checked ? 'ativo' : 'inativo'})) } />
+                </Label>
                 {
                     imagemPreview &&
                     <img src={imagemPreview} alt="Imagem do local de doação" />

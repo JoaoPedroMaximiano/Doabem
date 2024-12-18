@@ -49,7 +49,7 @@ class LocalDoacaoController extends Controller
             'nome' => $dados['nome'],
             'descricao' => $dados['descricao'],
             'imagem' => '/storage/'.$diretorio.$nomeImagem,
-            'status' => 'ativo',
+            'status' => $dados['status'],
         ]);
 
         DB::commit();
@@ -89,7 +89,7 @@ class LocalDoacaoController extends Controller
             'nome' => $dados['nome'],
             'descricao' => $dados['descricao'],
             'imagem' => $dados['imagem'],
-            'status' => 'ativo',
+            'status' => $dados['status'],
         ]);
 
         DB::commit();

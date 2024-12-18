@@ -40,19 +40,21 @@ class LocalDoacao extends Model
 
     public static function getLocalDoacaoForListagem($idEntidade)
     {
-        $query = self::where('locais_doacoes.status', 'ativo')
-            ->where('locais.status', 'ativo')
+        $query = self::where('locais.status', 'ativo')
             ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local');
             if ($idEntidade) {
                 $query->where('locais_doacoes.id_entidade_beneficente', $idEntidade);
-            }            
-            return $query->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+            } else {
+                $query->where('locais_doacoes.status', 'ativo');
+            }
+            return $query->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.status', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
-    public static function getLocalDoacaoForCadastroDoacao()
+    public static function getLocalDoacaoForCadastroDoacao($idEntidade)
     {
         $array = self::where('locais_doacoes.status', 'ativo')
             ->where('locais.status', 'ativo')
+            ->where('locais_doacoes.id_entidade_beneficente', $idEntidade)
             ->join('locais', 'locais.id', '=', 'locais_doacoes.id_local')
             ->get(['locais_doacoes.id', 'locais_doacoes.nome'])->toArray();
 

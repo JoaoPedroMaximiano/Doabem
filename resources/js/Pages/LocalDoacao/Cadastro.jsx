@@ -8,6 +8,7 @@ import { router, usePage } from "@inertiajs/react";
 import Map from "@/Components/Map";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ToggleSwitch from "@/Components/ToggleSwitch";
 
 export default function Cadastro() {
     let { localDoacao } = usePage().props;
@@ -24,6 +25,7 @@ export default function Cadastro() {
         cidade: '',
         estado: '',
         uf: '',
+        status: 'ativo',
     };
 
     if (localDoacao && local) {
@@ -38,6 +40,7 @@ export default function Cadastro() {
             cidade: '',
             estado: '',
             uf: '',
+            status: localDoacao.status || 'inativo',
         };
     }
 
@@ -145,6 +148,10 @@ export default function Cadastro() {
 
                 <Label texto="Descrição">
                     <TextArea placeholder="Digite a descricação" value={dados.descricao} onChange={e => setDados(p => ({...p, descricao: e.target.value}))} />
+                </Label>
+
+                <Label texto="Situação">
+                    <ToggleSwitch value={dados.status === 'ativo'} checked={dados.status === 'ativo'} onChange={e => setDados(p => ({...p, status: e.target.checked ? 'ativo' : 'inativo'})) } />
                 </Label>
 
                 {

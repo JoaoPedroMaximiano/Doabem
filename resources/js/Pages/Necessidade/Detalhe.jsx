@@ -20,7 +20,7 @@ export default function Detalhe() {
         <div className="flex flex-col gap-5">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="font-bold text-x1">{necessidade.nome}</h1>
-                <Link href="/" className="underline text-[#06B6D4]">Voltar</Link>
+                <Link href="/listagem" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <div className="flex flex-wrap gap-10">
                 <img class="w-full h-auto md:max-w-[600px] md:max-h-[600px] object-contain" src={necessidade.imagem == null ? "/storage/blank.svg" : necessidade.imagem} />

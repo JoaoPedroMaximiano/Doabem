@@ -53,7 +53,7 @@ class EventoController extends Controller
             'data_inicio' => $dados['dataInicio'],
             'data_fim' => $dados['dataFim'],
             'imagem' => '/storage/'.$diretorio.$nomeImagem,
-            'status' => 'ativo',
+            'status' => $dados['status'],
         ]);
 
         DB::commit();
@@ -125,7 +125,7 @@ class EventoController extends Controller
             'data_inicio' => $dados['dataInicio'],
             'data_fim' => $dados['dataFim'],
             'imagem' => $dados['imagem'],
-            'status' => 'ativo',
+            'status' => $dados['status'],
         ]);
 
         DB::commit();
