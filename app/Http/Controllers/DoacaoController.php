@@ -10,6 +10,7 @@ use App\Models\EntidadeBeneficente;
 use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
 use App\Models\LocalDoacao;
+use App\Models\Usuario;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -159,5 +160,45 @@ class DoacaoController extends Controller
     {
         $doador = Doador::where('cpf', $request->cpf)->first();
         return response()->json(['exists' => !empty($doador)]);
+    }
+
+    public function storeDoador(Request $request) {
+        $request->validate([
+            'login' => 'required|string|unique:usuarios,login',
+            'email' => 'required|email|unique:usuarios,email',
+            'celular' => 'required|string|min:15',
+            'nomeCompleto' => 'required|string',
+            'cpf' => 'required|string|unique:doadores,cpf',
+            'senha' => 'required|string|min:6|confirmed',
+        ], [
+            'senha.confirmed' => 'A confirmação de senha não coincide com a senha.',
+            'senha_confirmation.required' => 'O campo confirmação de senha é obrigatório.',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $usuario = Usuario::create([
+                'login' => $request->login,
+                'email' => $request->email,
+                'celular' => $request->celular,
+                'senha' => $request->senha,
+                'nivel_acesso' => 'doador',
+                'status' => 'ativo',
+            ]);
+
+            Doador::create([
+                'id_usuario' => $usuario->id,
+                'nome' => $request->nomeCompleto,
+                'cpf' => $request->cpf,
+            ]);
+
+            DB::commit();
+
+            return response()->json(['message' => 'Usuário e doador cadastrados com sucesso!'], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Erro ao cadastrar usuário e entidade.'], 500);
+        }
     }
 }

@@ -156,7 +156,7 @@ export default function Cadastro() {
 
             <div className="flex flex-col gap-2.5">
                 <Button texto="Salvar" onClick={ handleSalvar } />
-                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
+                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/listagem')} />
             </div>
         </div>
     </Layout>

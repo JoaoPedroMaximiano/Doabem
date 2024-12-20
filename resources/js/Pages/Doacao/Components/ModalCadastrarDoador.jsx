@@ -12,7 +12,7 @@ export default function ModalCadastrarDoador() {
     let [dados, setDados] = useState({});
 
     function cadastrar() {
-        axios.post('/doador/cadastrar/salvar', dados)
+        axios.post('/doacao/doador/cadastrar/salvar', dados)
         .then( () => {
             Swal.fire({
                 title: 'Sucesso',

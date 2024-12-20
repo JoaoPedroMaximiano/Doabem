@@ -189,7 +189,7 @@ export default function GerenciarConta(){
                 </div>
                 <div className="flex flex-col gap-2.5">
                     <Button texto="Salvar alterações" onClick={confimarAtualizar} />
-                    <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
+                    <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/listagem')} />
                 </div>
             </div>
         </Layout>

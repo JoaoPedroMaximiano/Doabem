@@ -68,7 +68,9 @@ class NecessidadeController extends Controller
 
         $response = [
             'necessidade' => $necessidade,
-            'entidade' => EntidadeBeneficente::findOrFail($necessidade->id_entidade_beneficente),
+            'entidade' => EntidadeBeneficente::with(['usuario' => function($query) {
+                $query->select('id', 'celular', 'email');
+            }])->findOrFail($necessidade->id_entidade_beneficente),
             'local' => Local::findOrFail($necessidade->id_local),
         ];
         return Inertia::render('Necessidade/Detalhe', $response);

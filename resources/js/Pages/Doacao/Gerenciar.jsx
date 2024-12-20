@@ -152,7 +152,7 @@ export default function Gerenciar() {
 
             <div className="flex flex-col gap-2.5">
                 <Button texto="Salvar" onClick={ handleSalvar } />
-                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
+                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/relatorio-doacoes')} />
             </div>
         </div>
     </Layout>

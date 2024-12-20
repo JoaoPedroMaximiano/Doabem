@@ -156,7 +156,7 @@ export default function Cadastro() {
 
                 {
                     imagemPreview &&
-                    <img src={imagemPreview} alt="Imagem do local de doação" />
+                    <img className="max-w-[400px]" src={imagemPreview} alt="Imagem do local de doação" />
                 }
                 <Label texto={"Imagem"}>
                     <Input
@@ -176,7 +176,7 @@ export default function Cadastro() {
 
             <div className="flex flex-col gap-2.5">
                 <Button texto="Salvar" onClick={ dados.id === '' ? handleSalvar : handleAlterar} />
-                <Button texto="Cancelar" btnType="secondary" onClick={() => router.visit('/')} />
+                <Button texto="Cancelar" btnType="secondary" onClick={() => dados.id === '' ? router.visit('/listagem') : router.visit('/locais/'+dados.id) } />
             </div>
         </div>
     </Layout>

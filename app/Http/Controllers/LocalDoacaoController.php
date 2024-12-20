@@ -101,7 +101,9 @@ class LocalDoacaoController extends Controller
 
         $response = [
             'localDoacao' => $localDoacao,
-            'entidade' => EntidadeBeneficente::findOrFail($localDoacao->id_entidade_beneficente),
+            'entidade' => EntidadeBeneficente::with(['usuario' => function($query) {
+                $query->select('id', 'celular', 'email');
+            }])->findOrFail($localDoacao->id_entidade_beneficente),
             'local' => Local::findOrFail($localDoacao->id_local),
         ];
         return Inertia::render('LocalDoacao/Detalhe', $response);

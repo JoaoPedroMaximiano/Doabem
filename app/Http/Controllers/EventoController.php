@@ -65,7 +65,9 @@ class EventoController extends Controller
 
         $response = [
             'evento' => $evento,
-            'entidade' => EntidadeBeneficente::findOrFail($evento->id_entidade_beneficente),
+            'entidade' => EntidadeBeneficente::with(['usuario' => function($query) {
+                $query->select('id', 'celular', 'email');
+            }])->findOrFail($evento->id_entidade_beneficente),
             'local' => Local::findOrFail($evento->id_local),
         ];
         return Inertia::render('Evento/Detalhe', $response);
