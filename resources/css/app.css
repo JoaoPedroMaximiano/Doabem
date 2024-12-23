@@ -47,6 +47,12 @@ textarea {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #F9A8D4;
+    color: white;
 }
 
 .btn-tertiary {
@@ -57,6 +63,27 @@ textarea {
     border-radius: 5px;
 }
 
+.btn-fourth {
+    border: #06B6D4 solid 1px;
+    color: #06B6D4;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-cardList {
+    background-color: transparent;
+    border: #06B6D4 solid 1px;
+    color: #06B6D4;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-cardList:hover {
+    background-color: #06B6D4;
+    color: white;
+}
 .swal2-confirm { background-color: #06B6D4; }
 
 .progressBar {

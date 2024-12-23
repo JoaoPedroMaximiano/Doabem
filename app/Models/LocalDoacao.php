@@ -47,7 +47,7 @@ class LocalDoacao extends Model
             } else {
                 $query->where('locais_doacoes.status', 'ativo');
             }
-            return $query->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.status', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+            return $query->get(['locais_doacoes.id', 'locais_doacoes.nome', 'locais_doacoes.status', 'locais_doacoes.descricao', 'locais_doacoes.data_cadastro', 'locais_doacoes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public static function getLocalDoacaoForCadastroDoacao($idEntidade)

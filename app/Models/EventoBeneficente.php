@@ -51,7 +51,7 @@ class EventoBeneficente extends Model
             } else {
                 $query->where('eventos_beneficentes.status', 'ativo');
             }
-        return $query->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.status', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+        return $query->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.status', 'eventos_beneficentes.descricao', 'eventos_beneficentes.data_inicio', 'eventos_beneficentes.data_fim', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public static function getEventosBeneficentesForCadastroDoacao($idEntidade)

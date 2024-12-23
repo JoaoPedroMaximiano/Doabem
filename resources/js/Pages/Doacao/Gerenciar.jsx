@@ -5,15 +5,14 @@ import Layout from "@/Components/Layout";
 import Modal from "@/Components/Modal";
 import Select from "@/Components/Select";
 import { router, usePage } from "@inertiajs/react";
-import { PlusCircle, Trash } from "@phosphor-icons/react";
+import { Envelope, IdentificationCard, Phone, PlusCircle, Trash, UserCircle } from "@phosphor-icons/react";
 import { useState } from "react";
 import ModalAdicionarSituacao from "./Components/ModalAdicionarSituacao";
 import ModalCadastrarDestinoFinal from "./Components/ModalCadastrarDestinoFinal";
 import Swal from "sweetalert2";
 
 export default function Gerenciar() {
-    let { doacao, destinosFinais, situacoes } = usePage().props;
-
+    let { doacao, destinosFinais, situacoes, doador } = usePage().props;
     let [isModalFinalDestinationOpen, setIsModalFinalDestinationOpen] = useState(false);
     let [isModalAddStatusOpen, setIsModalAddStatusOpen] = useState(false);
     let [selectValue, setSelectValue] = useState(() => {
@@ -26,7 +25,7 @@ export default function Gerenciar() {
         descricao: doacao.descricao,
         quantidade: doacao.qtd,
         dataRecebimento: doacao.data_recebimento,
-        idDestinoFinal: doacao.idDestinoFinal,
+        idDestinoFinal: doacao.id_destino_final,
         situacoes: situacoes,
     });
 
@@ -71,11 +70,32 @@ export default function Gerenciar() {
     let handleSalvar = () => {
         axios.put('/doacao/gerenciar/alterar', dados)
         .then(() => {
-            Swal.fire({
-                title: 'Sucesso',
-                icon: "success",
-                html: `<ul>Atualização realizado com sucesso</ul>`,
-            });
+            if (dados.situacoes.some(situacao => situacao.status.toLowerCase() === 'entregue')) {
+                Swal.fire({
+                    title: 'Sucesso',
+                    icon: "success",
+                    html: `<ul>Atualização realizada com sucesso </br> Você deseja enviar e-mail ao doador?</ul>`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar e-mail',
+                    cancelButtonText: 'Não enviar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.post('/doacao/enviar-email-entrega', { dados, doador })
+                        .then(() => {
+                            Swal.fire('E-mail enviado com sucesso!', '', 'success');
+                        })
+                        .catch(() => {
+                            Swal.fire('Erro ao enviar e-mail', '', 'error');
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Sucesso',
+                    icon: "success",
+                    html: `<ul>Atualização realizada com sucesso</ul>`,
+                });
+            }
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {
@@ -100,7 +120,6 @@ export default function Gerenciar() {
             }
         });
     }
-
     return <Layout titulo="Gerencimanto de doação">
         <div className="flex flex-col gap-5">
             <h1>Gerenciamento de doação</h1>
@@ -112,6 +131,29 @@ export default function Gerenciar() {
             </Modal>
 
             <div className="flex flex-col gap-2.5">
+                <div className="flex flex-col gap-2.5 mb-3">
+                    <h2>Informações do doador</h2>
+                    <div className="gap-2.5 flex flex-col">
+                        <div className="flex flex-row items-center gap-2.5">
+                            <UserCircle size={32} />
+                            <p>{doador.nome}</p>
+                        </div>
+                        <div className="flex flex-row items-center gap-2.5">
+                            <IdentificationCard size={32} />
+                            <p>
+                                {`${doador.cpf.substring(0, 3)}.***.***-${doador.cpf.substring(doador.cpf.length - 2)}`}
+                            </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-2.5">
+                            <Phone size={32} />
+                            <p>{doador.usuario.celular}</p>
+                        </div>
+                        <div className="flex flex-row items-center gap-2.5">
+                            <Envelope size={32} />
+                            <p>{doador.usuario.email}</p>
+                        </div>
+                    </div>
+                </div>
                 <Label texto="Descrição">
                     <Input placeholder="Digite a descrição da doação" name="descricao" value={dados.descricao} onChange={handleChange} />
                 </Label>

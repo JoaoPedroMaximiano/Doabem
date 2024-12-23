@@ -38,14 +38,14 @@ export default function Detalhe() {
         <div className="flex flex-col gap-5 ">
             <div className="flex flex-row items-center justify-between gap-1">
                 <h1 className="font-bold text-x1">{evento.nome}</h1>
-                <Link href="/listagem" className="underline text-[#06B6D4]">Voltar</Link>
+                <Link href="/listagem#eventos" className="underline text-[#06B6D4]">Voltar</Link>
             </div>
             <div className="flex flex-wrap gap-10">
-                <img className="w-full h-auto md:max-w-[600px] md:max-h-[600px] object-contain" src={evento.imagem == null ? "/storage/blank.svg" : evento.imagem} />
+                <img className="w-full h-auto md:max-w-[600px] md:max-h-[600px] object-contain self-start" src={evento.imagem == null ? "/storage/blank.svg" : evento.imagem} />
                 <div className="w-full md:w-auto min-w-[300px] md:max-w-[800px] gap-5 flex flex-col">
-                    <div onClick={() => setIsModalEntidadeDescriptionOpen(true)} className="flex flex-row items-center gap-2.5">
-                        <Handshake size={32} />
-                        <h1 className="text-lg">{entidade.razao_social}</h1>
+                    <div onClick={() => setIsModalEntidadeDescriptionOpen(true)} className="flex flex-row items-center gap-2.5 cursor-pointer">
+                        <Handshake className="text-[#06B6D4]" size={32} />
+                        <h1 className="text-lg text-[#06B6D4]">{entidade.nome_fantasia}</h1>
                     </div>
                     <div className="flex flex-row items-center gap-2.5 cursor-pointer" onClick={handleLinkClick}>
                         <MapPinArea size={32} className="text-[#06B6D4]"/>
@@ -57,7 +57,7 @@ export default function Detalhe() {
                             {`${diaInicio}/${mesInicio}/${anoInicio}`} - {`${diaFim}/${mesFim}/${anoFim}`}
                         </h1>
                     </div>
-                    <p>{evento.descricao}</p>
+                    <div className="text-justify" dangerouslySetInnerHTML={{ __html: evento.descricao.replace(/\n/g, "<br>")}}/>
                 </div>
             </div>
             {auth?.user?.id && entidade?.id_usuario && auth.user.id === entidade.id_usuario && (
@@ -66,6 +66,5 @@ export default function Detalhe() {
                     icone={<PencilSimple size={32} />}/>
             )}
         </div>
-
     </Layout>
 }

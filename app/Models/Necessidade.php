@@ -50,7 +50,7 @@ class Necessidade extends Model
         } else {
             $query->where('necessidades.status', 'ativo');
         }
-        return $query->get(['necessidades.id', 'necessidades.nome', 'necessidades.status', 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
+        return $query->get(['necessidades.id', 'necessidades.nome', 'necessidades.status', 'necessidades.descricao','necessidades.data_cadastro' , 'necessidades.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
 
     public static function getNecessidadesForCadastroDoacao($idEntidade)

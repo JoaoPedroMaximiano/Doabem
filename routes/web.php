@@ -24,6 +24,7 @@ Route::post('/doacao/cadastrar/verify-donator', [App\Http\Controllers\DoacaoCont
 Route::post('/doacao/doador/cadastrar/salvar', [App\Http\Controllers\DoacaoController::class, 'storeDoador'])->name('verificar.doador')->middleware('checkNivelAcesso:entidade');
 Route::get('/doacao/gerenciar/{id}', [App\Http\Controllers\DoacaoController::class, 'edit'])->name('gerenciar.doacao')->middleware('checkNivelAcesso:entidade');
 Route::put('/doacao/gerenciar/alterar', [App\Http\Controllers\DoacaoController::class, 'update'])->name('gerenciar.update')->middleware('checkNivelAcesso:entidade');
+Route::post('/doacao/enviar-email-entrega', [App\Http\Controllers\DoacaoController::class, 'enviaEmailDoacaoEntregue'])->name('enviaEmailDoacaoEntregue')->middleware('checkNivelAcesso:entidade');
 
 Route::get('/necessidade/cadastrar', [App\Http\Controllers\NecessidadeController::class, 'create'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');
 Route::post('/necessidade/cadastrar/salvar', [App\Http\Controllers\NecessidadeController::class, 'store'])->name('cadastrar.necessidade')->middleware('checkNivelAcesso:entidade');

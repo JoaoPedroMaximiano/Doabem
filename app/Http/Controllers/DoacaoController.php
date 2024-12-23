@@ -11,10 +11,12 @@ use App\Models\Necessidade;
 use App\Models\EventoBeneficente;
 use App\Models\LocalDoacao;
 use App\Models\Usuario;
+use Exception;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class DoacaoController extends Controller
 {
@@ -90,6 +92,9 @@ class DoacaoController extends Controller
             'doacao' => $doacao,
             'destinosFinais' => $destinosFinais,
             'situacoes' => $situacoes,
+            'doador' => Doador::with(['usuario' => function($query) {
+                $query->select('id', 'celular', 'email');
+            }])->findOrFail($doacao->id_doador),
         ]);
     }
 
@@ -111,7 +116,9 @@ class DoacaoController extends Controller
             'data_recebimento' => $dados['dataRecebimento'],
             'id_destino_final' => $dados['idDestinoFinal']
         ]);
+
         DestinoDoacao::where('id_doacao', $doacao->id)->delete();
+
         foreach ($dados['situacoes'] as $destinoFinal) {
             DestinoDoacao::create([
                 'id_doacao' => $doacao->id,
@@ -159,7 +166,10 @@ class DoacaoController extends Controller
     public function verifyDonator(Request $request)
     {
         $doador = Doador::where('cpf', $request->cpf)->first();
-        return response()->json(['exists' => !empty($doador)]);
+        return response()->json([
+            'exists' => !empty($doador),
+            'nome' => $doador ? $doador->nome : null
+        ]);
     }
 
     public function storeDoador(Request $request) {
@@ -199,6 +209,57 @@ class DoacaoController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Erro ao cadastrar usuário e entidade.'], 500);
+        }
+    }
+
+    public function enviaEmailDoacaoEntregue(Request $request) {
+        $request->validate([
+            'dados' => 'required|array',
+            'doador' => 'required|array',
+        ]);
+
+        $dados = $request->dados;
+        $doador = $request->doador;
+
+        //localizar entidade beneficente
+        $doacao = Doacao::find($dados['id']);
+        $entidade = EntidadeBeneficente::find($doacao['id_entidade_beneficente']);
+
+        //localizar destino final
+        $destinoFinal = DestinoFinal::find($dados['idDestinoFinal']);
+        $sendgridApiKey = config('services.sendgrid.key');
+
+        $email = new \SendGrid\Mail\Mail();
+        $email->setFrom("douglas.gs2003@aluno.ifsc.edu.br", "DOABEM - Doação Entregue");
+        $email->setSubject('Doação Entregue');
+        $email->addTo($doador['usuario']['email'], $doador['nome']);
+
+        $data = date_format(new \DateTime($dados['dataRecebimento']), 'd/m/Y');
+        $conteudoHtml = "
+            <h2>Sua doação foi entregue!</h2>
+            <p>Detalhes da doação:</p>
+            <ul>
+                <li>Descrição: {$dados['descricao']}</li>
+                <li>Quantidade: {$dados['quantidade']}</li>
+                <li>Destino final: {$destinoFinal->nome}</li>
+                <li>Entidade beneficente resposável: {$entidade['nome_fantasia']}</li>
+                <li>Data de recebimento: {$data}</li>
+            </ul>
+            <p>Agradecemos sua contribuição!</p>
+        ";
+        $email->addContent("text/html", $conteudoHtml);
+
+        $sendgrid = new \SendGrid($sendgridApiKey);
+
+        try {
+            $response = $sendgrid->send($email);
+            if ($response->statusCode() == 202) {
+                return response()->json(['message' => 'E-mail enviado com sucesso!'], 200);
+            } else {
+                return response()->json(['error' => 'Falha ao enviar e-mail'], $response->statusCode());
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Erro ao enviar e-mail: ' . $e->getMessage()], 500);
         }
     }
 }

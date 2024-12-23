@@ -21,7 +21,7 @@ export default function DoacoesCard({ data, itens }) {
                     <CaretDown size={24} />
                 </div>
             </div>
-            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirRelatorio ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${expandirRelatorio ? 'min-h-[70px] opacity-100' : 'max-h-0 opacity-0'}`}>
                 {itens.map((doacao, index) => (
                     <div key={index} className="mb-2 card-relatorio-in flex flex-row items-center justify-between h-15 bg-[#F0F0F0]">
                         <div className="pl-2">
@@ -44,6 +44,5 @@ export default function DoacoesCard({ data, itens }) {
                     </div>
                 ))}
             </div>
-        </div>
-    );
+        </div>    );
 };

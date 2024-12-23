@@ -3,6 +3,7 @@ import Layout from "@/Components/Layout";
 import { usePage } from "@inertiajs/react";
 import { useEffect, useState } from 'react';
 import Card from "./Components/Card";
+import { Basket, HouseLine, MapPinArea } from "@phosphor-icons/react";
 
 export default function Listagem() {
     let {listagem} = usePage().props;
@@ -13,6 +14,22 @@ export default function Listagem() {
     let [userLocation, setUserLocation] = useState(null);
     /* Distância máxima para exibir um item em quilômetros */
     let distanciaMaxima = 20;
+
+    useEffect(() => {
+        if (window.location.href.includes("/listagem#necessidades")) {
+            setTipo("Necessidades");
+            setLista(listagem);
+            setPesquisa("");
+        } else if (window.location.href.includes("/listagem#eventos")) {
+            setTipo("Eventos");
+            setLista(listagem);
+            setPesquisa("");
+        } else if (window.location.href.includes("/listagem#locais")) {
+            setTipo("Locais");
+            setLista(listagem);
+            setPesquisa("");
+        }
+    }, []);
 
     let mapTipo = {
         "Necessidades": "Necessidades",
@@ -78,10 +95,31 @@ export default function Listagem() {
     }, [userLocation, tipo, listagem]);
 
     return <Layout titulo={tipo}>
-        <div className="flex cursor-pointer gap-5 mb-5 border-b border-[#C2C2C2]">
-            <p className={returnTipo(tipo, "Necessidades")} onClick={() => handleType("Necessidades")}>Necessidades</p>
-            <p className={returnTipo(tipo, "Eventos")} onClick={() => handleType("Eventos")}>Eventos</p>
-            <p className={returnTipo(tipo, "Locais")} onClick={() => handleType("Locais")}>Locais</p>
+        <div className="flex md:flex-row justify-around md:justify-start cursor-pointer gap-5 mb-5 border-b border-[#C2C2C2]">
+            <div className="flex flex-col items-center">
+                <a href="#necessidades" id="necessidades" className={returnTipo(tipo, "Necessidades")} onClick={() => handleType("Necessidades")}>
+                    <div className="flex flex-col items-center">
+                        <Basket size={28} />
+                        <span>Necessidades</span>
+                    </div>
+                </a>
+            </div>
+            <div className="flex flex-col items-center">
+                <a href="#eventos" id="eventos" className={returnTipo(tipo, "Eventos")} onClick={() => handleType("Eventos")}>
+                    <div className="flex flex-col items-center">
+                        <HouseLine size={28} />
+                        <span>Eventos</span>
+                    </div>
+                </a>
+            </div>
+            <div className="flex flex-col items-center">
+                <a href="#locais" id="locais" className={returnTipo(tipo, "Locais")} onClick={() => handleType("Locais")}>
+                    <div className="flex flex-col items-center">
+                        <MapPinArea size={28} />
+                        <span>Locais</span>
+                    </div>
+                </a>
+            </div>
         </div>
 
         <h1>{mapTipo[tipo]}</h1>
@@ -94,7 +132,7 @@ export default function Listagem() {
         }
         {
             lista[tipo].length > 0 &&
-            <div className="gap-2 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6">
+            <div className="gap-2 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
                 {lista[tipo].map((item, i) => {
                     return <Card card={item} tipo={tipo.toLowerCase()} key={i} />
                 })}

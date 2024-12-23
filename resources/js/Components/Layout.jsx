@@ -12,8 +12,8 @@ export default function Layout({titulo, children}) {
 
         <div className="relative z-20 w-full bg-[#06B6D4] py-5 px-2.5">
             <div className="container mx-auto flex justify-between items-center px-4">
-                <Link href="/" className="text-3xl text-white">
-                    DOABEM
+                <Link href="/" className="text-white">
+                    <h2 className="text-5xl">doabem</h2>
                 </Link>
                 <div className="cursor-pointer" onClick={() => setIsMenuHidden(!isMenuHidden)}>
                     {
@@ -31,7 +31,7 @@ export default function Layout({titulo, children}) {
             </div>
 
             <div className={"absolute z-10 top-0 left-0 bg-[#00000025] w-full h-full "+(isMenuHidden ? ' hidden' : '')} onClick={() => setIsMenuHidden(!isMenuHidden)}></div>
-            <div className={"absolute z-30 top-0 right-0 xl:right-44 bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-bl-md md:rounded-b-md w-6/7 md:w-fit" + (isMenuHidden ? ' hidden' : '')}>
+            <div className={"absolute z-30 top-0 right-0 md:right-[2%] xl:right-[6%] 2xl:right-[8%] bg-[#06B6D4] flex flex-col text-right px-5 p-5 rounded-bl-md md:rounded-b-md w-6/7 md:w-fit" + (isMenuHidden ? ' hidden' : '')}>
                 <div className="flex flex-col divide-y-2">
                     <Menu />
                 </div>
@@ -45,7 +45,7 @@ function Menu() {
 
     let listaMenu = [
         {nome: "Início", caminho: "/"},
-        {nome: "Doações e Necessidades", caminho: "/listagem"},
+        {nome: "Listagem", caminho: "/listagem"},
         {nome: "Monitorar doações", caminho: "/monitorar-doacoes"},
     ];
 

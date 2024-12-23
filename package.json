@@ -23,6 +23,7 @@
     "dependencies": {
         "@phosphor-icons/react": "^2.1.7",
         "@react-google-maps/api": "^2.19.3",
+        "@sendgrid/mail": "^8.1.4",
         "i": "^0.3.7",
         "leaflet": "^1.9.4",
         "react-input-mask": "^2.0.4",
