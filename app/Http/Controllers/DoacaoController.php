@@ -230,14 +230,14 @@ class DoacaoController extends Controller
         $sendgridApiKey = config('services.sendgrid.key');
 
         $email = new \SendGrid\Mail\Mail();
-        $email->setFrom("douglas.gs2003@aluno.ifsc.edu.br", "DOABEM - Doação Entregue");
+        $email->setFrom("douglas.gs2003@aluno.ifsc.edu.br", "doabem - Doação Entregue");
         $email->setSubject('Doação Entregue');
         $email->addTo($doador['usuario']['email'], $doador['nome']);
 
         $data = date_format(new \DateTime($dados['dataRecebimento']), 'd/m/Y');
         $conteudoHtml = "
-            <h2>Sua doação foi entregue!</h2>
-            <p>Detalhes da doação:</p>
+            <h1>Sua doação foi entregue!</h1>
+            <h2>Detalhes da doação:</h2>
             <ul>
                 <li>Descrição: {$dados['descricao']}</li>
                 <li>Quantidade: {$dados['quantidade']}</li>

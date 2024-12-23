@@ -44,7 +44,6 @@ function Menu() {
     let {auth} = usePage().props;
 
     let listaMenu = [
-        {nome: "Início", caminho: "/"},
         {nome: "Listagem", caminho: "/listagem"},
         {nome: "Monitorar doações", caminho: "/monitorar-doacoes"},
     ];
