@@ -96,6 +96,7 @@ export default function Gerenciar() {
                     html: `<ul>Atualização realizada com sucesso</ul>`,
                 });
             }
+            router.visit('/relatorio-doacoes');
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {

@@ -56,12 +56,13 @@ export default function Cadastro() {
             tipoDoacao,
             idTipoDoacao: selectValue
         })
-        .then(() => {
+        .then((response) => {
             Swal.fire({
                 title: 'Sucesso',
                 icon: "success",
                 html: `<ul>Cadastro realizado com sucesso</ul>`,
             });
+            router.visit('/doacao/gerenciar/'+response.data);
         })
         .catch(error => {
             if (error.response && error.response.status === 422) {

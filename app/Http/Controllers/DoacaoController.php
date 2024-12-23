@@ -69,7 +69,7 @@ class DoacaoController extends Controller
 
         DB::commit();
 
-        return response()->json(['message' => "Sucesso"]);
+        return response($doacao->id, 200);
     }
 
     public function edit($id)
