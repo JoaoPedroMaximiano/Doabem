@@ -21,8 +21,9 @@ class Doacao extends Model
         'descricao',
         'qtd',
         'data_recebimento',
-    ]; 
-    
+        'imagem'
+    ];
+
     public function doador()
     {
         return $this->belongsTo(Doador::class, 'id_doador');
@@ -64,6 +65,7 @@ class Doacao extends Model
                     d.id,
                     d.descricao,
                     d.qtd,
+                    d.imagem,
                     dd.status,
                     DATE_FORMAT(dd.data_atualizacao, '%d/%m/%Y - %H:%i') AS data_atualizacao
                 FROM doacoes d
@@ -83,6 +85,7 @@ class Doacao extends Model
                     'id' => $item->id,
                     'descricao' => $item->descricao,
                     'qtd' => $item->qtd,
+                    'imagem' => $item->imagem,
                     'itens' => [],
                 ];
             }

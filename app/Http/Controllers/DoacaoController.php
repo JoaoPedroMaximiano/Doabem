@@ -16,7 +16,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class DoacaoController extends Controller
 {
@@ -108,21 +108,33 @@ class DoacaoController extends Controller
         $dados = $request->all();
         $doacao = Doacao::findOrFail($dados['id']);
 
-        DB::beginTransaction();
-
-        $doacao->update([
+        $dadosUpdate = [
             'descricao' => $dados['descricao'],
             'qtd' => $dados['quantidade'],
             'data_recebimento' => $dados['dataRecebimento'],
             'id_destino_final' => $dados['idDestinoFinal']
-        ]);
+        ];
+
+        if ($request->imagem != 'null') {
+            $request->validate([
+                'imagem' => 'image|mimes:jpeg,png,jpg|max:2048',
+            ]);
+            $nomeImagem = uniqid().".".$dados['imagem']->extension();
+            $diretorio = "doacoes/";
+            Storage::putFileAs('public/'.$diretorio, $dados['imagem'], $nomeImagem);
+            $dadosUpdate['imagem'] = '/storage/'.$diretorio.$nomeImagem;
+        }
+
+        DB::beginTransaction();
+
+        $doacao->update($dadosUpdate);
 
         DestinoDoacao::where('id_doacao', $doacao->id)->delete();
-
-        foreach ($dados['situacoes'] as $destinoFinal) {
+        $situacoes = json_decode($dados['situacoes']);
+        foreach ($situacoes as $destinoFinal) {
             DestinoDoacao::create([
                 'id_doacao' => $doacao->id,
-                'status' => $destinoFinal['status'],
+                'status' => $destinoFinal->status,
                 'data_atualizacao' => now()
             ]);
         }

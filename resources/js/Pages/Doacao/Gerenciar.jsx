@@ -27,7 +27,10 @@ export default function Gerenciar() {
         dataRecebimento: doacao.data_recebimento,
         idDestinoFinal: doacao.id_destino_final,
         situacoes: situacoes,
+        imagem: doacao.imagem,
     });
+
+    let [imagemPreview, setImagemPreview] = useState(dados.imagem);
 
     let formatDate = (dateString) => {
         let date = new Date(dateString);
@@ -68,7 +71,23 @@ export default function Gerenciar() {
     };
 
     let handleSalvar = () => {
-        axios.put('/doacao/gerenciar/alterar', dados)
+        let formData = new FormData();
+
+        Object.keys(dados).forEach(key => {
+            if (key === 'situacoes' && typeof dados[key] === 'object') {
+                formData.append(key, JSON.stringify(dados[key]));
+            } else {
+                formData.append(key, dados[key]);
+            }
+        });
+
+        formData.append('_method', 'PUT');
+
+        axios.post('/doacao/gerenciar/alterar', formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
         .then(() => {
             if (dados.situacoes.some(situacao => situacao.status.toLowerCase() === 'entregue')) {
                 Swal.fire({
@@ -121,6 +140,7 @@ export default function Gerenciar() {
             }
         });
     }
+
     return <Layout titulo="Gerencimanto de doação">
         <div className="flex flex-col gap-5">
             <h1>Gerenciamento de doação</h1>
@@ -192,6 +212,23 @@ export default function Gerenciar() {
                     </div>
                 </div>
             </div>
+
+            {
+                imagemPreview &&
+                <img className="max-w-[400px]" src={imagemPreview} alt="Imagem do local de doação" />
+            }
+            <Label texto={"Imagem"}>
+                <Input
+                    inputType="file"
+                    onChange={e => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            setDados(p => ({...p, imagem: file}));
+                            setImagemPreview(URL.createObjectURL(file));
+                        }
+                    }}
+                />
+            </Label>
 
             <div className="flex flex-col gap-2.5">
                 <Button texto="Salvar" onClick={ handleSalvar } />

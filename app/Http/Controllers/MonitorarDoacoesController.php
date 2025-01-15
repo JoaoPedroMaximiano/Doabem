@@ -24,7 +24,6 @@ class MonitorarDoacoesController extends Controller
         }
 
         $doacoes = Doacao::getDoacoesDestinosByIdDoador($doador->id);
-
         return response()->json(["doacoes" => $doacoes], 200);
     }
 }

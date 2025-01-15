@@ -1,9 +1,12 @@
 import Input from "@/Components/Input";
 import Layout from "@/Components/Layout";
 import { Link } from "@inertiajs/react";
+import { Image } from "@phosphor-icons/react";
 import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import ModalImagem from "./Components/ModalImagem";
+import Modal from "@/Components/Modal";
 
 export default function MonitorarDoacoes() {
     let [listaDoacoes, setListaDoacoes] = useState([]);
@@ -61,7 +64,6 @@ function ListaDoacoes({lista}) {
     if (lista.length < 1) {
         return <></>;
     }
-
     return <div className="flex flex-col gap-5">
         {Object.values(lista).map((doacao, i) => {
             return <CardDoacao doacao={doacao} key={i} />
@@ -70,13 +72,24 @@ function ListaDoacoes({lista}) {
 }
 
 function CardDoacao({doacao}) {
+    let [isModalImageOpen, setIsModalImageOpen] = useState(false);
     return <div className="bg-white rounded-md divide-y-2">
-        <p className="p-2.5">{doacao.id} - {doacao.descricao} ({doacao.qtd} qtd.)</p>
-        {doacao.itens.map(item => {
-            return <div className="flex justify-between p-2.5">
+        <Modal isOpen={isModalImageOpen} onClose={() => setIsModalImageOpen(false)}>
+            <ModalImagem dados={doacao}></ModalImagem>
+        </Modal>
+
+        <div className="flex justify-between items-center p-2.5">
+            <p>{doacao.id} - {doacao.descricao} ({doacao.qtd} qtd.)</p>
+            {doacao.imagem && <Image onClick={() => setIsModalImageOpen(true)} className="text-[#06B6D4] cursor-pointer ml-auto" size={32} />}
+        </div>
+
+        {doacao.itens.map((item, index) => {
+            return <div className="flex justify-between p-2.5" key={index}>
                 <p>{item.status}</p>
                 <p>{item.data_atualizacao}</p>
             </div>
         })}
     </div>;
 }
+
+
