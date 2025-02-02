@@ -7,6 +7,7 @@ import { Basket, HouseLine, MapPinArea } from "@phosphor-icons/react";
 
 export default function Listagem() {
     let {listagem} = usePage().props;
+    console.log(listagem);
     let { auth } = usePage().props;
     let [tipo, setTipo] = useState("Necessidades");
     let [lista, setLista] = useState(listagem);

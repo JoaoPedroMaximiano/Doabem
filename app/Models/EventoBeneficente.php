@@ -42,18 +42,17 @@ class EventoBeneficente extends Model
 
     public static function getEventosBeneficentesForListagem($idEntidade)
     {
-        $query = self::whereDate('data_inicio', '<=', now())
-            ->whereDate('data_fim', '>=', now())
-            ->where('locais.status', 'ativo')
+        $query = self::where('locais.status', 'ativo')
             ->join('locais', 'locais.id', '=', 'eventos_beneficentes.id_local');
             if ($idEntidade) {
                 $query->where('eventos_beneficentes.id_entidade_beneficente', $idEntidade);
             } else {
-                $query->where('eventos_beneficentes.status', 'ativo');
+                $query->where('eventos_beneficentes.status', 'ativo')
+                    ->whereDate('data_inicio', '<=', now())
+                    ->whereDate('data_fim', '>=', now());
             }
         return $query->get(['eventos_beneficentes.id', 'eventos_beneficentes.nome', 'eventos_beneficentes.status', 'eventos_beneficentes.descricao', 'eventos_beneficentes.data_inicio', 'eventos_beneficentes.data_fim', 'eventos_beneficentes.imagem', 'locais.latitude', 'locais.longitude'])->toArray();
     }
-
     public static function getEventosBeneficentesForCadastroDoacao($idEntidade)
     {
         $array = self::where('eventos_beneficentes.status', 'ativo')
