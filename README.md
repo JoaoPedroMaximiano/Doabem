@@ -1,4 +1,4 @@
-# AppDoacao
+# Doabem
 
 Plataforma WEB para gestão e divulgação de campanhas de doação e eventos beneficentes
 
@@ -10,27 +10,75 @@ Acadêmicos:
 Orientador:
  - Edjandir Corrêa Costa
 
-Para configurar a plataforma, basta clonar o projeto e executar estes comandos no diretório raíz do projeto (apenas uma vez é o suficiente):
+## Configuração do ambiente
 
-- Configurar o link das imagens do projeto
-```
-php artisan storage:link
-```
+Para configurar a plataforma, basta clonar o projeto e executar os comandos abaixo no diretório raiz.
 
-- Criar as tabelas no banco (MySQL precisa estar em execução) 
-```
-php artisan migrate
-```
+### 1. Instalar as dependências
 
-- Atualizar as dependencias:
-```
-npm i
+Instale as dependências do PHP e do JavaScript:
+
+```bash
+composer install
+npm install
 ```
 
-Para executar iniciar o projeto, basta rodar os seguintes comandos no diretório raíz do projeto, em dois terminais diferentes:
+### 2. Configurar o ambiente
+
+Crie o arquivo `.env` a partir do exemplo:
+
 ```
-php artisan serve
+cp .env.example .env
 ```
+
+Configure as variáveis de ambiente conforme necessário.
+
+### 3. Iniciar os containers Docker
+
+Inicie o ambiente utilizando o Laravel Sail:
+
 ```
-npm run dev
+./vendor/bin/sail up -d
+```
+
+### 4. Configuração inicial
+
+Execute os comandos abaixo para concluir a configuração da aplicação:
+
+- Gerar a chave da aplicação:
+
+```
+./vendor/bin/sail artisan key:generate
+```
+
+- Configurar o link das imagens do projeto:
+
+```
+./vendor/bin/sail artisan storage:link
+```
+
+- Criar as tabelas no banco de dados:
+
+```
+./vendor/bin/sail artisan migrate
+```
+
+### Executando o projeto
+
+Com os containers em execução, inicie o servidor de desenvolvimento do frontend:
+
+```
+./vendor/bin/sail npm run dev
+```
+
+A aplicação estará disponível no endereço configurado no ambiente Docker, normalmente:
+
+```
+http://localhost
+```
+
+Para encerrar os containers:
+
+```
+./vendor/bin/sail down
 ```
